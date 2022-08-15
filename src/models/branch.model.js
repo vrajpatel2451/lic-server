@@ -3,6 +3,11 @@ import { model, Schema } from "mongoose";
 
 const BranchSchema = new Schema({
     name:String,
+    branchCode:{
+      type:String,
+      unique:true,
+      index:true,
+    },
     contact:{type:Schema.Types.ObjectId, ref:'Contact'},
     address:{type:Schema.Types.ObjectId, ref:'Address'},
     departments:[{type:Schema.Types.ObjectId, ref:'Department'}],

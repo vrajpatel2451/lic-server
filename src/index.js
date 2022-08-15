@@ -1,24 +1,28 @@
 import express from 'express' 
+import 'dotenv/config';
 import cors from 'cors' 
 import compression from 'compression';
 import {connect,connection} from 'mongoose';
-import { mainComposer } from './resolvers';
-import { graphqlHTTP } from 'express-graphql';
+import AuthRoutes from './routes/auth.routes';
+import BranchRoutes from './routes/branch.routes';
+import DepartmentRoutes from './routes/department.routes';
 
 class MainServer {
      #app;
      #port = parseInt(process.env.PORT) || 3000;
-     #mongoUri = parseInt(process.env.MONGODB_URI) || 3000;
-     #schema = mainComposer;
-
+     #mongoUri = parseInt(process.env.MONGODB_URI) || 'ab';
+     //  #schema = mainComposer;
+     
      constructor(){
+       this.#port = parseInt(process.env.PORT) || 3000;
+          this.#mongoUri = process.env.MONGODB_URI || '';
          this.#app = express();
-         this.config();
-         this.mongo();
-         this.routes();
+         this.#config();
+         this.#mongo();
+         this.#routes();
      }
 
-     config = () =>{
+     #config = () =>{
        this.#app.set('port', this.#port || 3000);
        this.#app.use(express.json());
        this.#app.use(express.urlencoded({ extended: false }));
@@ -26,24 +30,28 @@ class MainServer {
        this.#app.use(cors());
      }
      
-    extensions = ({ context }) => {
-      return {
-        runTime: Date.now() - context.startTime,
-      };
-    };
+    // #extensions = ({ context }) => {
+    //   return {
+    //     runTime: Date.now() - context.startTime,
+    //   };
+    // };
 
-     routes=()=>{
-       this.#app.use("/graphql",graphqlHTTP(()=>{
-         return {
-           context:{startTime:Date.now()},
-           graphiql:true,
-           schema: this.#schema,
-           extensions: this.extensions, 
-         }
-       }))
+     #routes=()=>{
+      //  this.#app.use("/graphql",graphqlHTTP(()=>{
+      //    return {
+      //      context:{startTime:Date.now()},
+      //      graphiql:true,
+      //      schema: this.#schema,
+      //      extensions: this.#extensions, 
+      //    }
+      //  }))
+      this.#app.use('/api/auth', new AuthRoutes().router);
+      this.#app.use('/api/branch', new BranchRoutes().router);
+      this.#app.use('/api/department', new DepartmentRoutes().router);
      }
     
-    mongo=()=>{
+    #mongo=()=>{
+      // console.log(this.#mongoUri);
         connection.on('connected', () => {
           console.log('Mongo Connection Established');
         });
@@ -54,7 +62,7 @@ class MainServer {
           console.log('Mongo Connection Disconnected');
           console.log('Trying to reconnect to Mongo ...');
           setTimeout(() => {
-            connect(this.#mongoUri || '', {
+            connect(this.#mongoUri, {
               keepAlive: true,
               socketTimeoutMS: 3000,
               connectTimeoutMS: 3000,
@@ -67,12 +75,12 @@ class MainServer {
         connection.on('error', (error) => {
           console.log(`Mongo Connection ERROR: ${error}`);
         });
-    // const run = async () => {
-    //   await connect(this.#mongoUri || '', {
-    //     keepAlive: true,
-    //   });
-    // };
-    // run().catch((error) => console.error("mongo error",error));
+    const run = async() => {
+      await connect(this.#mongoUri, {
+        keepAlive: true,
+      });
+    };
+    run().catch((error) => console.error("mongo error",error));
   }
 
     runServer = ()=>{
@@ -86,3 +94,7 @@ class MainServer {
          )
      }
 }
+
+const server = new MainServer();
+
+server.runServer();

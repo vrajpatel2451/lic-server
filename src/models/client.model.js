@@ -12,7 +12,6 @@ const ClientSchema = new Schema({
     fields:{type:Schema.Types.Map, of:String},
     address:{type:Schema.Types.ObjectId, ref:'Address'},
     branch:{type:Schema.Types.ObjectId, ref:'Branch'},   
-    department:[{type:Schema.Types.ObjectId, ref:'Department'}],
     documents:[{type:Schema.Types.ObjectId, ref:'DocumentClient'}],   
 });
 
