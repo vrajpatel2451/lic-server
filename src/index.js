@@ -48,6 +48,9 @@ class MainServer {
       this.#app.use('/api/auth', new AuthRoutes().router);
       this.#app.use('/api/branch', new BranchRoutes().router);
       this.#app.use('/api/department', new DepartmentRoutes().router);
+      this.#app.get('/', (req,res)=>{
+        return res.send('<h1>Lic App</h1>')
+      });
      }
     
     #mongo=()=>{
