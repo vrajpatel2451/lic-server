@@ -10,7 +10,12 @@ const ClientSchema = new Schema({
     },
     contact:{type:Schema.Types.ObjectId, ref:'Contact'},
     fields:{type:Schema.Types.Map, of:String},
-    address:{type:Schema.Types.ObjectId, ref:'Address'},
+    line1:String,
+    line2:String,
+    area:String,
+    city:String,
+    state:String,
+    pin:String,
     branch:{type:Schema.Types.ObjectId, ref:'Branch'},   
     documents:[{type:Schema.Types.ObjectId, ref:'DocumentClient'}],   
 });

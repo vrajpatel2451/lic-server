@@ -6,6 +6,9 @@ import {connect,connection} from 'mongoose';
 import AuthRoutes from './routes/auth.routes';
 import BranchRoutes from './routes/branch.routes';
 import DepartmentRoutes from './routes/department.routes';
+import ClientRoutes from './routes/clients.routes';
+import TaskRoutes from './routes/task.routes';
+import swaggerIgnite from './utils/swagger.util';
 
 class MainServer {
      #app;
@@ -20,6 +23,7 @@ class MainServer {
          this.#config();
          this.#mongo();
          this.#routes();
+         this.#initSwaggerDocs();
      }
 
      #config = () =>{
@@ -48,6 +52,8 @@ class MainServer {
       this.#app.use('/api/auth', new AuthRoutes().router);
       this.#app.use('/api/branch', new BranchRoutes().router);
       this.#app.use('/api/department', new DepartmentRoutes().router);
+      this.#app.use('/api/client', new ClientRoutes().router);
+      this.#app.use('/api/task', new TaskRoutes().router);
       this.#app.get('/', (req,res)=>{
         return res.send('<h1>Lic App</h1>')
       });
@@ -84,6 +90,10 @@ class MainServer {
       });
     };
     run().catch((error) => console.error("mongo error",error));
+  }
+
+  #initSwaggerDocs() {
+    swaggerIgnite(this.#app);
   }
 
     runServer = ()=>{

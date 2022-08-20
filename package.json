@@ -22,7 +22,9 @@
     "graphql-compose-mongoose": "^9.7.1",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.5.1"
+    "mongoose": "^6.5.1",
+    "swagger-jsdoc": "^6.2.5",
+    "swagger-ui-express": "^4.5.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",

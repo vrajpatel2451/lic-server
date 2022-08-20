@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 class TaskValidator {
-  static createDepartment() {
+  static createTask() {
     return Joi.object({
       title: Joi.string().required(),
       description: Joi.string().required(),
@@ -9,17 +9,43 @@ class TaskValidator {
       branch: Joi.string().required(),
       department: Joi.string().required(),
       head: Joi.string().required(),
-      staff: Joi.string().required(),
       client: Joi.string().required(),
-      tastType:Joi.string().required(),
-      document:Joi.object({
+      taskType:Joi.string().required(),
+      documents:Joi.array().items(Joi.object({
+        name:Joi.string().required(),
+        type:Joi.string().required(),
+    })),
+      fields:Joi.object({
           name:Joi.string().required(),
-          type:Joi.string().required(),
+          value:Joi.string().valid(''),
       }),
+    });
+  }
+  static updateStatus() {
+    return Joi.object({
+      task: Joi.string().required(),
+      status: Joi.string().required(),
+    });
+  }
+  static assignStaff() {
+    return Joi.object({
+      task: Joi.string().required(),
+      status: Joi.string().required(),
+    });
+  }
+  static updateFields() {
+    return Joi.object({
+      client: Joi.string().required(),
       fields:Joi.object({
           name:Joi.string().required(),
           value:Joi.string(),
       }),
+    });
+  }
+  static updateDocuments() {
+    return Joi.object({
+      document: Joi.string().required(),
+      url:Joi.required(),
     });
   }
 }
