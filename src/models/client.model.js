@@ -9,7 +9,7 @@ const ClientSchema = new Schema({
         index:true,
     },
     contact:{type:Schema.Types.ObjectId, ref:'Contact'},
-    fields:{type:Schema.Types.Map, of:String},
+    // fields:{type:Schema.Types.Map, of:String},
     line1:String,
     line2:String,
     area:String,
@@ -18,6 +18,7 @@ const ClientSchema = new Schema({
     pin:String,
     branch:{type:Schema.Types.ObjectId, ref:'Branch'},   
     documents:[{type:Schema.Types.ObjectId, ref:'DocumentClient'}],   
+    fields:[{type:Schema.Types.ObjectId, ref:'FieldClient'}],   
 });
 
 // module.exports = {

@@ -18,7 +18,7 @@ export function createToken(user){
   
   export const JWTVerify = (authorization, callback) => {
     const token = authorization.replace(/bearer /i, '');
-  
+    console.log(token);
     jwt.verify(token, process.env.JWT_SECRET, callback);
   };
   

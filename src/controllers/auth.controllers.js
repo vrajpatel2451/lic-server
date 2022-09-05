@@ -1,3 +1,4 @@
+import FileOperations from '../helpers/fileOperation.helpers';
 import ResponseWraper from '../helpers/response.helpers';
 import { Address } from '../models/address.model';
 import { Branch } from '../models/branch.model';
@@ -5,17 +6,51 @@ import { Contact } from '../models/contact.model';
 import { Department } from '../models/department.model';
 import { User } from '../models/user.model';
 import { WorkRole } from '../models/workRole.model';
-
-
 class AuthController {
+
+  static async createAdmin(req,res){
+    const response = new ResponseWraper(res);
+    try {
+      const { email,phone, firstName,lastName, password,line1,line2,area,city,state,pin } = req.body;
+      let isUserExists = await User.findOne({email:email}).exec();
+      if(isUserExists) return response.unauthorized('User does not exist');
+      const newContact = await Contact.create({
+        email,
+        phone
+      });
+      const newAddress = await Address.create({
+        line1,
+        line2,
+        area,
+        city,
+        state,
+        pin
+      });
+      const user = await User.create({
+        password,
+        firstName,
+        email,
+        lastName,
+        role:'admin',
+        image:req.file.filename,
+        contact:newContact,
+        address:newAddress,
+      });
+      return response.created({ accessToken: user.generateToken(), user });
+    } catch (error) {
+      return response.internalServerError();
+    }
+  }
+
   static async register(req, res) {
     const response = new ResponseWraper(res);
     // console.log(req.body);
     try {
-      const { email,phone, firstName,lastName,branch,role,workRole,department,image, password,line1,line2,area,city,state,pin } = req.body;
+      const { email,phone, firstName,lastName,branch,role,workRole,department, password,line1,line2,area,city,state,pin } = req.body;
     //   const isEmailExist = await Contact.findOne({email}).exec();
-
+      
       let isUserExists = false;
+      console.log(req.file);
       if(role!='admin'){
         if( department != [] && department[0]!=null && department[0]!=''){
           // console.log(department);
@@ -63,7 +98,7 @@ class AuthController {
             role,
             workRole,
             department,
-            image,
+            image:req.file.filename,
             contact:newContact,
             address:newAddress,
           });
@@ -76,7 +111,7 @@ class AuthController {
             role,
             workRole,
             department,
-            image,
+            image:req.file.filename,
             contact:newContact,
             address:newAddress,
           });
@@ -101,6 +136,7 @@ class AuthController {
       const {branch,department,name} = req.query;
       let users=[];
       console.log(name);
+      console.log(req.file);
       if(branch!=null && branch!='' && department!=null && department!='' && branch != undefined && department != undefined){
         
         console.log("bd",branch,department);
@@ -143,7 +179,7 @@ class AuthController {
           ]
         }).populate('contact');
       }
-      console.log(name);
+      console.log(req.file);
       if(users==null||users.length<=0) return response.notFound('staff not found');
       return response.ok(users);
       
@@ -158,16 +194,6 @@ class AuthController {
     const response = new ResponseWraper(res);
     try {
       const { email, password } = req.body;
-      // const isEmailExist = await Contact.findOne({email}).exec();
-    //   if (isEmailExist) {
-
-    //     const contact = await Contact.findOne({ email })
-    //     isUserExists = await User.findOne({ contact:contact }).exec();
-    //     if (isUserExists) return response.unauthorized('User already exist');
-    //  }else{
-    //      return response.badRequest('Email does not exist');
-    //  }
-        // const contact = await Contact.findOne({email});
       const user = await User.findOne({
         email,
       });
@@ -176,6 +202,21 @@ class AuthController {
       const authenticateUser = await user.authenticate(password);
 
       if (!authenticateUser) return response.unauthorized('Invalid password');
+      console.log(user);
+      return response.created({ accessToken: user.generateToken(), user });
+    } catch (error) {
+        console.log(error);
+      return response.internalServerError();
+    }
+  }
+
+  static async verifyToken(req, res) {
+    const response = new ResponseWraper(res);
+    try {
+      const { userId } = req.body;
+      const user = await User.findById(userId);
+      if (!user) return response.unauthorized('user not available');
+
       console.log(user);
       return response.created({ accessToken: user.generateToken(), user });
     } catch (error) {

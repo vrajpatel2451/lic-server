@@ -12,7 +12,7 @@ class BranchValidator {
       area: Joi.string().required(),
       city: Joi.string().required(),
       state: Joi.string().required(),
-      pin: Joi.number().required(),
+      pin: Joi.number().required().min(100000).max(999999),
       departments: Joi.array(),
     });
   }

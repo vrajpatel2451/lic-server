@@ -9,7 +9,7 @@ import DepartmentRoutes from './routes/department.routes';
 import ClientRoutes from './routes/clients.routes';
 import TaskRoutes from './routes/task.routes';
 import swaggerIgnite from './utils/swagger.util';
-
+import path from 'path'
 class MainServer {
      #app;
      #port = parseInt(process.env.PORT) || 3000;
@@ -49,6 +49,7 @@ class MainServer {
       //      extensions: this.#extensions, 
       //    }
       //  }))
+      this.#app.use('/static', express.static(path.join(`${__dirname}/uploads`)));
       this.#app.use('/api/auth', new AuthRoutes().router);
       this.#app.use('/api/branch', new BranchRoutes().router);
       this.#app.use('/api/department', new DepartmentRoutes().router);

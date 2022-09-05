@@ -7,7 +7,7 @@ const AddressSchema = new Schema({
     area:String,
     city:String,
     state:String,
-    pin:String,
+    pin:Number,
 });
 
 // module.exports = {

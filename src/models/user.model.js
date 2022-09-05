@@ -18,7 +18,7 @@ const UserSchema = new Schema({
     role:{type:String, enum:['admin','head','staff'],default:'staff'},   
     department:[{type:Schema.Types.ObjectId, ref:'Department'}],
     workRole:[{type:Schema.Types.ObjectId, ref:'WorkRole'}],
-    image:{data:Buffer, contentType:String},   
+    image:String,   
 },
 {
     toJSON: {
@@ -55,6 +55,7 @@ UserSchema.pre('save', async function encrypt(next) {
         {
           firstName: this.firstName,
           lastName: this.lastName,
+          role: this.role,
         //   email: this.userName,
           // eslint-disable-next-line no-underscore-dangle
           id: this._id,
