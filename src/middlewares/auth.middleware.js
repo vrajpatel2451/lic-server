@@ -2,6 +2,7 @@ import { JWTVerify } from '../utils/auth.util';
 import ResponseWrapper from '../helpers/response.helpers';
 import FileOperations from '../helpers/fileOperation.helpers';
 import { buildClientSchema } from 'graphql';
+import ImageKitOperationsOperations from '../helpers/imageKitOperations.helpers';
 
 const verifyToken = (req, res, next) => {
   const { authorization } = req.headers;
@@ -87,13 +88,47 @@ export const uploadUserFile = (req,res,next) => {
     fileSize:1024*1024
   }
   ).single('userPhoto')(req,res,(err)=>{
-    console.log(req.file);
     if(err) {
       console.log(err);
       return response.internalServerError()
     };
+    req.body={...req.body,img:req.file.filename}
     next();
   });
+}
+export const uploadUserFileToServer = async(req,res,next) => {
+  const response = new ResponseWrapper(res);
+  // new FileOperations().upload((req,file,cb)=>{
+  //   if(file.mimetype==='image/png'||file.mimetype==='image/jpg'){
+  //     cb(null,true)
+  //   }else{
+  //     console.log('not suported',file);
+  //     cb(null,false)
+  //   }
+  // },
+  // {
+  //   fileSize:1024*1024
+  // }
+  // ).single('userPhoto')(req,res,(err)=>{
+  //   if(err) {
+  //     console.log(err);
+  //     return response.internalServerError()
+  //   };
+  //   next();
+  // });
+  try {
+    // const imageUpload = new ImageKitOperationsOperations();
+    // console.log(req.file);
+    // const result = await imageUpload.uploadFile(req.file);
+    // const { url } = result
+    // const modifiedUrl = imageUpload.getUrl(url);
+    // console.log('rs',result);
+    // req.body={...req.body,img:url}
+    next();
+  } catch (error) {
+    console.log(error);
+    return response.internalServerError('image error');
+  }
 }
 
 export default verifyToken;

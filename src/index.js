@@ -27,6 +27,7 @@ class MainServer {
      }
 
      #config = () =>{
+       global.mydir = __dirname
        this.#app.set('port', this.#port || 3000);
        this.#app.use(express.json());
        this.#app.use(express.urlencoded({ extended: false }));
@@ -49,7 +50,8 @@ class MainServer {
       //      extensions: this.#extensions, 
       //    }
       //  }))
-      this.#app.use('/static', express.static(path.join(`${__dirname}/uploads`)));
+      this.#app.use('/static', express.static('uploads'));
+      // this.#app.use('/static', express.static(path.join(`${global.mydir}/uploads`)));
       this.#app.use('/api/auth', new AuthRoutes().router);
       this.#app.use('/api/branch', new BranchRoutes().router);
       this.#app.use('/api/department', new DepartmentRoutes().router);

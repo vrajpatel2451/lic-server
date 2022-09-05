@@ -1,6 +1,6 @@
 import { Router } from "express";
 import AuthController from "../controllers/auth.controllers";
-import verifyToken, { roleFinder, roleMaker, uploadUserFile, verifySuperUser } from "../middlewares/auth.middleware";
+import verifyToken, { roleFinder, roleMaker, uploadUserFile, uploadUserFileToServer, verifySuperUser } from "../middlewares/auth.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import AuthValidator from "../validators/auth.validator";
 

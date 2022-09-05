@@ -38,6 +38,7 @@ class AuthValidator {
       firstName: Joi.string().required(),
       lastName: Joi.string().required(),
       line1: Joi.string().required(),
+      img:Joi.string().required(),
       line2: Joi.string(),
       area: Joi.string().required(),
       city: Joi.string().required(),

@@ -6,8 +6,8 @@ class FileOperations {
     constructor(){
       this.#storage = multer.diskStorage({
         destination: function (req, file, callback) {
-              console.log(path.join('../uploads'));
-              callback(null, 'src/uploads');
+              // console.log('uploads');
+              callback(null, 'uploads');
             },
             filename: function (req, file, callback) {
               callback(null, (new Date().getDate()+'-'+new Date().getMonth()+'-'+new Date().getFullYear()+'-'+new Date().getHours()+'-'+new Date().getMinutes()+'-'+new Date().getSeconds()+'-'+file.originalname));

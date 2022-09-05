@@ -11,7 +11,7 @@ class AuthController {
   static async createAdmin(req,res){
     const response = new ResponseWraper(res);
     try {
-      const { email,phone, firstName,lastName, password,line1,line2,area,city,state,pin } = req.body;
+      const { email,phone, firstName,lastName, password,line1,line2,area,city,state,pin,img } = req.body;
       let isUserExists = await User.findOne({email:email}).exec();
       if(isUserExists) return response.unauthorized('User does not exist');
       const newContact = await Contact.create({
@@ -32,7 +32,7 @@ class AuthController {
         email,
         lastName,
         role:'admin',
-        image:req.file.filename,
+        image:img,
         contact:newContact,
         address:newAddress,
       });
