@@ -10,7 +10,7 @@ class FileOperations {
               callback(null, 'uploads');
             },
             filename: function (req, file, callback) {
-              callback(null, (new Date().getDate()+'-'+new Date().getMonth()+'-'+new Date().getFullYear()+'-'+new Date().getHours()+'-'+new Date().getMinutes()+'-'+new Date().getSeconds()+'-'+file.originalname));
+              callback(null, (new Date().getDate()+'-'+new Date().getMonth()+'-'+new Date().getFullYear()+'-'+new Date().getHours()+'-'+new Date().getMinutes()+'-'+file.originalname));
             }
           });
     }

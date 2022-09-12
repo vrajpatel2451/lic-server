@@ -13,7 +13,7 @@ class AuthController {
     try {
       const { email,phone, firstName,lastName, password,line1,line2,area,city,state,pin,img } = req.body;
       let isUserExists = await User.findOne({email:email}).exec();
-      if(isUserExists) return response.unauthorized('User does not exist');
+      if(isUserExists) return response.unauthorized('User already exist');
       const newContact = await Contact.create({
         email,
         phone
@@ -46,21 +46,21 @@ class AuthController {
     const response = new ResponseWraper(res);
     // console.log(req.body);
     try {
-      const { email,phone, firstName,lastName,branch,role,workRole,department, password,line1,line2,area,city,state,pin } = req.body;
+      const { email,phone, firstName,lastName,branch,role,workRole,department, password,line1,line2,area,city,state,pin,img } = req.body;
     //   const isEmailExist = await Contact.findOne({email}).exec();
       
       let isUserExists = false;
       console.log(req.file);
       if(role!='admin'){
-        if( department != [] && department[0]!=null && department[0]!=''){
-          // console.log(department);
-          const isDepartmentExists = await Department.findById(department[0]).exec();
-          if(!isDepartmentExists) return response.badRequest('Department not exist');
-        }
-        if( workRole != [] && workRole[0]!=null && workRole[0]!=''){
-          const isWorkRoleExists = await WorkRole.findById(workRole[0]).exec();
-          if(!isWorkRoleExists) return response.badRequest('WorkRole not exist');
-        }
+        // if( department != [] && department[0]!=null && department[0]!=''){
+        //   // console.log(department);
+        //   const isDepartmentExists = await Department.findById(department[0]).exec();
+        //   if(!isDepartmentExists) return response.badRequest('Department not exist');
+        // }
+        // if( workRole != [] && workRole[0]!=null && workRole[0]!=''){
+        //   const isWorkRoleExists = await WorkRole.findById(workRole[0]).exec();
+        //   if(!isWorkRoleExists) return response.badRequest('WorkRole not exist');
+        // }
         // if( branch!=null && branch!=''){
           const isBranchExists = await Branch.findById(branch).exec();
           if(!isBranchExists) return response.badRequest('Branch not exist');
@@ -98,7 +98,7 @@ class AuthController {
             role,
             workRole,
             department,
-            image:req.file.filename,
+            image:img,
             contact:newContact,
             address:newAddress,
           });
@@ -111,7 +111,7 @@ class AuthController {
             role,
             workRole,
             department,
-            image:req.file.filename,
+            image:img,
             contact:newContact,
             address:newAddress,
           });
@@ -148,7 +148,7 @@ class AuthController {
             { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
-        }).populate('contact');
+        }).populate('contact').populate('department').populate('workRole');
       }else if(department!=null && department!='' && department != undefined){
         console.log("b",department);
         users = await User.find({
@@ -157,7 +157,7 @@ class AuthController {
             { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
-        }).populate('contact');
+        }).populate('contact').populate('department').populate('workRole');
       }else if(branch!=null && branch!='' && branch != undefined){
         console.log("b",branch);
         users = await User.find({
@@ -166,7 +166,7 @@ class AuthController {
             // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
-        }).populate('contact');
+        }).populate('contact').populate('department').populate('workRole');
       }else{
         console.log("no");
         users = await User.find({
@@ -177,7 +177,7 @@ class AuthController {
             // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
-        }).populate('contact');
+        }).populate('contact').populate('department').populate('workRole');
       }
       console.log(req.file);
       if(users==null||users.length<=0) return response.notFound('staff not found');

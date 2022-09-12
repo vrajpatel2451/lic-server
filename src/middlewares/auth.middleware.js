@@ -77,7 +77,7 @@ export function roleMaker (){
 export const uploadUserFile = (req,res,next) => {
   const response = new ResponseWrapper(res);
   new FileOperations().upload((req,file,cb)=>{
-    if(file.mimetype==='image/png'||file.mimetype==='image/jpg'){
+    if(file.mimetype==='image/png'||file.mimetype==='image/jpg' || file.mimetype === 'application/octet-stream'){
       cb(null,true)
     }else{
       console.log('not suported',file);
@@ -92,7 +92,7 @@ export const uploadUserFile = (req,res,next) => {
       console.log(err);
       return response.internalServerError()
     };
-    req.body={...req.body,img:req.file.filename}
+    req.body={...req.body,img:new Date().getDate()+'-'+new Date().getMonth()+'-'+new Date().getFullYear()+'-'+new Date().getHours()+'-'+new Date().getMinutes()+'-'+req.file.originalname}
     next();
   });
 }
