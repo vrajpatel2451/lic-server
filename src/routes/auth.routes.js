@@ -145,6 +145,7 @@ class AuthRoutes{
             *                   type: object  
         */
         this.router.get('/staff', [verifyToken,roleFinder(['admin','head'])], AuthController.getStaff);
+        this.router.get('/staff/:id', [verifyToken], AuthController.getStaffById);
         /**
             * @swagger
             * /auth/verify/admin:

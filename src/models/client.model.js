@@ -15,9 +15,10 @@ const ClientSchema = new Schema({
     area:String,
     city:String,
     state:String,
-    pin:String,
+    pin:Number,
     branch:{type:Schema.Types.ObjectId, ref:'Branch'},   
     documents:[{type:Schema.Types.ObjectId, ref:'DocumentClient'}],   
+    policies:[{type:Schema.Types.ObjectId, ref:'Policy'}],   
     fields:[{type:Schema.Types.ObjectId, ref:'FieldClient'}],   
 });
 

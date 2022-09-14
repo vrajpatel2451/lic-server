@@ -56,11 +56,11 @@ class ClientController {
         try {
             const {name} = req.query;
             const clients = await Client.find({
-                $or:[
-                    {
-                        firstName:{ $regex: new RegExp(`.*${name??''}.*`), $options: "i" }
-                    }
-                ]
+                // $or:[
+                //     {
+                //         firstName:{ $regex: new RegExp(`.*${name??''}.*`), $options: "i" }
+                //     }
+                // ]
             }).populate('contact');
             
             if(clients.length<=0) return response.notFound('Clients not found');

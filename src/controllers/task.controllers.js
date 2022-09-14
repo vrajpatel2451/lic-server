@@ -2,9 +2,11 @@ import ResponseWraper from "../helpers/response.helpers";
 import { Address } from "../models/address.model";
 import { Branch } from "../models/branch.model";
 import { Client } from "../models/client.model";
+import { Comment } from "../models/comment.model";
 import { Contact } from "../models/contact.model";
 import { Department } from "../models/department.model";
 import { DocumentClient } from "../models/document.model";
+import { FieldClient } from "../models/fields.model";
 import { Task } from "../models/task.model";
 import { User } from "../models/user.model";
 
@@ -30,10 +32,11 @@ class TaskController {
         //     email,
         //     phone
         // });
+        const fieldsResult = await FieldClient.create(fields)
         const documentsCreated = await DocumentClient.create(documents);
        const clientData = await Client.findByIdAndUpdate(client,{
             $set:{
-               fields:fields 
+               fields:fieldsResult 
             },
             $push:{
                 documents:documentsCreated
@@ -80,7 +83,7 @@ class TaskController {
         const response = new ResponseWraper(res);
         try {
             let branch = null
-            branch = await Task.findById(req.params.id).populate('head','name').populate('staff','name').populate('department','name').populate({path:'client',populate:{path:'documents'}});
+            branch = await Task.findById(req.params.id).populate('head',['firstName','lastName'],).populate('staff',['firstName','lastName']).populate('department','name').populate({path:'client',populate:{path:'documents'}}).populate('branch','name').populate({path:'comments',populate:{path:'user'}});
             console.log(branch);
             if(branch==null) return response.notFound('branch does not exist');
             return response.ok(branch);
@@ -95,15 +98,18 @@ class TaskController {
             const {department,staff} = req.query;
             let tasks = [];
             if(department!=undefined && department != null && department != "" && staff!=undefined && staff != null && staff != ""){
+                console.log('hi3');
                 tasks = await Task.find({
                     $or:[
                         {
+                            head:staff,
                             staff:staff,
                             department:department,
                         }
                     ]
                 }).populate('staff');
             }else if(department!=undefined && department != null && department != ""){
+                console.log('hi2');
                 tasks = await Task.find({
                     $or:[
                         {
@@ -112,15 +118,18 @@ class TaskController {
                     ]
                 }).populate('staff');
             }else if(staff!=undefined && staff != null && staff != ""){
+                console.log('hi');
                 tasks = await Task.find({
                     $or:[
                         {
-                            staff:staff,
-                            department:department,
+                            head:staff,
+                            // staff:staff,
                         }
                     ]
                 }).populate('staff');
+                // console.log(tasksResult);
             }else{
+                console.log('hiiiiii');
                 tasks = await Task.find().populate('staff');
             }
             
@@ -139,7 +148,7 @@ class TaskController {
                 const staffExist = await User.findById(staff);
                 if(staffExist === null) return response.badRequest('Staff does not exist');
                 await taskExist.update({
-                    staff:staff
+                    staff:staffExist
                 });
                 return response.ok(taskExist);
             }else{
@@ -191,6 +200,29 @@ class TaskController {
             await taskExist.update({
                 $push:{
                     taskStatus:status
+                }
+            });   
+            return response.ok(taskExist);
+        } catch (error) {
+            return response.internalServerError();
+        }
+    }
+    static async addComment(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            const {userId,task,comment} = req.body;
+            const taskExist = await Task.findById(task);
+            if(taskExist===null) return response.badRequest('Task does not exist');
+            // const staffExist = await User.findById(userId);
+
+            const commentResult = await Comment.create({
+                comment:comment,
+                user:userId,
+                task:taskExist
+            });
+            await taskExist.update({
+                $push:{
+                    comments:commentResult
                 }
             });   
             return response.ok(taskExist);

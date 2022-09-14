@@ -63,11 +63,9 @@ class DepartmentController {
                     }
                 });
             }else if(branch!=null && branch!='' && branch != undefined){
+                console.log('here');
                 departments = await Department.find({
-                    $or:[
-                        { branches: branch },
-                        // { name: { $regex: new RegExp(`.*${name??''}.*`), $options: "i" } },
-                      ]
+                    branches: { $in: [branch] }
                 }).populate('branches').populate({
                     path:'heads',
                     populate:{

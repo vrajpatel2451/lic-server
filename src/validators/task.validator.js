@@ -9,16 +9,18 @@ class TaskValidator {
       branch: Joi.string().required(),
       department: Joi.string().required(),
       head: Joi.string().required(),
+      staff: Joi.string().allow(''),
       client: Joi.string().required(),
       taskType:Joi.string().required(),
       documents:Joi.array().items(Joi.object({
         name:Joi.string().required(),
         type:Joi.string().required(),
     })),
-      fields:Joi.object({
-          name:Joi.string().required(),
-          value:Joi.string().valid(''),
-      }),
+      fields:Joi.array().items(Joi.object({
+          label:Joi.string().required(),
+          value:Joi.string().allow(''),
+          type:Joi.string().required(),
+      })),
     });
   }
   static updateStatus() {
@@ -30,7 +32,7 @@ class TaskValidator {
   static assignStaff() {
     return Joi.object({
       task: Joi.string().required(),
-      status: Joi.string().required(),
+      staff: Joi.string().required(),
     });
   }
   static updateFields() {
@@ -46,6 +48,12 @@ class TaskValidator {
     return Joi.object({
       document: Joi.string().required(),
       url:Joi.required(),
+    });
+  }
+  static addComment() {
+    return Joi.object({
+      comment: Joi.string().required(),
+      task:Joi.string().required(),
     });
   }
 }

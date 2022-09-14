@@ -10,6 +10,8 @@ import ClientRoutes from './routes/clients.routes';
 import TaskRoutes from './routes/task.routes';
 import swaggerIgnite from './utils/swagger.util';
 import path from 'path'
+import WorkRoleRoutes from './routes/workRoles.routes';
+import PolicyRoutes from './routes/polciy.routes';
 class MainServer {
      #app;
      #port = parseInt(process.env.PORT) || 3000;
@@ -57,6 +59,8 @@ class MainServer {
       this.#app.use('/api/department', new DepartmentRoutes().router);
       this.#app.use('/api/client', new ClientRoutes().router);
       this.#app.use('/api/task', new TaskRoutes().router);
+      this.#app.use('/api/workrole', new WorkRoleRoutes().router);
+      this.#app.use('/api/policy', new PolicyRoutes().router);
       this.#app.get('/', (req,res)=>{
         return res.send('<h1>Lic App</h1>')
       });

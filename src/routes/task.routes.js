@@ -165,6 +165,7 @@ class TaskRoutes{
             *                   type: object  
         */
         this.router.patch('/assign', [validationMiddleware(TaskValidator.assignStaff()), verifyToken], TaskController.assignStaff);
+        this.router.patch('/comment', [validationMiddleware(TaskValidator.addComment()), verifyToken], TaskController.addComment);
     }
 }
 

@@ -148,7 +148,7 @@ class AuthController {
             { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
-        }).populate('contact').populate('department').populate('workRole');
+        }).populate('contact').populate('department').populate('workRole').populate('branch');
       }else if(department!=null && department!='' && department != undefined){
         console.log("b",department);
         users = await User.find({
@@ -157,7 +157,7 @@ class AuthController {
             { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
-        }).populate('contact').populate('department').populate('workRole');
+        }).populate('contact').populate('department').populate('workRole').populate('branch');
       }else if(branch!=null && branch!='' && branch != undefined){
         console.log("b",branch);
         users = await User.find({
@@ -166,7 +166,7 @@ class AuthController {
             // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
-        }).populate('contact').populate('department').populate('workRole');
+        }).populate('contact').populate('department').populate('workRole').populate('branch');
       }else{
         console.log("no");
         users = await User.find({
@@ -177,11 +177,25 @@ class AuthController {
             // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
-        }).populate('contact').populate('department').populate('workRole');
+        }).populate('contact').populate('department').populate('workRole').populate('branch');
       }
       console.log(req.file);
       if(users==null||users.length<=0) return response.notFound('staff not found');
       return response.ok(users);
+      
+    } catch (error) {
+      console.log('staff',error);
+      return response.internalServerError();
+    }
+
+  }
+  static async getStaffById(req,res){
+    const response = new ResponseWraper(res);
+    try {
+      const {id} = req.params;
+      const user = await User.findById(id).populate('contact').populate('department').populate('workRole').populate('branch');
+      if(user==null) return response.notFound('staff not found');
+      return response.ok(user);
       
     } catch (error) {
       console.log('staff',error);

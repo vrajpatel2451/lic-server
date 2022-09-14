@@ -12,7 +12,7 @@ const TaskSchema = new Schema({
     staff: {type: Schema.Types.ObjectId, ref: 'User'},
     head: {type: Schema.Types.ObjectId, ref: 'User'},
     comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
-    taskType:{type:String, enum:['admin','head','staff'],default:'staff'}, 
+    taskType:{type:String, enum:['infeiald','offfield','onfield'],default:'infield'}, 
     taskStatus:{type:String, enum:['pending','inprogress','test','finished'],default:'pending'}, 
 });
 

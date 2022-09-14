@@ -3,6 +3,7 @@ import ResponseWrapper from '../helpers/response.helpers';
 function validationMiddleware(Validator){
   return async (req, res, next) => {
     const response = new ResponseWrapper(res);
+    console.log(req.body);
     try {
       if (Validator) {
         await Validator.validateAsync(req.body);
