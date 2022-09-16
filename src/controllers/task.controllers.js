@@ -47,7 +47,7 @@ class TaskController {
                 task = await Task.create({
                     title,
                     description,
-                    startTime: new Date(),
+                    startTime: new Date().toISOString(),
                     endTime:deadline,
                     department,
                     branch,
@@ -61,8 +61,8 @@ class TaskController {
                 task = await Task.create({
                     title,
                     description,
-                    startTime,
-                    endTime,
+                    startTime:new Date().toISOString(),
+                    endTime:deadline,
                     department,
                     branch,
                     head,

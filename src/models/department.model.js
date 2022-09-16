@@ -1,4 +1,3 @@
-import { composeWithMongoose } from "graphql-compose-mongoose";
 import { model, Schema } from "mongoose";
 
 const DepartmentSchema = new Schema({
@@ -8,7 +7,7 @@ const DepartmentSchema = new Schema({
       index:true
     },
     branches:[{type:Schema.Types.ObjectId, ref:'Branch'}],
-    staffs:[{type:Schema.Types.ObjectId, ref:'User'}],
+    staff:[{type:Schema.Types.ObjectId, ref:'User'}],
     heads:[{type:Schema.Types.ObjectId, ref:'User'}],
     clients:[{type:Schema.Types.ObjectId, ref:'Client'}],
 },
@@ -19,7 +18,4 @@ const DepartmentSchema = new Schema({
   },
 );
 
-// module.exports = {
    export const Department = model('Department', DepartmentSchema);
-   export const  DepartmentTC = composeWithMongoose(model('Department', DepartmentSchema));
-// };

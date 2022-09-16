@@ -50,51 +50,54 @@ class DepartmentController {
         try {
             let departments = []
             const {name,branch} = req.query;
-            if(branch!=null && branch!='' && name!=null && name!='' && branch!= undefined && name != undefined){
-                departments = await Department.find({
-                    $or:[
-                        { branches: branch },
-                        { name: { $regex: new RegExp(`.*${name}.*`), $options: "i" } },
-                      ]
-                }).populate('branches').populate({
-                    path:'heads',
-                    populate:{
-                        path:'contact'
-                    }
-                });
-            }else if(branch!=null && branch!='' && branch != undefined){
-                console.log('here');
-                departments = await Department.find({
-                    branches: { $in: [branch] }
-                }).populate('branches').populate({
-                    path:'heads',
-                    populate:{
-                        path:'contact'
-                    }
-                });
-            }else if(name!=null && name!='' && name != undefined){
-                departments = await Department.find({
-                    $or:[
-                        // { branchCode: { $regex: new RegExp(`.*${branchCode??''}.*`), $options: "i" } },
-                        { name: { $regex: new RegExp(`.*${name??''}.*`), $options: "i" } },
-                      ]
-                }).populate('branches').populate({
-                    path:'heads',
-                    populate:{
-                        path:'contact'
-                    }
-                });
-            }else{
-                departments = await Department.find().populate('branches').populate({
-                    path:'heads',
-                    populate:{
-                        path:'contact'
-                    }
-                });
-            }
-                // departments = await Branch.find().populate('branch').populate({path:'head',populate:{
-                //     path:'contact'
-                // }});
+            // if(branch!=null && branch!='' && name!=null && name!='' && branch!= undefined && name != undefined){
+            //     departments = await Department.find({
+            //         $or:[
+            //             { branches: branch },
+            //             { name: { $regex: new RegExp(`.*${name}.*`), $options: "i" } },
+            //           ]
+            //     }).populate('branches').populate({
+            //         path:'heads',
+            //         populate:{
+            //             path:'contact'
+            //         }
+            //     });
+            // }else if(branch!=null && branch!='' && branch != undefined){
+            //     console.log('here');
+            //     departments = await Department.find({
+            //         branches: { $in: [branch] }
+            //     }).populate('branches').populate({
+            //         path:'heads',
+            //         populate:{
+            //             path:'contact'
+            //         }
+            //     });
+            // }else if(name!=null && name!='' && name != undefined){
+            //     departments = await Department.find({
+            //         $or:[
+            //             // { branchCode: { $regex: new RegExp(`.*${branchCode??''}.*`), $options: "i" } },
+            //             { name: { $regex: new RegExp(`.*${name??''}.*`), $options: "i" } },
+            //           ]
+            //     }).populate('branches').populate({
+            //         path:'heads',
+            //         populate:{
+            //             path:'contact'
+            //         }
+            //     });
+            // }else{
+            //     departments = await Department.find().populate('branches').populate({
+            //         path:'heads',
+            //         populate:{
+            //             path:'contact'
+            //         }
+            //     });
+            // }
+            departments = await Department.find().populate('branches').populate({
+                        path:'heads',
+                        populate:{
+                            path:'contact'
+                        }
+                    }).populate('staff');
             if(departments.length<=0) return response.notFound('Departments not found');
             return response.ok(departments);
         } catch (error) {

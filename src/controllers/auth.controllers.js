@@ -1,11 +1,10 @@
-import FileOperations from '../helpers/fileOperation.helpers';
 import ResponseWraper from '../helpers/response.helpers';
 import { Address } from '../models/address.model';
 import { Branch } from '../models/branch.model';
 import { Contact } from '../models/contact.model';
 import { Department } from '../models/department.model';
 import { User } from '../models/user.model';
-import { WorkRole } from '../models/workRole.model';
+
 class AuthController {
 
   static async createAdmin(req,res){
@@ -51,7 +50,7 @@ class AuthController {
       
       let isUserExists = false;
       console.log(req.file);
-      if(role!='admin'){
+      // if(role!='admin'){
         // if( department != [] && department[0]!=null && department[0]!=''){
         //   // console.log(department);
         //   const isDepartmentExists = await Department.findById(department[0]).exec();
@@ -62,9 +61,11 @@ class AuthController {
         //   if(!isWorkRoleExists) return response.badRequest('WorkRole not exist');
         // }
         // if( branch!=null && branch!=''){
-          const isBranchExists = await Branch.findById(branch).exec();
-          if(!isBranchExists) return response.badRequest('Branch not exist');
-        }
+          console.log(branch);
+          const isBranchExists = await Branch.findById(branch);
+          console.log(isBranchExists);
+          if(isBranchExists==null) return response.badRequest('Branch not exist');
+        // }
           // }
           // const isBranchExists = await Branch.findById(branch).exec();
           // const isWorkRoleExists = await WorkRole.findById(workRole[0]).exec();
@@ -88,7 +89,7 @@ class AuthController {
             pin
         });
         let user;
-        if(branch!=''){
+        // if(branch!=''){
           user = await User.create({
             password,
             firstName,
@@ -102,20 +103,25 @@ class AuthController {
             contact:newContact,
             address:newAddress,
           });
-        }else{
-          user = await User.create({
-            password,
-            firstName,
-            email,
-            lastName,
-            role,
-            workRole,
-            department,
-            image:img,
-            contact:newContact,
-            address:newAddress,
+          await isBranchExists.update({$push:{staff:user}});
+          department.forEach(async e=>{
+            await Department.findByIdAndUpdate(e,{$push:{staff:user}});
           });
-        }
+          // Department.updateMany()
+        // }else{
+        //   user = await User.create({
+        //     password,
+        //     firstName,
+        //     email,
+        //     lastName,
+        //     role,
+        //     workRole,
+        //     department,
+        //     image:img,
+        //     contact:newContact,
+        //     address:newAddress,
+        //   });
+        // }
 
     //   const user = await User.create({
     //     email,
@@ -133,38 +139,58 @@ class AuthController {
   static async getStaff(req,res){
     const response = new ResponseWraper(res);
     try {
-      const {branch,department,name} = req.query;
+      const {branch,department,name,role} = req.query;
       let users=[];
       console.log(name);
       console.log(req.file);
-      if(branch!=null && branch!='' && department!=null && department!='' && branch != undefined && department != undefined){
+      if(branch!=null && branch!='' && department!=null && department!='' && branch != undefined && department != undefined ){
         
         console.log("bd",branch,department);
         users = await User.find({
           // "$match":{"firstName": name,"branch"}
           // firstName: new RegExp(name,'i')
+          // department,
+          // branch,
+          // role,
+          // $where:[
+          //   // {role:role},
+          //   { department: department },
+          // ],
+          // $and:[
+          // ],
+          branch,
+          role,
+          department,
           $or:[
-            { firstName: { $regex: new RegExp(`.*${name}.*`), $options: "i" } },
-            { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
-            { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
+            // { branch: branch },
+            { firstName: { $regex: new RegExp(`.*${name??''}.*`), $options: "i" } },
+            // { role: { $regex: new RegExp(`.*${role}.*`), $options: "i" } },
           ]
         }).populate('contact').populate('department').populate('workRole').populate('branch');
+        // users = users.filter(e=>(e.branch?._id===branch && e.department?.includes() && e.role === role));
+        
       }else if(department!=null && department!='' && department != undefined){
         console.log("b",department);
         users = await User.find({
+          role,
+          department,
           $or:[
             { firstName: { $regex: new RegExp(`.*${name}.*`), $options: "i" } },
-            { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
+            // { role: { $regex: new RegExp(`.*${role}.*`), $options: "i" } },
+            // { department: department },
             // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
         }).populate('contact').populate('department').populate('workRole').populate('branch');
       }else if(branch!=null && branch!='' && branch != undefined){
         console.log("b",branch);
         users = await User.find({
+          role,
+          branch,
           $or:[
             { firstName: { $regex: new RegExp(`.*${name}.*`), $options: "i" } },
+            // { role: { $regex: new RegExp(`.*${role}.*`), $options: "i" } },
             // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
-            { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
+            // { branch: branch },
           ]
         }).populate('contact').populate('department').populate('workRole').populate('branch');
       }else{
@@ -172,14 +198,16 @@ class AuthController {
         users = await User.find({
           // "$match":{"firstName": name,"branch"}
           // firstName: new RegExp(name,'i')
+          // role,
           $or:[
             { firstName: { $regex: new RegExp(`.*${name??''}.*`), $options: "i" } },
+            { role: { $regex: new RegExp(`.*${role??''}.*`), $options: "i" } },
             // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
         }).populate('contact').populate('department').populate('workRole').populate('branch');
       }
-      console.log(req.file);
+      console.log(users);
       if(users==null||users.length<=0) return response.notFound('staff not found');
       return response.ok(users);
       

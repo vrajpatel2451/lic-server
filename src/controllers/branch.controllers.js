@@ -43,7 +43,7 @@ class BrnachController {
         const response = new ResponseWraper(res);
         try {
             let branch = null
-            branch = await Branch.findById(req.params.id).populate('contact').populate('address');
+            branch = await Branch.findById(req.params.id).populate('contact').populate('address').populate('staff').populate('departments');
             console.log(branch);
             if(branch==null) return response.notFound('branch does not exist');
             return response.ok(branch);

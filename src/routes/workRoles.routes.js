@@ -1,6 +1,8 @@
 import { Router } from "express";
 import WrokRoleController from "../controllers/workRole.cotroller";
 import verifyToken from "../middlewares/auth.middleware";
+import validationMiddleware from "../middlewares/validation.middleware";
+import WorkRoleValidator from "../validators/workrole.validator";
 
 class WorkRoleRoutes{
     router;
@@ -53,6 +55,7 @@ class WorkRoleRoutes{
             *                   type: object  
         */
         this.router.get('/:id', verifyToken, WrokRoleController.getWorkRoleById);
+        this.router.post('/', [validationMiddleware(WorkRoleValidator.createWorkRole()),verifyToken], WrokRoleController.addWorkRole);
     }
 }
 

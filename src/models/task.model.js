@@ -1,4 +1,3 @@
-import { composeWithMongoose } from "graphql-compose-mongoose";
 import { model, Schema } from "mongoose";
 
 const TaskSchema = new Schema({
@@ -16,7 +15,5 @@ const TaskSchema = new Schema({
     taskStatus:{type:String, enum:['pending','inprogress','test','finished'],default:'pending'}, 
 });
 
-// module.exports = {
-    export const Task = model('Task', TaskSchema);
-    export const TaskTC = composeWithMongoose(model('Task', TaskSchema));
-// };
+export const Task = model('Task', TaskSchema);
+    

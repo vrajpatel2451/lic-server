@@ -1,4 +1,3 @@
-import { composeWithMongoose } from "graphql-compose-mongoose";
 import { model, Schema } from "mongoose";
 
 const DocumentClientSchema = new Schema({
@@ -9,7 +8,5 @@ const DocumentClientSchema = new Schema({
     client:{type:Schema.Types.ObjectId, ref:'Client'}   
 });
 
-// module.exports = {
-    export const DocumentClient = model('DocumentClient', DocumentClientSchema);
-    export const DocumentClientTC = composeWithMongoose(model('DocumentClient', DocumentClientSchema));
-// };
+export const DocumentClient = model('DocumentClient', DocumentClientSchema);
+    

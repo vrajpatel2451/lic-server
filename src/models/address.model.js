@@ -1,4 +1,3 @@
-import { composeWithMongoose } from "graphql-compose-mongoose";
 import { model, Schema } from "mongoose";
 
 const AddressSchema = new Schema({
@@ -10,7 +9,5 @@ const AddressSchema = new Schema({
     pin:Number,
 });
 
-// module.exports = {
-    export const Address = model('Address', AddressSchema);
-    export const AddressTC = composeWithMongoose(model('Address', AddressSchema));
-// };
+export const Address = model('Address', AddressSchema);
+    

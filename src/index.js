@@ -1,6 +1,7 @@
 import express from 'express' 
 import 'dotenv/config';
-import cors from 'cors' 
+import cors from 'cors';
+import path from 'path'; 
 import compression from 'compression';
 import {connect,connection} from 'mongoose';
 import AuthRoutes from './routes/auth.routes';
@@ -9,14 +10,12 @@ import DepartmentRoutes from './routes/department.routes';
 import ClientRoutes from './routes/clients.routes';
 import TaskRoutes from './routes/task.routes';
 import swaggerIgnite from './utils/swagger.util';
-import path from 'path'
 import WorkRoleRoutes from './routes/workRoles.routes';
 import PolicyRoutes from './routes/polciy.routes';
 class MainServer {
      #app;
      #port = parseInt(process.env.PORT) || 3000;
      #mongoUri = parseInt(process.env.MONGODB_URI) || 'ab';
-     //  #schema = mainComposer;
      
      constructor(){
        this.#port = parseInt(process.env.PORT) || 3000;
@@ -35,25 +34,13 @@ class MainServer {
        this.#app.use(express.urlencoded({ extended: false }));
        this.#app.use(compression());
        this.#app.use(cors());
+       this.#app.use(
+        express.static(path.join(__dirname, "./client/dist"))
+      );
      }
-     
-    // #extensions = ({ context }) => {
-    //   return {
-    //     runTime: Date.now() - context.startTime,
-    //   };
-    // };
 
      #routes=()=>{
-      //  this.#app.use("/graphql",graphqlHTTP(()=>{
-      //    return {
-      //      context:{startTime:Date.now()},
-      //      graphiql:true,
-      //      schema: this.#schema,
-      //      extensions: this.#extensions, 
-      //    }
-      //  }))
       this.#app.use('/static', express.static('uploads'));
-      // this.#app.use('/static', express.static(path.join(`${global.mydir}/uploads`)));
       this.#app.use('/api/auth', new AuthRoutes().router);
       this.#app.use('/api/branch', new BranchRoutes().router);
       this.#app.use('/api/department', new DepartmentRoutes().router);
@@ -61,13 +48,17 @@ class MainServer {
       this.#app.use('/api/task', new TaskRoutes().router);
       this.#app.use('/api/workrole', new WorkRoleRoutes().router);
       this.#app.use('/api/policy', new PolicyRoutes().router);
-      this.#app.get('/', (req,res)=>{
-        return res.send('<h1>Lic App</h1>')
+      // this.#app.get('/', (req,res)=>{
+      //   return res.send('<h1>Lic App</h1>')
+      // });
+      this.#app.get("*", (req, res) => {
+        res.sendFile(
+          path.join(__dirname, "./client/dist/index.html")
+        );
       });
      }
     
     #mongo=()=>{
-      // console.log(this.#mongoUri);
         connection.on('connected', () => {
           console.log('Mongo Connection Established');
         });

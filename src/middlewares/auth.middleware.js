@@ -1,8 +1,6 @@
 import { JWTVerify } from '../utils/auth.util';
 import ResponseWrapper from '../helpers/response.helpers';
 import FileOperations from '../helpers/fileOperation.helpers';
-import { buildClientSchema } from 'graphql';
-import ImageKitOperationsOperations from '../helpers/imageKitOperations.helpers';
 
 const verifyToken = (req, res, next) => {
   const { authorization } = req.headers;

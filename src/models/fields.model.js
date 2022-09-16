@@ -5,8 +5,6 @@ const FieldClientSchema = new Schema({
     value:String,
     type:{type:String, enum:['string','number','date-time'],default:'string'}, 
 });
-
-// module.exports = {
-    export const FieldClient = model('FieldClient', FieldClientSchema);
-    // export const DoClientTC = composeWithMongoose(model('DocumentClient', DocumentClientSchema));
-// };
+ 
+export const FieldClient = model('FieldClient', FieldClientSchema);
+   

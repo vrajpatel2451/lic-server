@@ -27,6 +27,18 @@ class WrokRoleController {
             return response.internalServerError();
         }
     }
+    static async addWorkRole(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            const {name} = req.body;
+            const workrole = await WorkRole.create({name});
+            
+            // if(workroles==null) return response.notFound('WorkRoles not found');
+            return response.created(workrole);
+        } catch (error) {
+            return response.internalServerError();
+        }
+    }
 }
 
 export default WrokRoleController;

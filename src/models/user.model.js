@@ -1,8 +1,6 @@
 import { model, Schema } from "mongoose";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { composeWithMongoose } from "graphql-compose-mongoose";
-
 const UserSchema = new Schema({
     firstName:String,
     lastName:String,
@@ -67,8 +65,5 @@ UserSchema.pre('save', async function encrypt(next) {
       );
     },
   };
-
-// module.exports = {
-    export const User = model('User', UserSchema);
-    export const UserTC = composeWithMongoose(model('User', UserSchema));
-// };
+export const User = model('User', UserSchema);
+    
