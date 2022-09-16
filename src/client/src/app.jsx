@@ -1,10 +1,14 @@
-import React from 'react'
-import './styles/style.css'
+import React from 'react';
+import HeaderComponent from './components/headerComponent';
+import './styles/style.css';
 
 const App = () => {
   return (
-    <h1 className='text-red-500'>app</h1>
-  )
-}
+    <div>
+      <HeaderComponent />
+      <h2 className="text-pri font-montserrat font-bold">Hello world</h2>
+    </div>
+  );
+};
 
-export default App
+export default App;
