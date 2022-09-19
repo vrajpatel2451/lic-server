@@ -238,7 +238,7 @@ class AuthController {
       const { email, password } = req.body;
       const user = await User.findOne({
         email,
-      });
+      }).populate('department').populate('branch');
       if (!user) return response.unauthorized('user not available');
 
       const authenticateUser = await user.authenticate(password);
@@ -256,7 +256,7 @@ class AuthController {
     const response = new ResponseWraper(res);
     try {
       const { userId } = req.body;
-      const user = await User.findById(userId);
+      const user = await User.findById(userId).populate('department').populate('branch');
       if (!user) return response.unauthorized('user not available');
 
       console.log(user);
