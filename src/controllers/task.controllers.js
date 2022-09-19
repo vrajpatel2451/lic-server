@@ -107,7 +107,7 @@ class TaskController {
                             department:department,
                         }
                     ]
-                }).populate('staff').populate('head');
+                }).populate('staff').populate('head').populate('branch').populate('department');
             }else if(department!=undefined && department != null && department != ""){
                 console.log('hi2');
                 tasks = await Task.find({
@@ -116,7 +116,7 @@ class TaskController {
                             department:department,
                         }
                     ]
-                }).populate('staff').populate('head');
+                }).populate('staff').populate('head').populate('branch').populate('department');
             }else if(staff!=undefined && staff != null && staff != ""){
                 console.log('hi');
                 tasks = await Task.find({
@@ -126,11 +126,11 @@ class TaskController {
                             // staff:staff,
                         }
                     ]
-                }).populate('staff').populate('head');
+                }).populate('staff').populate('head').populate('branch').populate('department');
                 // console.log(tasksResult);
             }else{
                 console.log('hiiiiii');
-                tasks = await Task.find().populate('staff').populate('head');
+                tasks = await Task.find().populate('staff').populate('head').populate('branch').populate('department');
             }
             
             if(tasks.length<=0) return response.notFound('Tasks not found');
