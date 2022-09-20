@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 
-const Dropdown = ({ options }) => {
-  const [dropdownValue, setDropdownValue] = useState('');
-
-  console.log(dropdownValue);
-
+const Dropdown = ({ options, value, onChange }) => {
   return (
     <select
+      className="py-2 px-4 bg-pri-dark focus:outline-none text-white cursor-pointer rounded-full"
       name="selectOption"
-      value={dropdownValue}
-      onChange={e => setDropdownValue(e.target.value)}
+      value={value}
+      onChange={onChange}
     >
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
-      <option value="option4">Option 4</option>
+      {options.map((e, i) => (
+        <option className="bg-white text-black" key={i} value={e.value}>
+          {e.text}
+        </option>
+      ))}
     </select>
   );
 };
