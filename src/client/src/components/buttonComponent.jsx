@@ -14,7 +14,7 @@ function ButtonComponent({
       className={cn('px-5 py-2 rounded-md', {
         'flex items-center justify-center gap-2': icon,
 
-        'bg-pri hover:bg-pri-light text-white hover:text-pri-dark font-semibold transition-all':
+        'bg-pri hover:bg-pri-light/50 text-white hover:text-pri-dark font-semibold transition-all':
           appearance === 'pri',
         'border-pri border text-pri hover:bg-pri-light hover:border-pri-light hover:text-pri-dark transition-all ':
           appearance === 'pri-out',

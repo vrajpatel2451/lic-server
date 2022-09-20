@@ -18,11 +18,13 @@ const App = () => {
           <SideBar />
           <div className="w-full">
             <HeaderComponent />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/client" element={<Client />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
+            <div className="p-10">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/client" element={<Client />} />
+                <Route path="/login" element={<Login />} />
+              </Routes>
+            </div>
           </div>
         </div>
       </BrowserRouter>
