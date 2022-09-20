@@ -31,12 +31,13 @@ const ClientTable = () => {
     { text: 'Option 3', value: 'option3' },
   ];
 
-  const [dropdownValue, setDropdownValue] = useState('option1');
+  const [dropdownValue, setDropdownValue] = useState('');
   return (
     <div className="bg-white py-2 px-4 rounded-xl">
       <div className="flex justify-between items-center mb-4 ">
         <h5 className="p-4 font-semibold">Client Table</h5>
         <Dropdown
+          placeholder="Filter"
           value={dropdownValue}
           onChange={e => setDropdownValue(e.target.value)}
           options={options}
@@ -49,12 +50,12 @@ const ClientTable = () => {
           ))}
         </tr>
         {listItemData.map((itemData, i) => (
-          <tr className="hover:bg-pri-light rounded-full">
-            <td className="text-center py-4 text-gray">{itemData.item}</td>
-            <td className="text-center py-4 text-gray">{itemData.name}</td>
-            <td className="text-center py-4 text-gray">{itemData.date}</td>
-            <td className="text-center py-4 text-gray">{itemData.city}</td>
-            <td className="text-center py-4 text-gray">{itemData.state}</td>
+          <tr className="hover:bg-pri-light rounded-full text-gray hover:text-black">
+            <td className="text-center py-4">{itemData.item}</td>
+            <td className="text-center py-4">{itemData.name}</td>
+            <td className="text-center py-4">{itemData.date}</td>
+            <td className="text-center py-4">{itemData.city}</td>
+            <td className="text-center py-4">{itemData.state}</td>
           </tr>
         ))}
       </table>

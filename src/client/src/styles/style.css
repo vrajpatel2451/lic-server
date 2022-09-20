@@ -18,19 +18,19 @@
   } 
 
   h4 {
-    @apply text-2xl text-gray 
+    @apply text-2xl text-black 
   }
 
   h5 {
-    @apply text-xl text-gray 
+    @apply text-xl text-black 
   }
 
   h6 {
-    @apply text-base text-gray 
+    @apply text-base text-black 
   }
 
   p {
-    @apply text-sm text-gray 
+    @apply text-sm text-black 
   }
   .side-nav{
     @apply pl-6 py-3 hover:bg-pri-light/50 hover:text-pri-dark font-semibold cursor-pointer rounded-l-2xl w-full 

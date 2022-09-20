@@ -8,9 +8,6 @@ import SideBar from './components/sideBar';
 import Client from './pages/client';
 
 const App = () => {
-  // const linkp = useLocation();
-  // console.log(linkp.pathname);
-
   return (
     <div className="bg-lightGray w-full">
       <BrowserRouter>

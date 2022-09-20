@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Dropdown = ({ options, value, onChange }) => {
+const Dropdown = ({ options, value, onChange, placeholder }) => {
   return (
     <select
       className="py-2 px-4 bg-pri-dark focus:outline-none text-white cursor-pointer rounded-full"
@@ -8,6 +8,11 @@ const Dropdown = ({ options, value, onChange }) => {
       value={value}
       onChange={onChange}
     >
+      {placeholder && (
+        <option className="bg-white text-black" value="selectOption">
+          {placeholder}
+        </option>
+      )}
       {options.map((e, i) => (
         <option className="bg-white text-black" key={i} value={e.value}>
           {e.text}

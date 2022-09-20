@@ -4,7 +4,6 @@ import ButtonComponent from './buttonComponent';
 
 const SideBar = () => {
   const link = useLocation();
-  console.log(link.pathname);
 
   const navigate = useNavigate();
 
