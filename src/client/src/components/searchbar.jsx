@@ -8,7 +8,7 @@ const Searchbar = () => {
   return (
     <Formik onSubmit={submitAction} initialValues={{ searchInput: '' }}>
       {({ values, handleChange, submitForm }) => (
-        <Form>
+        <Form className="w-full max-w-2xl flex justify-center items-center">
           <Field
             type="text"
             name="searchInput"
@@ -18,7 +18,7 @@ const Searchbar = () => {
               handleChange(e);
               submitForm();
             }}
-            className="bg-[transparent] focus:outline-none py-1 px-4 border rounded-full"
+            className="bg-lightGray focus:outline-none py-2 px-4 rounded-full w-full max-w-xl"
           />
         </Form>
       )}

@@ -10,7 +10,7 @@ const Login = () => {
   };
 
   return (
-    <div className="h-[95vh] flex flex-col items-center justify-center">
+    <div className="h-screen flex flex-col items-center justify-center">
       <div className=" bg-white w-96 p-4 rounded-lg">
         <h2 className="font-bold font-montserrat text-lg text-center mb-4">Login</h2>
         <Formik initialValues={{ email: '', password: '' }} onSubmit={handleSubmit}>

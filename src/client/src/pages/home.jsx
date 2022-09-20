@@ -6,7 +6,6 @@ import Searchbar from '../components/searchbar';
 const Home = () => {
   return (
     <>
-      <Searchbar />
       <Dropdown />
       <ClientTable />;
     </>
