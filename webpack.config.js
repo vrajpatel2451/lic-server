@@ -3,35 +3,38 @@ const path = require('path');
 const { mainModule } = require('process');
 
 module.exports = {
-    entry:'./src/client/src/index.jsx',
-    output:{path: path.resolve(__dirname,'./src/client/dist'),filename:'main.js'},
-    plugins:[
+    entry: './src/client/src/index.jsx',
+    output: { path: path.resolve(__dirname, './src/client/dist'), filename: 'main.js', publicPath: '/', },
+    plugins: [
         new HtmlWebpackPlugin({
-            template:'./src/client/public/index.html',
-            filename:'index.html'
+            template: './src/client/public/index.html',
+            filename: 'index.html'
         }),
     ],
-    resolve:{
-        extensions:['.js','.jsx']
+    devServer: {
+        historyApiFallback: true,
     },
-    performance:{
-        hints:false,
+    resolve: {
+        extensions: ['.js', '.jsx']
     },
-    module:{
-        rules:[
+    performance: {
+        hints: false,
+    },
+    module: {
+        rules: [
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                use:{
+                use: {
                     loader: 'babel-loader',
                 }
             },
             {
                 test: /\.css$/,
                 exclude: /node_modules/,
-                use:['style-loader','css-loader','postcss-loader'],
+                use: ['style-loader', 'css-loader', 'postcss-loader'],
             },
         ]
     },
-    mode: process.env.NODE_ENV==='dev'? 'development':'production',
+    mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
 };
