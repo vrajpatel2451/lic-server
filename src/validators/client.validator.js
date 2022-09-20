@@ -15,6 +15,7 @@ class ClientValidator {
       branch: Joi.string().required(),
       policies: Joi.array().required(),
       birthDate:Joi.date().required(),
+      meetingDate:Joi.date().required(),
       email: Joi.string().required().email(),
       phone: Joi.string().required().length(10).pattern(/^[0-9]+$/),
     });

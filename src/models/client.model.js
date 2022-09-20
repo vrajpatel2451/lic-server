@@ -15,6 +15,8 @@ const ClientSchema = new Schema({
     city:String,
     state:String,
     pin:Number,
+    birthDate:{type:Schema.Types.Date,default:new Date().toISOString()},
+    meetingDate:{type:Schema.Types.Date,default:new Date().toISOString()},
     branch:{type:Schema.Types.ObjectId, ref:'Branch'},   
     documents:[{type:Schema.Types.ObjectId, ref:'DocumentClient'}],   
     policies:[{type:Schema.Types.ObjectId, ref:'Policy'}],   

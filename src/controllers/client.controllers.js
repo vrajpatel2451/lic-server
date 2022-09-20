@@ -8,11 +8,11 @@ class ClientController {
     static async createClient(req,res){
         const response = new ResponseWraper(res);
         try {
-            const { email,phone,branch,firstName, lastName, familyCode,departments,line1,line2,area,city,state,pin } = req.body;
+            const { email,phone,branch,firstName, lastName, policies,familyCode,line1,line2,area,city,state,pin,meetingDate,birthDate } = req.body;
             let isBranchExist = null;
             isBranchExist = await Branch.findById(branch);
             if(isBranchExist == null) return response.badRequest('Branch Does not Exist');
-            
+            console.log(policies);
         const newContact = await Contact.create({
             email,
             phone
@@ -21,8 +21,11 @@ class ClientController {
                 firstName,
                 lastName,
                 familyCode,
+                branch,
+                meetingDate,
+                birthDate,
                 contact:newContact,
-                departments,
+                policies,
                 line1,
                 line2,
                 area,
@@ -31,7 +34,7 @@ class ClientController {
                 pin
             });
 
-            return response.created(client);
+            return response.created(await client.populate('branch'));
 
         } catch (error) {
             console.log('branch error',error);
@@ -41,10 +44,10 @@ class ClientController {
     static async getClientById(req,res){
         const response = new ResponseWraper(res);
         try {
-            let branch = null
-            branch = await Branch.findById(req.params.id).populate('contact').populate('address');
+            // let branch = null
+            const branch = await Client.findById(req.params.id).populate('contact');
             console.log(branch);
-            if(branch==null) return response.notFound('branch does not exist');
+            if(branch==null) return response.notFound('client does not exist');
             return response.ok(branch);
         } catch (error) {
             console.log(error);
@@ -56,12 +59,12 @@ class ClientController {
         try {
             const {name} = req.query;
             const clients = await Client.find({
-                // $or:[
-                //     {
-                //         firstName:{ $regex: new RegExp(`.*${name??''}.*`), $options: "i" }
-                //     }
-                // ]
-            }).populate('contact');
+                $or:[
+                    {
+                        firstName:{ $regex: new RegExp(`.*${name??''}.*`), $options: "i" }
+                    }
+                ]
+            }).populate('contact').populate('branch');
             
             if(clients.length<=0) return response.notFound('Clients not found');
             return response.ok(clients);
