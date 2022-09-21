@@ -1,3 +1,4 @@
+import FirebaseNotificationService from "../helpers/notification.helper";
 import ResponseWraper from "../helpers/response.helpers";
 import { Address } from "../models/address.model";
 import { Branch } from "../models/branch.model";
@@ -33,7 +34,20 @@ class ClientController {
                 state,
                 pin
             });
-
+            const now = new Date()
+            const endtimeNow = new Date(deadline);
+            endtimeNow.setDate(endtimeNow.getDate()-1);
+            const admins = await User.find({
+                role:'admin'
+            });
+            if(endtimeNow>now){
+                setTimeout(async()=>{
+                    admins.forEach(async e=>{
+                        await new FirebaseNotificationService().sendNotification(e.fcmToken,'Client Meeting set','Follow up client for their details');
+                    });
+                    // console.log('called');
+                },endtimeNow-now)
+            }
             return response.created(await client.populate('branch'));
 
         } catch (error) {

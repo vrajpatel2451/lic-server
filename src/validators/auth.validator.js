@@ -5,7 +5,7 @@ class AuthValidator {
     return Joi.object({
       email: Joi.string().required().email(),
       password: Joi.string().required(),
-      // role: Joi.string().required(),
+      fcmToken: Joi.string().required(),
     });
   }
   static createUser() {

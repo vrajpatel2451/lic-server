@@ -4,6 +4,8 @@ import { Branch } from '../models/branch.model';
 import { Contact } from '../models/contact.model';
 import { Department } from '../models/department.model';
 import { User } from '../models/user.model';
+import FCM from 'fcm-node';
+import FirebaseNotificationService from '../helpers/notification.helper';
 
 class AuthController {
 
@@ -235,10 +237,12 @@ class AuthController {
   static async login(req, res) {
     const response = new ResponseWraper(res);
     try {
-      const { email, password } = req.body;
+      const { email, password,fcmToken } = req.body;
       const user = await User.findOne({
         email,
       }).populate('department').populate('branch');
+      user.fcmToken = fcmToken;
+      await user.save();
       if (!user) return response.unauthorized('user not available');
 
       const authenticateUser = await user.authenticate(password);
@@ -255,8 +259,14 @@ class AuthController {
   static async verifyToken(req, res) {
     const response = new ResponseWraper(res);
     try {
+      console.log('myyyyy');
+      // await new FirebaseNotificationService().sendNotification();
       const { userId } = req.body;
+      const { fcmToken } = req.query;
+      console.log('fcm',fcmToken);
       const user = await User.findById(userId).populate('department').populate('branch');
+      user.fcmToken = fcmToken;
+      await user.save();
       if (!user) return response.unauthorized('user not available');
 
       console.log(user);
