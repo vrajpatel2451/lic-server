@@ -71,7 +71,13 @@ class TaskController {
                     taskType,
                 });
             }
-
+            const now = new Date()
+            const endtimeNow = new Date(deadline)
+            if(endtimeNow>now){
+                setTimeout(()=>{
+                    console.log('called');
+                },endtimeNow-now)
+            }
             return response.created(task);
 
         } catch (error) {
@@ -150,6 +156,13 @@ class TaskController {
                 await taskExist.update({
                     staff:staffExist
                 });
+                const now = new Date()
+                const endtimeNow = new Date(taskExist.endTime)
+                if(endtimeNow>now){
+                    setTimeout(()=>{
+                        console.log('called staff');
+                    },endtimeNow-now)
+                }
                 return response.ok(taskExist);
             }else{
                 return response.badRequest('Task does not exist');
