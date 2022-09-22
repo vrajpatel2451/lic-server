@@ -76,7 +76,7 @@ class TaskController {
             }
             const now = new Date()
             const endtimeNow = new Date(deadline);
-            endtimeNow.setDate(endtimeNow.getDate()-1);
+            endtimeNow.setHours(endtimeNow.getHours()-5);
             const admins = await User.find({
                 role:'admin'
             });
@@ -86,7 +86,9 @@ class TaskController {
                 await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Assigned to you','Please finish this task','1',task._id);
             }
             if(endtimeNow>now){
+                console.log(endtimeNow-now);
                 setTimeout(async()=>{
+                    console.log('hi notification after si');
                     admins.forEach(async e=>{
                         await new FirebaseNotificationService().sendNotification(e.fcmToken,'Task Reminder','Please finish this task','1',task._id);
                     });
@@ -177,6 +179,7 @@ class TaskController {
                 });
                 const now = new Date()
                 const endtimeNow = new Date(taskExist.endTime)
+                endtimeNow.setHours(endtimeNow.getHours()-5);
                 await new FirebaseNotificationService().sendNotification(staffExist.fcmToken,'Task Assigned','Please finish this task','1',taskExist._id);
                 if(endtimeNow>now){
                     setTimeout(async()=>{
