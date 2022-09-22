@@ -80,19 +80,19 @@ class TaskController {
             const admins = await User.find({
                 role:'admin'
             });
-            await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Assigned to you','Please finish this task');
+            await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Assigned to you','Please finish this task','1',task._id);
             if(isStaffExist!=null){
                 // console.log('hahhaha staff exist',isStaffExist?.fcmToken);
-                await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Assigned to you','Please finish this task');
+                await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Assigned to you','Please finish this task','1',task._id);
             }
             if(endtimeNow>now){
                 setTimeout(async()=>{
                     admins.forEach(async e=>{
-                        await new FirebaseNotificationService().sendNotification(e.fcmToken,'Task Reminder','Please finish this task');
+                        await new FirebaseNotificationService().sendNotification(e.fcmToken,'Task Reminder','Please finish this task','1',task._id);
                     });
-                    await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Reminder','Please finish this task');
+                    await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
                     if(isStaffExist!=null){
-                        await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Reminder','Please finish this task');
+                        await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
                     }
                     // console.log('called');
                 },endtimeNow-now)
@@ -177,10 +177,10 @@ class TaskController {
                 });
                 const now = new Date()
                 const endtimeNow = new Date(taskExist.endTime)
-                await new FirebaseNotificationService().sendNotification(staffExist.fcmToken,'Task Assigned','Please finish this task');
+                await new FirebaseNotificationService().sendNotification(staffExist.fcmToken,'Task Assigned','Please finish this task','1',taskExist._id);
                 if(endtimeNow>now){
                     setTimeout(async()=>{
-                       await new FirebaseNotificationService().sendNotification(staffExist.fcmToken,'Task Reminder','Please finish this task');
+                       await new FirebaseNotificationService().sendNotification(staffExist.fcmToken,'Task Reminder','Please finish this task','1',taskExist._id);
                         // console.log('called staff');
                     },endtimeNow-now)
                 }
@@ -244,7 +244,7 @@ class TaskController {
     static async addComment(req,res){
         const response = new ResponseWraper(res);
         try {
-            const {userId,task,comment,createdRole} = req.body;
+            const {userId,task,comment,createRole} = req.body;
             const taskExist = await Task.findById(task);
             if(taskExist===null) return response.badRequest('Task does not exist');
             // const staffExist = await User.findById(userId);
@@ -258,23 +258,26 @@ class TaskController {
                 $push:{
                     comments:commentResult
                 }
-            }).populate('head').populate('staff');
+            });
+            const noti = await (await taskExist.populate('staff')).populate('head');
             const admins = await User.find({
                 role:'admin'
             });
-            // console.log('hhahah',role);
-            if(createdRole!=='admin'){
+            console.log('hhahah',createRole);
+            if(createRole!=='admin'){
                 admins.forEach(async e=>{
-                    await new FirebaseNotificationService().sendNotification(e.fcmToken,`Comment By added for task`,'Check this task for the comment');   
+                    await new FirebaseNotificationService().sendNotification(e.fcmToken,`Comment By added for task`,'Check this task for the comment','1',taskExist._id);   
                 });
             }
-            if(createdRole!=='head'){
-                await new FirebaseNotificationService().sendNotification(taskExist?.head?.fcmToken,`Comment By added for task`,'Check this task for the comment');   
+            if(createRole!=='head'){
+                console.log('head noti',taskExist?.head);
+                await new FirebaseNotificationService().sendNotification(noti?.head?.fcmToken,`Comment By added for task`,'Check this task for the comment','1',taskExist._id);   
             }
-            if(createdRole!=='staff'){
-                await new FirebaseNotificationService().sendNotification(taskExist?.staff?.fcmToken,`Comment added for task`,'Check this task for the comment');   
+            if(createRole!=='staff'){
+                console.log('staff noti',taskExist?.staff);
+                await new FirebaseNotificationService().sendNotification(noti?.staff?.fcmToken,`Comment added for task`,'Check this task for the comment','1',taskExist._id);   
             }
-            return response.ok(taskExist);
+            return response.ok(noti);
         } catch (error) {
             console.log(error);
             return response.internalServerError();

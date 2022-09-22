@@ -9,7 +9,7 @@ class FirebaseNotificationService {
         // const key = process.env.FCM_SERVER_KEY || '' 
         // this.#server = new FCM(key);
     }
-    async sendNotification(token,title='Test Title',subtitle='Test Subtitle'){
+    async sendNotification(token,title='Test Title',subtitle='Test Subtitle',type='1',id='id'){
         console.log('hhahahaaa');
         try {
             // const noti = {
@@ -28,7 +28,11 @@ class FirebaseNotificationService {
                 "notification":{
                     "body":subtitle,
                     "title":title,
-                    "subtitle":subtitle
+                    "subtitle":subtitle,
+                },
+                "data":{
+                    "type":type,
+                    "id":id,
                 }
             }
             console.log(process.env.FCM_SERVER_KEY);
