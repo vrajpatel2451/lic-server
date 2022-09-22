@@ -57,6 +57,7 @@ class TaskController {
                     head,
                     client:clientData,
                     taskType,
+                    documents:documentsCreated
                 });
             }else{
                 isStaffExist = await User.findById(staff);
@@ -72,6 +73,7 @@ class TaskController {
                     staff,
                     client:clientData,
                     taskType,
+                    documents:documentsCreated
                 });
             }
             const now = new Date()
@@ -110,7 +112,7 @@ class TaskController {
         const response = new ResponseWraper(res);
         try {
             let branch = null
-            branch = await Task.findById(req.params.id).populate('head',['firstName','lastName'],).populate('staff',['firstName','lastName']).populate('department','name').populate({path:'client',populate:{path:'documents'}}).populate('branch','name').populate({path:'comments',populate:{path:'user'}});
+            branch = await Task.findById(req.params.id).populate('head',['firstName','lastName'],).populate('staff',['firstName','lastName']).populate('department','name').populate('client').populate('branch','name').populate({path:'comments',populate:{path:'user'}}).populate('documents');
             console.log(branch);
             if(branch==null) return response.notFound('branch does not exist');
             return response.ok(branch);

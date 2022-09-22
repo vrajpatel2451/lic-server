@@ -60,7 +60,7 @@ class ClientController {
         const response = new ResponseWraper(res);
         try {
             // let branch = null
-            const branch = await Client.findById(req.params.id).populate('contact');
+            const branch = await Client.findById(req.params.id).populate('contact').populate('documents');
             console.log(branch);
             if(branch==null) return response.notFound('client does not exist');
             return response.ok(branch);
