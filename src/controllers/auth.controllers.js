@@ -90,9 +90,9 @@ class AuthController {
             state,
             pin
         });
-        let user;
+        
         // if(branch!=''){
-          user = await User.create({
+          const user = await User.create({
             password,
             firstName,
             email,
@@ -130,8 +130,11 @@ class AuthController {
     //     name,
     //     password,
     //   });
-        console.log("hola",user);
-      return response.created({ accessToken: user.generateToken(), user });
+
+    const userData = await user.populate('contact')
+    // .populate('department').populate('workRole').populate('branch');
+        console.log("hola",userData);
+      return response.created({ accessToken: user.generateToken(), user: userData });
     } catch (error) {
       console.log(error);
       return response.internalServerError();
@@ -240,8 +243,9 @@ class AuthController {
       const { email, password,fcmToken } = req.body;
       const user = await User.findOne({
         email,
-      }).populate('department').populate('branch');
+    }).populate('department').populate('branch');
       user.fcmToken = fcmToken;
+
       await user.save();
       if (!user) return response.unauthorized('user not available');
 
@@ -265,6 +269,7 @@ class AuthController {
       const { fcmToken } = req.query;
       console.log('fcm',fcmToken);
       const user = await User.findById(userId).populate('department').populate('branch');
+      console.log('fcm user',userId);
       user.fcmToken = fcmToken;
       await user.save();
       if (!user) return response.unauthorized('user not available');

@@ -189,7 +189,7 @@ class AuthRoutes{
             *                 error:
             *                   type: object  
         */
-        this.router.get('/verify/head', AuthController.verifyToken);
+        this.router.get('/verify/head',[verifyToken,roleFinder(['head'])], AuthController.verifyToken);
         /**
             * @swagger
             * /auth/verify/staff:
@@ -211,7 +211,7 @@ class AuthRoutes{
             *                 error:
             *                   type: object  
         */
-        this.router.get('/verify/staff', AuthController.verifyToken);
+        this.router.get('/verify/staff',[verifyToken,roleFinder(['staff'])], AuthController.verifyToken);
     }
 }
 

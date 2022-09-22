@@ -4,6 +4,7 @@ import { Address } from "../models/address.model";
 import { Branch } from "../models/branch.model";
 import { Client } from "../models/client.model";
 import { Contact } from "../models/contact.model";
+import { User } from "../models/user.model";
 
 class ClientController {
     static async createClient(req,res){
@@ -35,7 +36,7 @@ class ClientController {
                 pin
             });
             const now = new Date()
-            const endtimeNow = new Date(deadline);
+            const endtimeNow = new Date(meetingDate);
             endtimeNow.setDate(endtimeNow.getDate()-1);
             const admins = await User.find({
                 role:'admin'

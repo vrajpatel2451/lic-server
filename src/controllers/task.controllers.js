@@ -59,7 +59,7 @@ class TaskController {
                     taskType,
                 });
             }else{
-                isStaffExist = User.findById(staff);
+                isStaffExist = await User.findById(staff);
                 if(isStaffExist===null) return response.badRequest('Staff not exist');
                 task = await Task.create({
                     title,
@@ -80,6 +80,11 @@ class TaskController {
             const admins = await User.find({
                 role:'admin'
             });
+            await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Assigned to you','Please finish this task');
+            if(isStaffExist!=null){
+                // console.log('hahhaha staff exist',isStaffExist?.fcmToken);
+                await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Assigned to you','Please finish this task');
+            }
             if(endtimeNow>now){
                 setTimeout(async()=>{
                     admins.forEach(async e=>{
@@ -95,7 +100,7 @@ class TaskController {
             return response.created(task);
 
         } catch (error) {
-            console.log('branch error',error);
+            // console.log('branch error',error);
             return response.internalServerError();
         }
     }
@@ -239,7 +244,7 @@ class TaskController {
     static async addComment(req,res){
         const response = new ResponseWraper(res);
         try {
-            const {userId,task,comment,role} = req.body;
+            const {userId,task,comment,createdRole} = req.body;
             const taskExist = await Task.findById(task);
             if(taskExist===null) return response.badRequest('Task does not exist');
             // const staffExist = await User.findById(userId);
@@ -257,19 +262,21 @@ class TaskController {
             const admins = await User.find({
                 role:'admin'
             });
-            if(role!='admin'){
+            // console.log('hhahah',role);
+            if(createdRole!=='admin'){
                 admins.forEach(async e=>{
                     await new FirebaseNotificationService().sendNotification(e.fcmToken,`Comment By added for task`,'Check this task for the comment');   
                 });
             }
-            if(role!=='head'){
+            if(createdRole!=='head'){
                 await new FirebaseNotificationService().sendNotification(taskExist?.head?.fcmToken,`Comment By added for task`,'Check this task for the comment');   
             }
-            if(role!=='staff'){
+            if(createdRole!=='staff'){
                 await new FirebaseNotificationService().sendNotification(taskExist?.staff?.fcmToken,`Comment added for task`,'Check this task for the comment');   
             }
             return response.ok(taskExist);
         } catch (error) {
+            console.log(error);
             return response.internalServerError();
         }
     }
