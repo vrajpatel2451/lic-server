@@ -1,8 +1,10 @@
+import FirebaseNotificationService from "../helpers/notification.helper";
 import ResponseWraper from "../helpers/response.helpers";
 import { Address } from "../models/address.model";
 import { Branch } from "../models/branch.model";
 import { Client } from "../models/client.model";
 import { Contact } from "../models/contact.model";
+import { User } from "../models/user.model";
 
 class ClientController {
     static async createClient(req,res){
@@ -33,7 +35,20 @@ class ClientController {
                 state,
                 pin
             });
-
+            const now = new Date()
+            const endtimeNow = new Date(meetingDate);
+            endtimeNow.setDate(endtimeNow.getDate()-1);
+            const admins = await User.find({
+                role:'admin'
+            });
+            if(endtimeNow>now){
+                setTimeout(async()=>{
+                    admins.forEach(async e=>{
+                        await new FirebaseNotificationService().sendNotification(e.fcmToken,'Client Meeting set','Follow up client for their details');
+                    });
+                    // console.log('called');
+                },endtimeNow-now)
+            }
             return response.created(await client.populate('branch'));
 
         } catch (error) {
@@ -45,7 +60,7 @@ class ClientController {
         const response = new ResponseWraper(res);
         try {
             // let branch = null
-            const branch = await Client.findById(req.params.id).populate('contact');
+            const branch = await Client.findById(req.params.id).populate('contact').populate('documents');
             console.log(branch);
             if(branch==null) return response.notFound('client does not exist');
             return response.ok(branch);

@@ -10,6 +10,7 @@ const UserSchema = new Schema({
         index:true,
     },
     password:String,
+    fcmToken:{type:Schema.Types.String,default:''},
     contact:{type:Schema.Types.ObjectId, ref:'Contact'},
     address:{type:Schema.Types.ObjectId, ref:'Address'},
     branch:{type:Schema.Types.ObjectId, ref:'Branch'},

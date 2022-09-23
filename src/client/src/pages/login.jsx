@@ -6,7 +6,10 @@ const Login = () => {
   const navigate = useNavigate();
   const handleSubmit = values => {
     console.log(values);
-    navigate('/');
+   
+      navigate('/');
+    
+    
   };
 
   console.log(window.location.href.split('/')[3], 'url');
