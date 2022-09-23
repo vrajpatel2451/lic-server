@@ -10,6 +10,7 @@ const TaskSchema = new Schema({
     client: {type: Schema.Types.ObjectId, ref:'Client'},
     staff: {type: Schema.Types.ObjectId, ref: 'User'},
     head: {type: Schema.Types.ObjectId, ref: 'User'},
+    documents:[{type:Schema.Types.ObjectId, ref:'DocumentClient'}],
     comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
     taskType:{type:String, enum:['infeiald','offfield','onfield'],default:'infield'}, 
     taskStatus:{type:String, enum:['pending','inprogress','test','finished'],default:'pending'}, 
