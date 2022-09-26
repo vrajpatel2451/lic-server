@@ -2,8 +2,12 @@ import React from 'react';
 import Searchbar from './searchbar';
 import '../styles/style.css';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 
 const HeaderComponent = () => {
+   const  data = useSelector(state => state.authUser )
+   console.log("data",data)
   const link = useLocation();
 
   if (link.pathname !== '/login') {
@@ -21,7 +25,7 @@ const HeaderComponent = () => {
             />
           </div>
           <div>
-            <h6 className="font-semibold">Pro File</h6>
+            <h6 className="font-semibold">Profile</h6>
             <p>Super&nbsp;Admin</p>
           </div>
         </div>
