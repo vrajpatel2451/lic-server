@@ -13,7 +13,7 @@ const TaskSchema = new Schema({
     documents:[{type:Schema.Types.ObjectId, ref:'DocumentClient'}],
     comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
     taskType:{type:String, enum:['infeiald','offfield','onfield'],default:'infield'}, 
-    taskStatus:{type:String, enum:['pending','inprogress','test','finished'],default:'pending'}, 
+    taskStatus:{type:String, enum:['pending','inprogress','verify','completed'],default:'pending'}, 
 });
 
 export const Task = model('Task', TaskSchema);

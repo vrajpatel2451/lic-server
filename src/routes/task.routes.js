@@ -1,6 +1,7 @@
 import { Router } from "express";
 import TaskController from "../controllers/task.controllers";
 import verifyToken from "../middlewares/auth.middleware";
+import { uploadTaskFile } from "../middlewares/task.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import TaskValidator from "../validators/task.validator";
 
@@ -120,7 +121,7 @@ class TaskRoutes{
             *                 error:
             *                   type: object  
         */
-        this.router.patch('/documents', [validationMiddleware(TaskValidator.updateDocuments()), verifyToken], TaskController.upDateDocument);
+        this.router.patch('/documents', [uploadTaskFile,validationMiddleware(TaskValidator.updateDocuments()), verifyToken], TaskController.upDateDocument);
         /**
             * @swagger
             * /task/status:

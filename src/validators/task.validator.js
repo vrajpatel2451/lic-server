@@ -46,8 +46,8 @@ class TaskValidator {
   }
   static updateDocuments() {
     return Joi.object({
-      document: Joi.string().required(),
-      url:Joi.required(),
+      image:Joi.string().required(),
+      document:Joi.string().required(),
     });
   }
   static addComment() {

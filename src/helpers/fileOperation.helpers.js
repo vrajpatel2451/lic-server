@@ -14,7 +14,7 @@ class FileOperations {
             }
           });
     }
-    upload=(cb,limits)=>multer({
+    upload=(cb,limits={})=>multer({
       // dest:'../uploads',
       fileFilter:cb,
       limits,

@@ -124,19 +124,30 @@ class TaskController {
     static async getTasks(req,res){
         const response = new ResponseWraper(res);
         try {
-            const {department,staff} = req.query;
+            const {department,staff,head,fromAdmin} = req.query;
             let tasks = [];
             if(department!=undefined && department != null && department != "" && staff!=undefined && staff != null && staff != ""){
                 console.log('hi3');
                 tasks = await Task.find({
                     $or:[
                         {
-                            head:staff,
+                            // head:head,
                             staff:staff,
                             department:department,
                         }
                     ]
                 }).populate('staff').populate('head').populate('branch').populate('department');
+            }else if(department!=undefined && department != null && department != ""&& head!=undefined && head != null && head != ""){
+                tasks = await Task.find({
+                    $or:[
+                        {
+                            head:head,
+                            // staff:staff,
+                            department:department,
+                        }
+                    ]
+                }).populate('staff').populate('head').populate('branch').populate('department');
+
             }else if(department!=undefined && department != null && department != ""){
                 console.log('hi2');
                 tasks = await Task.find({
@@ -147,11 +158,23 @@ class TaskController {
                     ]
                 }).populate('staff').populate('head').populate('branch').populate('department');
             }else if(staff!=undefined && staff != null && staff != ""){
+                    console.log('hi astaff');
+                    tasks = await Task.find({
+                        $or:[
+                            {
+                                // head:staff,
+                                staff:staff,
+                            }
+                        ]
+                    }).populate('staff').populate('head').populate('branch').populate('department');
+            
+                // console.log(tasksResult);
+            }else if(head!=undefined && head != null && head != ""){
                 console.log('hi');
                 tasks = await Task.find({
                     $or:[
                         {
-                            head:staff,
+                            head:head,
                             // staff:staff,
                         }
                     ]
@@ -201,16 +224,27 @@ class TaskController {
     static async upDateDocument(req,res){
         const response = new ResponseWraper(res);
         try {
-            const {url,document} = req.body;
-            const documentExist = await DocumentClient.findById(document);
-            if(documentExist===null) return response.badRequest('Document does not exist');
-            await documentExist.update({
+            const {document,image} = req.body;
+            // const documentExist = await DocumentClient.findById(document);
+            // if(documentExist===null) return response.badRequest('Document does not exist');
+            // await documentExist.update({
+                // uploaded:true,
+                // $push:{
+                //     image,
+                // }
+            // });
+            // awai
+            console.log('doc',document);
+            console.log('image',image);
+            const documentExist = await DocumentClient.findByIdAndUpdate(document,{
+                uploaded:true,
                 $push:{
-                    image:url
+                    image,
                 }
-            });   
+            })   
             return response.ok(documentExist);
         } catch (error) {
+            console.log(error);
             return response.internalServerError();
         }
     }
@@ -234,13 +268,16 @@ class TaskController {
         const response = new ResponseWraper(res);
         try {
             const {status,task,userId} = req.body;
-            const taskExist = await Task.findById(task);
-            if(taskExist===null) return response.badRequest('Task does not exist');
-            await taskExist.update({
-                $push:{
-                    taskStatus:status
-                }
-            });   
+            // const taskExist = await Task.findById(task);
+            // if(taskExist===null) return response.badRequest('Task does not exist');
+            // await taskExist.update({
+            //     taskStatus:status
+            //     // $push:{
+            //     // }
+            // });
+            const taskExist = await Task.findByIdAndUpdate(task,{
+                taskStatus:status
+            })   
             return response.ok(taskExist);
         } catch (error) {
             return response.internalServerError();
