@@ -1,6 +1,7 @@
 import { head } from "request";
 import FirebaseNotificationService from "../helpers/notification.helper";
 import ResponseWraper from "../helpers/response.helpers";
+import MyScheduler from "../helpers/schedular.helper";
 import { Address } from "../models/address.model";
 import { Branch } from "../models/branch.model";
 import { Client } from "../models/client.model";
@@ -89,20 +90,22 @@ class TaskController {
                 // console.log('hahhaha staff exist',isStaffExist?.fcmToken);
                 await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Assigned to you','Please finish this task','1',task._id);
             }
-            if(endtimeNow>now){
-                console.log(endtimeNow-now);
-                setTimeout(async()=>{
-                    console.log('hi notification after si');
-                    admins.forEach(async e=>{
-                        await new FirebaseNotificationService().sendNotification(e.fcmToken,'Task Reminder','Please finish this task','1',task._id);
-                    });
-                    await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
-                    if(isStaffExist!=null){
-                        await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
-                    }
-                    // console.log('called');
-                },endtimeNow-now)
-            }
+            await agenda.start();
+            await agenda.schedule(endtimeNow, 'task reminder', {token:isHeadExist?.fcmToken,title:'Task Reminder',subtitle:'Please finish this task',type:'1',id:task._id});
+            // if(endtimeNow>now){
+            //     console.log(endtimeNow-now);
+            //     setTimeout(async()=>{
+            //         console.log('hi notification after si');
+            //         admins.forEach(async e=>{
+            //             await new FirebaseNotificationService().sendNotification(e.fcmToken,'Task Reminder','Please finish this task','1',task._id);
+            //         });
+            //         await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
+            //         if(isStaffExist!=null){
+            //             await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
+            //         }
+            //         // console.log('called');
+            //     },endtimeNow-now)
+            // }
             return response.created(task);
 
         } catch (error) {
