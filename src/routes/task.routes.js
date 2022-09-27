@@ -1,6 +1,6 @@
 import { Router } from "express";
 import TaskController from "../controllers/task.controllers";
-import verifyToken from "../middlewares/auth.middleware";
+import verifyToken, { roleFinder } from "../middlewares/auth.middleware";
 import { uploadTaskFile } from "../middlewares/task.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import TaskValidator from "../validators/task.validator";
@@ -56,6 +56,8 @@ class TaskRoutes{
             *                   type: object  
         */
         this.router.get('/', verifyToken, TaskController.getTasks);
+        this.router.get('/history', verifyToken, TaskController.getTasksHistory);
+        this.router.get('/dashboard', [verifyToken,roleFinder(['admin'])], TaskController.getTaskCount);
         /**
             * @swagger
             * /task/:id:

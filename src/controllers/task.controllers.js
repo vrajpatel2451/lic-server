@@ -1,3 +1,4 @@
+import { head } from "request";
 import FirebaseNotificationService from "../helpers/notification.helper";
 import ResponseWraper from "../helpers/response.helpers";
 import { Address } from "../models/address.model";
@@ -69,6 +70,7 @@ class TaskController {
                     endTime:deadline,
                     department,
                     branch,
+                    taskStatus:'inprogress',
                     head,
                     staff,
                     client:clientData,
@@ -129,6 +131,9 @@ class TaskController {
             if(department!=undefined && department != null && department != "" && staff!=undefined && staff != null && staff != ""){
                 console.log('hi3');
                 tasks = await Task.find({
+                    $nor:[{
+                        taskStatus:'completed'
+                    }],
                     $or:[
                         {
                             // head:head,
@@ -136,9 +141,12 @@ class TaskController {
                             department:department,
                         }
                     ]
-                }).populate('staff').populate('head').populate('branch').populate('department');
+                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
             }else if(department!=undefined && department != null && department != ""&& head!=undefined && head != null && head != ""){
                 tasks = await Task.find({
+                    $nor:[{
+                        taskStatus:'completed'
+                    }],
                     $or:[
                         {
                             head:head,
@@ -146,48 +154,139 @@ class TaskController {
                             department:department,
                         }
                     ]
-                }).populate('staff').populate('head').populate('branch').populate('department');
+                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
 
             }else if(department!=undefined && department != null && department != ""){
                 console.log('hi2');
                 tasks = await Task.find({
+                    $nor:[{
+                        taskStatus:'completed'
+                    }],
                     $or:[
                         {
                             department:department,
                         }
                     ]
-                }).populate('staff').populate('head').populate('branch').populate('department');
+                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
             }else if(staff!=undefined && staff != null && staff != ""){
                     console.log('hi astaff');
                     tasks = await Task.find({
+                        $nor:[{
+                            taskStatus:'completed'
+                        }],
                         $or:[
                             {
                                 // head:staff,
                                 staff:staff,
                             }
                         ]
-                    }).populate('staff').populate('head').populate('branch').populate('department');
+                    }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
             
                 // console.log(tasksResult);
             }else if(head!=undefined && head != null && head != ""){
                 console.log('hi');
                 tasks = await Task.find({
+                    $nor:[{
+                        taskStatus:'completed'
+                    }],
                     $or:[
                         {
                             head:head,
                             // staff:staff,
                         }
                     ]
-                }).populate('staff').populate('head').populate('branch').populate('department');
+                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
                 // console.log(tasksResult);
             }else{
                 console.log('hiiiiii');
-                tasks = await Task.find().populate('staff').populate('head').populate('branch').populate('department');
+                tasks = await Task.find({
+                    $nor:[{
+                        taskStatus:'completed'
+                    }],
+                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
             }
             
             if(tasks.length<=0) return response.notFound('Tasks not found');
             return response.ok(tasks);
         } catch (error) {
+            return response.internalServerError();
+        }
+    }
+    static async getTasksHistory(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            const {createRole,userId} = req.body;
+            let tasks = [];
+            console.log(createRole);
+            if(createRole==='admin'){
+                tasks = await Task.find({
+                    taskStatus:'completed'
+                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+            }else if(createRole==='head'){
+                tasks = await Task.find({
+                    taskStatus:'completed',
+                    head:userId
+                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+            }else{
+                console.log('here');
+                tasks = await Task.find({
+                    taskStatus:'completed',
+                    staff:userId
+                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+            }
+            if(tasks.length<=0) return response.notFound('Tasks not found');
+            return response.ok(tasks);
+        } catch (error) {
+            return response.internalServerError();
+        }
+    }
+    static async getTaskCount(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            const {createRole,userId} = req.body;
+            let task = {
+                completed:0,
+                pending:0,
+                inprogress:0,
+                verify:0
+            }
+
+            task.completed = await Task.count({
+                taskStatus:'completed'
+            });
+            task.pending = await Task.count({
+                taskStatus:'pending'
+            });
+            task.inprogress = await Task.count({
+                taskStatus:'inprogress'
+            });
+            task.verify = await Task.count({
+                taskStatus:'verify'
+            });
+
+            // console.log(c);
+            // let tasks = [];
+            // console.log(createRole);
+            // if(createRole==='admin'){
+            //     tasks = await Task.find({
+            //         taskStatus:'completed'
+            //     }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+            // }else if(createRole==='head'){
+            //     tasks = await Task.find({
+            //         taskStatus:'completed',
+            //         head:userId
+            //     }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+            // }else{
+            //     console.log('here');
+            //     tasks = await Task.find({
+            //         taskStatus:'completed',
+            //         staff:userId
+            //     }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+            // }
+            // if(tasks.length<=0) return response.notFound('Tasks not found');
+            return response.ok(task);
+        } catch (error) {
+            console.log(error);
             return response.internalServerError();
         }
     }
@@ -200,7 +299,8 @@ class TaskController {
                 const staffExist = await User.findById(staff);
                 if(staffExist === null) return response.badRequest('Staff does not exist');
                 await taskExist.update({
-                    staff:staffExist
+                    staff:staffExist,
+                    taskStatus:'inprogress'
                 });
                 const now = new Date()
                 const endtimeNow = new Date(taskExist.endTime)
