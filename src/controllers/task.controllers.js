@@ -1,12 +1,8 @@
-import { head } from "request";
 import FirebaseNotificationService from "../helpers/notification.helper";
 import ResponseWraper from "../helpers/response.helpers";
-import MyScheduler from "../helpers/schedular.helper";
-import { Address } from "../models/address.model";
 import { Branch } from "../models/branch.model";
 import { Client } from "../models/client.model";
 import { Comment } from "../models/comment.model";
-import { Contact } from "../models/contact.model";
 import { Department } from "../models/department.model";
 import { DocumentClient } from "../models/document.model";
 import { FieldClient } from "../models/fields.model";
@@ -79,7 +75,6 @@ class TaskController {
                     documents:documentsCreated
                 });
             }
-            const now = new Date()
             const endtimeNow = new Date(deadline);
             endtimeNow.setHours(endtimeNow.getHours()-5);
             const admins = await User.find({
@@ -87,29 +82,9 @@ class TaskController {
             });
             await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Assigned to you','Please finish this task','1',task._id);
             if(isStaffExist!=null){
-                // console.log('hahhaha staff exist',isStaffExist?.fcmToken);
                 await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Assigned to you','Please finish this task','1',task._id);
             }
-            // await new MyScheduler().agenda.start();
-            const agenda = new MyScheduler().agenda;
-            agenda.on('ready',async ()=>{
-                await agenda.schedule(endtimeNow, 'task reminder', {isHeadExist,isStaffExist,admins,task,});
-            })
-            // await new MyScheduler().
-            // if(endtimeNow>now){
-            //     console.log(endtimeNow-now);
-            //     setTimeout(async()=>{
-            //         console.log('hi notification after si');
-            //         admins.forEach(async e=>{
-            //             await new FirebaseNotificationService().sendNotification(e.fcmToken,'Task Reminder','Please finish this task','1',task._id);
-            //         });
-            //         await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
-            //         if(isStaffExist!=null){
-            //             await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
-            //         }
-            //         // console.log('called');
-            //     },endtimeNow-now)
-            // }
+            await global.agenda.schedule(endtimeNow, 'task reminder', {isHeadExist,isStaffExist,admins,task,}); 
             return response.created(task);
 
         } catch (error) {
@@ -270,27 +245,6 @@ class TaskController {
             task.verify = await Task.count({
                 taskStatus:'verify'
             });
-
-            // console.log(c);
-            // let tasks = [];
-            // console.log(createRole);
-            // if(createRole==='admin'){
-            //     tasks = await Task.find({
-            //         taskStatus:'completed'
-            //     }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
-            // }else if(createRole==='head'){
-            //     tasks = await Task.find({
-            //         taskStatus:'completed',
-            //         head:userId
-            //     }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
-            // }else{
-            //     console.log('here');
-            //     tasks = await Task.find({
-            //         taskStatus:'completed',
-            //         staff:userId
-            //     }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
-            // }
-            // if(tasks.length<=0) return response.notFound('Tasks not found');
             return response.ok(task);
         } catch (error) {
             console.log(error);
@@ -309,16 +263,11 @@ class TaskController {
                     staff:staffExist,
                     taskStatus:'inprogress'
                 });
-                const now = new Date()
                 const endtimeNow = new Date(taskExist.endTime)
                 endtimeNow.setHours(endtimeNow.getHours()-5);
                 await new FirebaseNotificationService().sendNotification(staffExist.fcmToken,'Task Assigned','Please finish this task','1',taskExist._id);
-                if(endtimeNow>now){
-                    setTimeout(async()=>{
-                       await new FirebaseNotificationService().sendNotification(staffExist.fcmToken,'Task Reminder','Please finish this task','1',taskExist._id);
-                        // console.log('called staff');
-                    },endtimeNow-now)
-                }
+
+            await global.agenda.schedule(endtimeNow, 'task reminder', {isHeadExist:null,isStaffExist:staffExist,admins:null,task:taskExist,});
                 return response.ok(taskExist);
             }else{
                 return response.badRequest('Task does not exist');
@@ -332,15 +281,6 @@ class TaskController {
         const response = new ResponseWraper(res);
         try {
             const {document,image} = req.body;
-            // const documentExist = await DocumentClient.findById(document);
-            // if(documentExist===null) return response.badRequest('Document does not exist');
-            // await documentExist.update({
-                // uploaded:true,
-                // $push:{
-                //     image,
-                // }
-            // });
-            // awai
             console.log('doc',document);
             console.log('image',image);
             const documentExist = await DocumentClient.findByIdAndUpdate(document,{
@@ -375,13 +315,6 @@ class TaskController {
         const response = new ResponseWraper(res);
         try {
             const {status,task,userId} = req.body;
-            // const taskExist = await Task.findById(task);
-            // if(taskExist===null) return response.badRequest('Task does not exist');
-            // await taskExist.update({
-            //     taskStatus:status
-            //     // $push:{
-            //     // }
-            // });
             const taskExist = await Task.findByIdAndUpdate(task,{
                 taskStatus:status
             })   
@@ -396,8 +329,6 @@ class TaskController {
             const {userId,task,comment,createRole} = req.body;
             const taskExist = await Task.findById(task);
             if(taskExist===null) return response.badRequest('Task does not exist');
-            // const staffExist = await User.findById(userId);
-
             const commentResult = await Comment.create({
                 comment:comment,
                 user:userId,

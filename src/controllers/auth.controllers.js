@@ -244,7 +244,7 @@ class AuthController {
       const { email, password,fcmToken } = req.body;
       const user = await User.findOne({
         email,
-    }).populate('department').populate('branch');
+    }).populate('department').populate('branch').populate('workRole');
       user.fcmToken = fcmToken;
 
       await user.save();
@@ -269,7 +269,7 @@ class AuthController {
       const { userId } = req.body;
       const { fcmToken } = req.query;
       console.log('fcm',fcmToken);
-      const user = await User.findById(userId).populate('department').populate('branch');
+      const user = await User.findById(userId).populate('department').populate('branch').populate('workRole');
       console.log('fcm user',userId);
       user.fcmToken = fcmToken;
       await user.save();

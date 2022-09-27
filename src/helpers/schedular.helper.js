@@ -17,20 +17,17 @@ class MyScheduler {
     #defineTaskScheduler(){
         this.agenda.define('task reminder', {priority: 'high', concurrency: 10},async (job, done) => {
             const {isHeadExist,isStaffExist,admins,task} = job.attrs.data;
-            // await this.#notificationServise.sendNotification(token,title,subtitle,type,id);
-            admins?.forEach(async e=>{
-                await new FirebaseNotificationService().sendNotification(e?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
-            });
-            await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
-            if(isStaffExist!=null){
+            if(admins){
+                admins?.forEach(async e=>{
+                    await new FirebaseNotificationService().sendNotification(e?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
+                });
+            }
+            if(isHeadExist){
+                await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
+            }
+            if(isStaffExist){
                 await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
             }
-            // emailClient.send({
-            //   to,
-            //   from: 'example@example.com',
-            //   subject: 'Email Report',
-            //   body: '...'
-            // }, done);
           });
     }
 }

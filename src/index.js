@@ -12,6 +12,7 @@ import TaskRoutes from './routes/task.routes';
 import swaggerIgnite from './utils/swagger.util';
 import WorkRoleRoutes from './routes/workRoles.routes';
 import PolicyRoutes from './routes/polciy.routes';
+import MyScheduler from './helpers/schedular.helper';
 class MainServer {
      #app;
      #port = parseInt(process.env.PORT) || 3000;
@@ -34,6 +35,7 @@ class MainServer {
        this.#app.use(express.urlencoded({ extended: false }));
        this.#app.use(compression());
        this.#app.use(cors());
+       global.agenda = new MyScheduler().agenda;
        this.#app.use(
         express.static(path.join(__dirname, "./client/dist"))
       );
@@ -95,14 +97,16 @@ class MainServer {
   }
 
     runServer = ()=>{
+      global.agenda.on('ready',()=>{
         this.#app.listen(
-            this.#app.get('port'),
-            ()=>{
-              console.log(
-                `Server running at http://localhost:${this.#app.get('port')}`
+          this.#app.get('port'),
+          ()=>{
+            console.log(
+              `Server running at http://localhost:${this.#app.get('port')}`
               );
             }
-         )
+            )
+          })
      }
 }
 
