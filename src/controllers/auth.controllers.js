@@ -6,6 +6,7 @@ import { Department } from '../models/department.model';
 import { User } from '../models/user.model';
 import FCM from 'fcm-node';
 import FirebaseNotificationService from '../helpers/notification.helper';
+import { StaffLog } from '../models/log.model';
 
 class AuthController {
 
@@ -276,6 +277,39 @@ class AuthController {
 
       console.log(user);
       return response.created({ accessToken: user.generateToken(), user });
+    } catch (error) {
+        console.log(error);
+      return response.internalServerError();
+    }
+  }
+  static async createStaffLog(req, res) {
+    const response = new ResponseWraper(res);
+    try {
+      const { userId,lat,long } = req.body;
+      const log = await StaffLog.create({
+        lat,
+        long,
+        staff:userId,
+        time:new Date().toISOString()
+      })
+      console.log('fcm user',userId);
+      return response.created(log);
+    } catch (error) {
+        console.log(error);
+      return response.internalServerError();
+    }
+  }
+  static async getStaffLog(req, res) {
+    const response = new ResponseWraper(res);
+    try {
+      const {staff} = req.query;
+      if(staff){
+        const logByStaff = StaffLog.find({staff}).populate('staff');
+        return response.ok(logByStaff);
+      }
+      const log = StaffLog.find().populate('staff');
+      // console.log('fcm user',userId);
+      return response.ok(log);
     } catch (error) {
         console.log(error);
       return response.internalServerError();

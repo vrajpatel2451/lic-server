@@ -212,6 +212,8 @@ class AuthRoutes{
             *                   type: object  
         */
         this.router.get('/verify/staff',[verifyToken,roleFinder(['staff'])], AuthController.verifyToken);
+        this.router.get('/log',[verifyToken,roleFinder(['admin'])], AuthController.getStaffLog);
+        this.router.post('/log',[validationMiddleware(AuthValidator.createLog()),verifyToken,roleFinder(['staff'])], AuthController.createStaffLog);
     }
 }
 

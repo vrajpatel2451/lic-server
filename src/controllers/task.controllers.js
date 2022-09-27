@@ -90,8 +90,12 @@ class TaskController {
                 // console.log('hahhaha staff exist',isStaffExist?.fcmToken);
                 await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Assigned to you','Please finish this task','1',task._id);
             }
-            await agenda.start();
-            await agenda.schedule(endtimeNow, 'task reminder', {token:isHeadExist?.fcmToken,title:'Task Reminder',subtitle:'Please finish this task',type:'1',id:task._id});
+            // await new MyScheduler().agenda.start();
+            const agenda = new MyScheduler().agenda;
+            agenda.on('ready',async ()=>{
+                await agenda.schedule(endtimeNow, 'task reminder', {isHeadExist,isStaffExist,admins,task,});
+            })
+            // await new MyScheduler().
             // if(endtimeNow>now){
             //     console.log(endtimeNow-now);
             //     setTimeout(async()=>{
@@ -109,7 +113,7 @@ class TaskController {
             return response.created(task);
 
         } catch (error) {
-            // console.log('branch error',error);
+            console.log('branch error',error);
             return response.internalServerError();
         }
     }

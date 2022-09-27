@@ -5,14 +5,26 @@ class MyScheduler {
     agenda;
     #notificationServise
     constructor(){
-        this.agenda = new Agenda({db:process.env.MONGODB_URI || ''});
+        console.log(process.env.MONGODB_URI_N);
+        this.agenda = new Agenda({ db: { address: process.env.MONGODB_URI_N || '', collection: "newNotification", options: { useUnifiedTopology: true } },});
+        // this.agenda = new Agenda({db:process.env.MONGODB_URI || ''});
         this.#notificationServise = new FirebaseNotificationService();
         this.#defineTaskScheduler();
+        this.agenda.on('ready',async()=>{
+            await this.agenda.start();
+        })
     }
     #defineTaskScheduler(){
         this.agenda.define('task reminder', {priority: 'high', concurrency: 10},async (job, done) => {
-            const {token,title,subtitle,type,id} = job.attrs.data;
-            await this.#notificationServise.sendNotification(token,title,subtitle,type,id);
+            const {isHeadExist,isStaffExist,admins,task} = job.attrs.data;
+            // await this.#notificationServise.sendNotification(token,title,subtitle,type,id);
+            admins?.forEach(async e=>{
+                await new FirebaseNotificationService().sendNotification(e?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
+            });
+            await new FirebaseNotificationService().sendNotification(isHeadExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
+            if(isStaffExist!=null){
+                await new FirebaseNotificationService().sendNotification(isStaffExist?.fcmToken,'Task Reminder','Please finish this task','1',task._id);
+            }
             // emailClient.send({
             //   to,
             //   from: 'example@example.com',

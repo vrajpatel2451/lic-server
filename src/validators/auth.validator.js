@@ -46,6 +46,12 @@ class AuthValidator {
       pin: Joi.number().required().min(100000).max(999999),
     });
   }
+  static createLog() {
+    return Joi.object({
+      lat: Joi.number().required(),
+      long: Joi.number().required(),
+    });
+  }
 }
 
 export default AuthValidator;
