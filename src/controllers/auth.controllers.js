@@ -304,10 +304,10 @@ class AuthController {
     try {
       const {staff} = req.query;
       if(staff){
-        const logByStaff = StaffLog.find({staff}).populate('staff');
+        const logByStaff = await StaffLog.find({staff}).populate('staff');
         return response.ok(logByStaff);
       }
-      const log = StaffLog.find().populate('staff');
+      const log = await StaffLog.find().populate('staff');
       // console.log('fcm user',userId);
       return response.ok(log);
     } catch (error) {
