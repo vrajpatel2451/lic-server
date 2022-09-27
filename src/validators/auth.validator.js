@@ -50,6 +50,7 @@ class AuthValidator {
     return Joi.object({
       lat: Joi.number().required(),
       long: Joi.number().required(),
+      place: Joi.string().required(),
     });
   }
 }

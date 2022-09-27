@@ -285,10 +285,11 @@ class AuthController {
   static async createStaffLog(req, res) {
     const response = new ResponseWraper(res);
     try {
-      const { userId,lat,long } = req.body;
+      const { userId,lat,long,place} = req.body;
       const log = await StaffLog.create({
         lat,
         long,
+        place,
         staff:userId,
         time:new Date().toISOString()
       })
