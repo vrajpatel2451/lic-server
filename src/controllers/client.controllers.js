@@ -79,7 +79,7 @@ class ClientController {
                         firstName:{ $regex: new RegExp(`.*${name??''}.*`), $options: "i" }
                     }
                 ]
-            }).populate('contact').populate('branch');
+            }).populate('contact').populate('branch').populate('fields');
             
             if(clients.length<=0) return response.notFound('Clients not found');
             return response.ok(clients);

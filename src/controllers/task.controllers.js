@@ -52,6 +52,7 @@ class TaskController {
                     endTime:deadline,
                     department,
                     branch,
+                    fields,
                     head,
                     client:clientData,
                     taskType,
@@ -70,6 +71,7 @@ class TaskController {
                     taskStatus:'inprogress',
                     head,
                     staff,
+                    fields,
                     client:clientData,
                     taskType,
                     documents:documentsCreated
@@ -298,15 +300,20 @@ class TaskController {
     static async updateFields(req,res){
         const response = new ResponseWraper(res);
         try {
-            const {fields,client} = req.body;
-            const clientExist = await Client.findById(client);
-            if(clientExist===null) return response.badRequest('Document does not exist');
-            await clientExist.update({
-                $push:{
-                    fields
+            const {field,value} = req.body;
+            // const clientExist = await Client.findById(client);
+            // if(clientExist===null) return response.badRequest('Document does not exist');
+            // await clientExist.update({
+            //     $push:{
+            //         fields
+            //     }
+            // });  
+            const updated = await FieldClient.findByIdAndUpdate(field,{
+                $set:{
+                    value
                 }
-            });   
-            return response.ok(clientExist);
+            }) 
+            return response.ok(updated);
         } catch (error) {
             return response.internalServerError();
         }

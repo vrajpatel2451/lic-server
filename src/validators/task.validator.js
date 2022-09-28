@@ -16,11 +16,7 @@ class TaskValidator {
         name:Joi.string().required(),
         type:Joi.string().required(),
     })),
-      fields:Joi.array().items(Joi.object({
-          label:Joi.string().required(),
-          value:Joi.string().allow(''),
-          type:Joi.string().required(),
-      })),
+      fields:Joi.array().items(Joi.string().required()),
     });
   }
   static updateStatus() {
@@ -37,11 +33,8 @@ class TaskValidator {
   }
   static updateFields() {
     return Joi.object({
-      client: Joi.string().required(),
-      fields:Joi.object({
-          name:Joi.string().required(),
-          value:Joi.string(),
-      }),
+      value: Joi.string().required(),
+      field:Joi.string().required(),
     });
   }
   static updateDocuments() {

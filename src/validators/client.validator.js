@@ -18,6 +18,36 @@ class ClientValidator {
       meetingDate:Joi.date().required(),
       email: Joi.string().required().email(),
       phone: Joi.string().required().length(10).pattern(/^[0-9]+$/),
+      fields:Joi.array().items(Joi.object({
+        label:Joi.string().required(),
+        value:Joi.string().allow(''),
+        type:Joi.string().required(),
+        update:Joi.string().required(),
+      }),),
+      documents:Joi.array().items(Joi.object({
+        name:Joi.string().required(),
+        type:Joi.string().required(),
+    })),
+    });
+  }
+  static addFields() {
+    return Joi.object({
+      client:Joi.string().required(),
+      fields:Joi.array().items(Joi.object({
+        label:Joi.string().required(),
+        value:Joi.string().allow(''),
+        type:Joi.string().required(),
+        update:Joi.string().required(),
+      }),),
+    });
+  }
+  static addDocuments() {
+    return Joi.object({
+      client:Joi.string().required(),
+      documents:Joi.array().items(Joi.object({
+        name:Joi.string().required(),
+        type:Joi.string().required(),
+    })),
     });
   }
 }
