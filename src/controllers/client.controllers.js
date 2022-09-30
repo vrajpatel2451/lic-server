@@ -4,14 +4,16 @@ import { Address } from "../models/address.model";
 import { Branch } from "../models/branch.model";
 import { Client } from "../models/client.model";
 import { Contact } from "../models/contact.model";
+import { FieldClient } from "../models/fields.model";
 import { User } from "../models/user.model";
 
 class ClientController {
     static async createClient(req,res){
         const response = new ResponseWraper(res);
         try {
-            const { email,phone,branch,firstName, lastName, policies,familyCode,line1,line2,area,city,state,pin,meetingDate,birthDate } = req.body;
+            const { email,phone,branch,firstName, lastName, policies,familyCode,line1,line2,area,city,state,pin,meetingDate,birthDate,fields } = req.body;
             let isBranchExist = null;
+            console.log(fields);
             isBranchExist = await Branch.findById(branch);
             if(isBranchExist == null) return response.badRequest('Branch Does not Exist');
             console.log(policies);
@@ -19,6 +21,7 @@ class ClientController {
             email,
             phone
         });
+        const createdFields = await FieldClient.insertMany(fields);
             const client = await Client.create({
                 firstName,
                 lastName,
@@ -33,6 +36,7 @@ class ClientController {
                 area,
                 city,
                 state,
+                fields:createdFields,
                 pin
             });
             const now = new Date()

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import FirebaseNotificationService from "../helpers/notification.helper";
 import ResponseWraper from "../helpers/response.helpers";
 import { Branch } from "../models/branch.model";
@@ -15,6 +16,7 @@ class TaskController {
         try {
             const { title,description,fields,deadline,taskType, department, client,staff,head,branch,documents } = req.body;
             let isBranchExist = null;
+            console.log(req.body);
             isBranchExist = await Branch.findById(branch);
             if(isBranchExist == null) return response.badRequest('Branch Does not Exist');
             let isDepartmentExist = null;
@@ -33,12 +35,9 @@ class TaskController {
         //     email,
         //     phone
         // });
-        const fieldsResult = await FieldClient.create(fields)
-        const documentsCreated = await DocumentClient.create(documents);
+        // const fieldsResult = await FieldClient.create(fields)
+        const documentsCreated = await DocumentClient.insertMany(documents);
        const clientData = await Client.findByIdAndUpdate(client,{
-            $set:{
-               fields:fieldsResult 
-            },
             $push:{
                 documents:documentsCreated
             }
