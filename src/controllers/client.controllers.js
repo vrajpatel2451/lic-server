@@ -1,3 +1,4 @@
+
 import FirebaseNotificationService from "../helpers/notification.helper";
 import ResponseWraper from "../helpers/response.helpers";
 import SearchHelper from "../helpers/searchindexing.helpers";
@@ -40,7 +41,8 @@ class ClientController {
                 fields:createdFields,
                 pin
             });
-            await new SearchHelper().addIndex(client);
+            const clData = await (await client.populate('contact')).populate('branch');
+            await new SearchHelper().addIndex(clData);
             const now = new Date()
             const endtimeNow = new Date(meetingDate);
             endtimeNow.setDate(endtimeNow.getDate()-1);
