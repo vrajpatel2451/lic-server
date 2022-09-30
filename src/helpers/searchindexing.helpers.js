@@ -16,7 +16,7 @@ class SearchHelper {
     async defineIndex(){
         try {
             const index = this.#client.index('madhav_client_search');
-            const data = await Client.find();
+            const data = await Client.find().populate('contact').populate('branch');
             const res = await index.addDocuments(data);
             console.log(res);
         } catch (error) {
