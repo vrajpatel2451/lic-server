@@ -6,7 +6,7 @@ class SearchHelper {
     #client;
     constructor(){
     this.#client = new MeiliSearch({
-            host: 'http://127.0.0.1:7700',
+            host: 'http://https://1f5a-2401-4900-1f3f-7a39-c7f-a46f-5c35-d4fc.in.ngrok.io',
             apiKey: 'MADHAV_SEARCH',
     });
     }
