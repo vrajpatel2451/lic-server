@@ -1,5 +1,6 @@
 import FirebaseNotificationService from "../helpers/notification.helper";
 import ResponseWraper from "../helpers/response.helpers";
+import SearchHelper from "../helpers/searchindexing.helpers";
 import { Address } from "../models/address.model";
 import { Branch } from "../models/branch.model";
 import { Client } from "../models/client.model";
@@ -39,6 +40,7 @@ class ClientController {
                 fields:createdFields,
                 pin
             });
+            await new SearchHelper().addIndex(client);
             const now = new Date()
             const endtimeNow = new Date(meetingDate);
             endtimeNow.setDate(endtimeNow.getDate()-1);

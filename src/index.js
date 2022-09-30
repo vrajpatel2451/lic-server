@@ -13,6 +13,7 @@ import swaggerIgnite from './utils/swagger.util';
 import WorkRoleRoutes from './routes/workRoles.routes';
 import PolicyRoutes from './routes/polciy.routes';
 import MyScheduler from './helpers/schedular.helper';
+import SearchHelper from './helpers/searchindexing.helpers';
 class MainServer {
      #app;
      #port = parseInt(process.env.PORT) || 3000;
@@ -112,4 +113,14 @@ class MainServer {
 
 const server = new MainServer();
 
-server.runServer();
+const searchServer = new SearchHelper();
+
+if(process.env.IS_SEARCH_BUILD==="1"){
+  connection.on('connected',async()=>{
+    console.log('search connected');
+    await searchServer.defineIndex();
+  });
+}else{
+  console.log('search connected dev');
+  server.runServer();
+}
