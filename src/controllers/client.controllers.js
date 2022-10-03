@@ -42,7 +42,8 @@ class ClientController {
                 pin
             });
             const clData = await (await client.populate('contact')).populate('branch');
-            await new SearchHelper().addIndex(clData);
+            const dta = await new SearchHelper().addIndex(clData);
+            console.log('search',dta);
             const now = new Date()
             const endtimeNow = new Date(meetingDate);
             endtimeNow.setDate(endtimeNow.getDate()-1);
