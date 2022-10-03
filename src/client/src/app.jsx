@@ -9,8 +9,11 @@ import Client from './pages/client';
 import Login from './pages/login';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from 'react-redux';
 
 const App = () => {
+  // const state = useSelector(state => console.log(state, 'state.auth'));
+
   return (
     <>
       <ToastContainer />
@@ -22,7 +25,10 @@ const App = () => {
               <HeaderComponent />
               <div className="p-10">
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route
+                    path="/"
+                    element={<Home data={useSelector(state => state?.staff?.user)} />}
+                  />
                   <Route path="/client" element={<Client />} />
                   <Route path="/login" element={<Login />} />
                 </Routes>

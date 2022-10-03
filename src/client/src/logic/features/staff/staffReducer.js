@@ -3,39 +3,36 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     status: 'initial',
     errorMessage: '',
-    isLoggedIn: false,
     user: {},
     token: '',
 }
 
-const authReducer = createSlice({
-    name: 'auth',
+const staffReducer = createSlice({
+    name: 'staff',
     initialState,
     reducers: {
-        loadingAuth(state) {
+        loadingReducer(state) {
             state.status = 'loading';
             state.user = {};
             state.token = '';
-            state.isLoggedIn = false;
         },
-        successAuth(state, action) {
-            // console.log(action, "login credentials");
+        successReducer(state, action) {
+            // console.log(action.payload, "action.payload");
             state.status = 'success';
-            state.user = action.payload.data.user;
+            state.user = action.payload.data;
             state.token = action.payload.data.accessToken;
-            state.isLoggedIn = true;
         },
-        failedAuth(state, action) {
+        failedReducer(state, action) {
             console.log(action);
             state.status = 'error';
             state.errorMessage = action.payload.message;
             state.user = {};
             state.token = '';
-            state.isLoggedIn = false;
         },
     },
 });
 
-export default authReducer.reducer;
 
-export const { loadingAuth, successAuth, failedAuth } = authReducer.actions;
+export default staffReducer.reducer;
+
+export const { loadingReducer, successReducer, failedReducer } = staffReducer.actions;

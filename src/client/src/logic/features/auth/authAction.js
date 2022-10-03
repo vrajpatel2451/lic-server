@@ -19,7 +19,7 @@ export const login = async (dispatch, req) => {
     try {
         dispatch(loadingAuth());
         const data = await postData(LOGIN, req);
-        console.log(data);
+        console.log(data, "hello wrold");
         localStorage.setItem('token', data.data?.accessToken)
         dispatch(successAuth(data?.data));
     } catch (error) {
