@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     status: 'initial',
     errorMessage: '',
-    user: {},
+    user: [],
     token: '',
 }
 
@@ -13,7 +13,7 @@ const staffReducer = createSlice({
     reducers: {
         loadingReducer(state) {
             state.status = 'loading';
-            state.user = {};
+            state.user = [];
             state.token = '';
         },
         successReducer(state, action) {
@@ -26,7 +26,7 @@ const staffReducer = createSlice({
             console.log(action);
             state.status = 'error';
             state.errorMessage = action.payload.message;
-            state.user = {};
+            state.user = [];
             state.token = '';
         },
     },
