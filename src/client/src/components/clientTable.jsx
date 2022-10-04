@@ -35,7 +35,7 @@ const ClientTable = () => {
   return (
     <div className="bg-white py-2 px-4 rounded-xl">
       <div className="flex justify-between items-center mb-4 ">
-        <h5 className="p-4 font-semibold">Client Table</h5>
+        <h5 className="p-4 font-semibold">Staff Table</h5>
         <Dropdown
           placeholder="Filter"
           value={dropdownValue}

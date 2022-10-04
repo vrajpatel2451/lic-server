@@ -78,6 +78,20 @@ class ClientController {
             return response.internalServerError('id is not valid');
         }
     }
+    static async getClientByWebId(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            // let branch = null
+            const branch = await Client.findById(req.params.id).populate('contact').populate('documents');
+            const clients = await Client.find({familyCode:branch.familyCode}).populate('contact').populate('documents');
+            console.log(branch);
+            if(branch==null) return response.notFound('client does not exist');
+            return response.ok({client:branch,related:clients});
+        } catch (error) {
+            console.log(error);
+            return response.internalServerError('id is not valid');
+        }
+    }
     static async getClients(req,res){
         const response = new ResponseWraper(res);
         try {

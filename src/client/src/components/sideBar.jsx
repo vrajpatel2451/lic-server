@@ -17,7 +17,7 @@ const SideBar = () => {
           <div>
             <Link to="/">
               <h6 className={`side-nav mb-4 ${link.pathname === '/' ? 'side-nav-active' : null}`}>
-                Customer
+                 Staff
               </h6>
             </Link>
             <Link to="/client">
