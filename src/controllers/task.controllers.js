@@ -124,7 +124,7 @@ class TaskController {
                             department:department,
                         }
                     ]
-                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+                }).populate('staff').populate('head').populate('branch').populate('department').populate('fields').sort('endTime');
             }else if(department!=undefined && department != null && department != ""&& head!=undefined && head != null && head != ""){
                 tasks = await Task.find({
                     $nor:[{
@@ -137,7 +137,7 @@ class TaskController {
                             department:department,
                         }
                     ]
-                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+                }).populate('staff').populate('head').populate('branch').populate('department').populate('fields').sort('endTime');
 
             }else if(department!=undefined && department != null && department != ""){
                 console.log('hi2');
@@ -150,7 +150,7 @@ class TaskController {
                             department:department,
                         }
                     ]
-                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+                }).populate('staff').populate('head').populate('branch').populate('department').populate('fields').sort('endTime');
             }else if(staff!=undefined && staff != null && staff != ""){
                     console.log('hi astaff');
                     tasks = await Task.find({
@@ -163,7 +163,7 @@ class TaskController {
                                 staff:staff,
                             }
                         ]
-                    }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+                    }).populate('staff').populate('head').populate('branch').populate('department').populate('fields').sort('endTime');
             
                 // console.log(tasksResult);
             }else if(head!=undefined && head != null && head != ""){
@@ -178,7 +178,7 @@ class TaskController {
                             // staff:staff,
                         }
                     ]
-                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+                }).populate('staff').populate('head').populate('branch').populate('department').populate('fields').sort('endTime');
                 // console.log(tasksResult);
             }else{
                 console.log('hiiiiii');
@@ -186,7 +186,7 @@ class TaskController {
                     $nor:[{
                         taskStatus:'completed'
                     }],
-                }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
+                }).populate('staff').populate('head').populate('branch').populate('department').populate('fields').sort('endTime');
             }
             
             if(tasks.length<=0) return response.notFound('Tasks not found');

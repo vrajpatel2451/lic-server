@@ -245,14 +245,14 @@ class AuthController {
       const user = await User.findOne({
         email,
     }).populate('department').populate('branch').populate('workRole');
-      user.fcmToken = fcmToken;
+    if (!user) return response.unauthorized('user not available');
+    
+    const authenticateUser = await user.authenticate(password);
+    
+    if (!authenticateUser) return response.unauthorized('Invalid password');
+    user.fcmToken = fcmToken;
 
-      await user.save();
-      if (!user) return response.unauthorized('user not available');
-
-      const authenticateUser = await user.authenticate(password);
-
-      if (!authenticateUser) return response.unauthorized('Invalid password');
+    await user.save();
       console.log(user);
       return response.created({ accessToken: user.generateToken(), user });
     } catch (error) {
