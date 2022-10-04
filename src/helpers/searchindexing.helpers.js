@@ -6,12 +6,13 @@ class SearchHelper {
     #client;
     constructor(){
     this.#client = new MeiliSearch({
-            host: 'http://127.0.0.1:7700',
+            host: 'https://4d7e-2401-4900-1f3f-7a39-c7f-a46f-5c35-d4fc.in.ngrok.io',
             apiKey: 'MADHAV_SEARCH',
     });
     }
     async addIndex(clientData){
-        await this.#client.createIndex(uuidv4(),clientData);
+        const index = this.#client.index('madhav_client_search');
+        await index.addDocuments([clientData]);
     }
     async defineIndex(){
         try {
