@@ -1,12 +1,24 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import Searchbar from './searchbar';
 import '../styles/style.css';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+
+
 const HeaderComponent = () => {
-  const data = useSelector(state => state.authUser);
-  //  console.log("data",data)
+ 
+  const data = useSelector(state => state.auth);
+  console.log("data====>",data)
+
+  const [userData ,setUserData] = useState(data)
+
+  useEffect(()=>{
+        setUserData(data)
+  },[data])
+
+
+ 
   const link = useLocation();
 
   if (link.pathname !== '/login') {
