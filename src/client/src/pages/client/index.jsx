@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ClientTable from '../../components/clientTable';
 
 const Client = () => {
-
+  
   return (
     <div>
        <ClientTable/>

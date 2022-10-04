@@ -20,9 +20,9 @@ const clientReducer = createSlice({
                 
             },
             successClient(state, action) {
-                console.log("action",action);
+                console.log("action",action.payload);
                 state.status = 'success';
-                state.user = action.payload.data.user;
+                state.user = action.payload.data;
                 state.token = action.payload.data.accessToken;
                
             },
