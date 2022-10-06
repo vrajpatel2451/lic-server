@@ -16,7 +16,6 @@ const authReducer = createSlice({
             state.status = 'loading';
             state.user = {};
             state.token = '';
-            state.isLoggedIn = false;
         },
         successAuth(state, action) {
             state.status = 'success';

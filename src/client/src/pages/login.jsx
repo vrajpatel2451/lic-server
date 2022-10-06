@@ -23,6 +23,7 @@ const Login = () => {
   };
 
   if (state.isLoggedIn) {
+    console.log('hehhee hhhh');
     console.log(state.isLoggedIn);
     nav('/');
   }

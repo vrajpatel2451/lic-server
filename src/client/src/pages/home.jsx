@@ -1,40 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLinkClickHandler, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLinkClickHandler, useLocation, useNavigate } from 'react-router-dom';
 import ClientTable from '../components/clientTable';
 import { verifyUser } from '../logic/features/auth/authAction';
 import { getStaff } from '../logic/features/staff/staffAction';
 import { getClient } from '../logic/features/client/clientAction';
 import { toast } from 'react-toastify';
 
-const Home = ({ data }) => {
+const Home = () => {
   // console.log(data, 'staff data');
   const dispatch = useDispatch();
   const nav = useNavigate();
   const state = useSelector(state => state.auth);
   useEffect(() => {
-    if (!state.loading || !state.isLoggedIn) {
+    if (state.isLoggedIn) {
+      console.log('its htre');
       verifyUser(dispatch);
       getStaff(dispatch);
-      getClient(dispatch);
     }
-  }, []);
+  }, [state.isLoggedIn]);
 
-  if ((state.status !== 'initial' || state.status !== 'loading') && !state.isLoggedIn) {
-    console.log('here');
-    // nav('/login');
-  } else {
-    if (state.status === 'error' || !state.isLoggedIn) {
-      console.log('hhahahah');
-      nav('/login');
-    }
+  if (state.status === 'error' || !state.isLoggedIn) {
+    return <Navigate to={'/login'} />;
   }
+  // }
 
   if (state.status === 'error')
     toast.error(state.errorMessage || '', {
       position: toast.POSITION.TOP_RIGHT,
     });
-  return <ClientTable dataType={'staff'} data={data} />;
+  return <ClientTable dataType={'staff'} />;
 };
 
 export default Home;

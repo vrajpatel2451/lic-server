@@ -3,8 +3,11 @@ import '../styles/style.css';
 import ButtonComponent from './buttonComponent';
 import { MdFilterList } from 'react-icons/md';
 import Dropdown from './dropdown';
+import { useSelector } from 'react-redux';
 
-const ClientTable = ({ dataType, data = [] }) => {
+const ClientTable = ({ dataType }) => {
+  const stateStaff = useSelector(state => state?.client);
+  const stateClient = useSelector(state => state?.staff);
   // console.log(dataType, 'staff datatype');
   console.log(data, 'data');
   const staffHeadingData = [
@@ -57,17 +60,43 @@ const ClientTable = ({ dataType, data = [] }) => {
               ))}
           </tr>
         </thead>
-        <tbody> 
-          
-          {data?.map((e, i) => (
-            <tr key={i}>
-              <td>{`#${e?._id}`}</td>
-              <td>{`${e?.firstName} ${e?.lastName}`}</td>
-              <td>{dataType === 'staff' ? e.role : e.birthDate}</td>
-              <td>{dataType === 'staff'  ? e?.department?.length !== 0 ? e?.department?.length : '-' : e?.branch?.departments?.length !== 0 ? e?.branch?.departments?.length :'-' }</td>
-              <td>{e?.branch?.name}</td>
-            </tr>
-          ))}
+        <tbody>
+          {dataType === 'client' &&
+            stateClient?.clients?.map((e, i) => (
+              <tr key={i}>
+                <td>{`#${e?._id}`}</td>
+                <td>{`${e?.firstName} ${e?.lastName}`}</td>
+                <td>{dataType === 'staff' ? e.role : e.birthDate}</td>
+                <td>
+                  {dataType === 'staff'
+                    ? e?.department?.length !== 0
+                      ? e?.department?.length
+                      : '-'
+                    : e?.branch?.departments?.length !== 0
+                    ? e?.branch?.departments?.length
+                    : '-'}
+                </td>
+                <td>{e?.branch?.name}</td>
+              </tr>
+            ))}
+          {dataType === 'staff' &&
+            stateStaff?.staff?.map((e, i) => (
+              <tr key={i}>
+                <td>{`#${e?._id}`}</td>
+                <td>{`${e?.firstName} ${e?.lastName}`}</td>
+                <td>{dataType === 'staff' ? e.role : e.birthDate}</td>
+                <td>
+                  {dataType === 'staff'
+                    ? e?.department?.length !== 0
+                      ? e?.department?.length
+                      : '-'
+                    : e?.branch?.departments?.length !== 0
+                    ? e?.branch?.departments?.length
+                    : '-'}
+                </td>
+                <td>{e?.branch?.name}</td>
+              </tr>
+            ))}
           {/* <tr>{data.map((item, i) => console.log(item[0], 'indi data'))}</tr> */}
           {/* {listItemData.map((itemData, i) => (
           <tr className="hover:bg-pri-light rounded-full text-gray hover:text-black">

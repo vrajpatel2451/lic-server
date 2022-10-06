@@ -7,8 +7,10 @@ export const verifyUser = async (dispatch) => {
     try {
         dispatch(loadingAuth());
         const data = await getData(VERIFY);
-        dispatch(successAuth(data));
+        dispatch(successAuth(data?.data));
+        console.log('here');
     } catch (error) {
+        console.log(error, 'log');
         dispatch(failedAuth({ message: error.response?.data?.error?.message || error?.message }));
     }
 }
