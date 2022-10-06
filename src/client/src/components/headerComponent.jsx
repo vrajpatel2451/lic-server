@@ -1,19 +1,31 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import Searchbar from './searchbar';
 import '../styles/style.css';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+
+
 const HeaderComponent = () => {
-  const data = useSelector(state => state.authUser);
-  //  console.log("data",data)
+ 
+  const data = useSelector(state => state.auth);
+  console.log("data====>",data)
+
+  const [userData ,setUserData] = useState(data)
+
+  useEffect(()=>{
+        setUserData(data)
+  },[data])
+
+
+ 
   const link = useLocation();
 
   if (link.pathname !== '/login') {
     return (
       <header className="w-full px-8 py-6 bg-white">
         <div className="flex justify-between items-center w-full">
-          <h5 className="font-bold">Customer</h5>
+          
           <Searchbar />
           <div className="flex justify-center items-center gap-4">
             <div className="h-12 w-12 rounded-full overflow-hidden">

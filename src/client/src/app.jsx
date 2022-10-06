@@ -29,7 +29,10 @@ const App = () => {
                     path="/"
                     element={<Home data={useSelector(state => state?.staff?.user)} />}
                   />
-                  <Route path="/client" element={<Client />} />
+                  <Route
+                    path="/client"
+                    element={<Client data={useSelector(state => state?.client?.user)} />}
+                  />
                   <Route path="/login" element={<Login />} />
                 </Routes>
               </div>
