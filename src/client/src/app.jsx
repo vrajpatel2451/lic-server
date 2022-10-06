@@ -31,7 +31,7 @@ const App = () => {
                   />
                   <Route
                     path="/client"
-                    element={<Client data={useSelector(state => state?.staff?.user)} />}
+                    element={<Client data={useSelector(state => state?.client?.user)} />}
                   />
                   <Route path="/login" element={<Login />} />
                 </Routes>

@@ -18,7 +18,7 @@ const ClientTable = ({ dataType, data = [] }) => {
   const clientHeadingData = [
     { headItem: 'ID' },
     { headItem: 'Name' },
-    { headItem: 'Birthdatae' },
+    { headItem: 'Birthdate' },
     { headItem: 'Departments' },
     { headItem: 'Branch' },
   ];
@@ -49,21 +49,22 @@ const ClientTable = ({ dataType, data = [] }) => {
           <tr>
             {dataType === 'staff' &&
               staffHeadingData?.map((headingData, i) => (
-                <th className="py-4">{headingData.headItem}</th>
+                <th className="py-4 ">{headingData.headItem}</th>
               ))}
             {dataType === 'client' &&
               clientHeadingData?.map((headingData, i) => (
-                <th className="py-4">{headingData.headItem}</th>
+                <th className="py-4 ">{headingData.headItem}</th>
               ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody> 
+          
           {data?.map((e, i) => (
             <tr key={i}>
               <td>{`#${e?._id}`}</td>
               <td>{`${e?.firstName} ${e?.lastName}`}</td>
-              <td>{e.role}</td>
-              <td>{e?.department?.length === 0 ? '-' : e?.department?.length}</td>
+              <td>{dataType === 'staff' ? e.role : e.birthDate}</td>
+              <td>{dataType === 'staff'  ? e?.department?.length !== 0 ? e?.department?.length : '-' : e?.branch?.departments?.length !== 0 ? e?.branch?.departments?.length :'-' }</td>
               <td>{e?.branch?.name}</td>
             </tr>
           ))}

@@ -25,7 +25,7 @@ const HeaderComponent = () => {
     return (
       <header className="w-full px-8 py-6 bg-white">
         <div className="flex justify-between items-center w-full">
-          <h5 className="font-bold">Customer</h5>
+          
           <Searchbar />
           <div className="flex justify-center items-center gap-4">
             <div className="h-12 w-12 rounded-full overflow-hidden">
