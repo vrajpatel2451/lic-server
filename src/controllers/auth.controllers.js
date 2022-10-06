@@ -182,7 +182,7 @@ class AuthController {
           role,
           department,
           $or:[
-            { firstName: { $regex: new RegExp(`.*${name}.*`), $options: "i" } },
+            { firstName: { $regex: new RegExp(`.*${name ?? ''}.*`), $options: "i" } },
             // { role: { $regex: new RegExp(`.*${role}.*`), $options: "i" } },
             // { department: department },
             // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
@@ -194,7 +194,7 @@ class AuthController {
           role,
           branch,
           $or:[
-            { firstName: { $regex: new RegExp(`.*${name}.*`), $options: "i" } },
+            { firstName: { $regex: new RegExp(`.*${name ?? ''}.*`), $options: "i" } },
             // { role: { $regex: new RegExp(`.*${role}.*`), $options: "i" } },
             // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             // { branch: branch },
@@ -208,7 +208,7 @@ class AuthController {
           // role,
           $or:[
             { firstName: { $regex: new RegExp(`.*${name??''}.*`), $options: "i" } },
-            { role: { $regex: new RegExp(`.*${role??''}.*`), $options: "i" } },
+            // { role: { $regex: new RegExp(`.*${role??''}.*`), $options: "i" } },
             // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
@@ -229,11 +229,16 @@ class AuthController {
     try {
       const {id} = req.params;
       const user = await User.findById(id).populate('contact').populate('department').populate('workRole').populate('branch');
-      const tasks = await Task.find({
-        staff:user._id
-      },{
-        limit:5
-      });
+      let tasks = [];
+      if (user.role === 'head') {
+        tasks = await Task.find({
+          head: user._id
+        }).limit(5);
+      } else if (user.role === 'staff') {
+        tasks = await Task.find({
+          staff: user._id
+        }).limit(5);
+      }
       if(user==null) return response.notFound('staff not found');
       return response.ok({user,tasks});
       

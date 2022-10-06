@@ -97,7 +97,7 @@ class TaskController {
         const response = new ResponseWraper(res);
         try {
             let branch = null
-            branch = await Task.findById(req.params.id).populate('head',['firstName','lastName'],).populate('staff',['firstName','lastName']).populate('department','name').populate('client').populate('branch','name').populate({path:'comments',populate:{path:'user'}}).populate('documents');
+            branch = await Task.findById(req.params.id).populate('head', ['firstName', 'lastName'],).populate('staff', ['firstName', 'lastName']).populate('department', 'name').populate('client').populate('branch', 'name').populate({ path: 'comments', populate: { path: 'user' } }).populate('documents').populate('fields');
             console.log(branch);
             if(branch==null) return response.notFound('branch does not exist');
             return response.ok(branch);
