@@ -7,6 +7,7 @@ import { User } from '../models/user.model';
 import FCM from 'fcm-node';
 import FirebaseNotificationService from '../helpers/notification.helper';
 import { StaffLog } from '../models/log.model';
+import { Task } from '../models/task.model';
 
 class AuthController {
 
@@ -228,8 +229,13 @@ class AuthController {
     try {
       const {id} = req.params;
       const user = await User.findById(id).populate('contact').populate('department').populate('workRole').populate('branch');
+      const tasks = await Task.find({
+        staff:user._id
+      },{
+        limit:5
+      });
       if(user==null) return response.notFound('staff not found');
-      return response.ok(user);
+      return response.ok({user,tasks});
       
     } catch (error) {
       console.log('staff',error);

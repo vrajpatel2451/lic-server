@@ -12,6 +12,7 @@ const UserSchema = new Schema({
     password:String,
     fcmToken:{type:Schema.Types.String,default:''},
     contact:{type:Schema.Types.ObjectId, ref:'Contact'},
+    points:{type:Schema.Types.Number, default:100},
     address:{type:Schema.Types.ObjectId, ref:'Address'},
     branch:{type:Schema.Types.ObjectId, ref:'Branch'},
     role:{type:String, enum:['admin','head','staff'],default:'staff'},   
