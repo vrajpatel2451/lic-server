@@ -6,42 +6,45 @@
 
 @layer components {
   h1 {
-    @apply text-8xl text-pri 
+    @apply text-8xl text-pri;
   }
 
   h2 {
-    @apply text-6xl text-pri 
+    @apply text-6xl text-pri;
   }
 
   h3 {
-    @apply text-4xl text-pri 
-  } 
+    @apply text-4xl text-pri;
+  }
 
   h4 {
-    @apply text-2xl text-black 
+    @apply text-2xl text-black;
   }
 
   h5 {
-    @apply text-xl text-black 
+    @apply text-xl text-black;
   }
 
   h6 {
-    @apply text-base text-black 
+    @apply text-base text-black;
   }
 
   p {
-    @apply text-sm text-black 
+    @apply text-sm text-black;
   }
-  .side-nav{
-    @apply pl-6 py-3 hover:bg-pri-light/50 hover:text-pri-dark font-semibold cursor-pointer rounded-l-2xl w-full 
+  .side-nav {
+    @apply pl-6 py-3 hover:bg-pri-light/50 hover:text-pri-dark font-semibold cursor-pointer rounded-l-2xl w-full;
   }
-  .side-nav-active{
-    @apply bg-pri-light text-pri-dark border-r-4 border-r-pri-dark
+  .side-nav-active {
+    @apply bg-pri-light text-pri-dark border-r-4 border-r-pri-dark;
   }
-}
-
-td {
-  cursor: pointer;
+  tr {
+    @apply hover:bg-pri-light rounded-full text-gray hover:text-black;
+  }
+  td,
+  th {
+    @apply cursor-pointer text-start;
+  }
 }
 
 td:first-child,

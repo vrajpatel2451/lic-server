@@ -8,7 +8,7 @@ import { getClient } from '../logic/features/client/clientAction';
 import { toast } from 'react-toastify';
 
 const Home = ({ data }) => {
-  //console.log(data, 'staff data');
+  // console.log(data, 'staff data');
   const dispatch = useDispatch();
   const nav = useNavigate();
   const state = useSelector(state => state.auth);
@@ -16,7 +16,7 @@ const Home = ({ data }) => {
     if (!state.loading || !state.isLoggedIn) {
       verifyUser(dispatch);
       getStaff(dispatch);
-      getClient(dispatch)
+      getClient(dispatch);
     }
   }, []);
 
@@ -34,7 +34,7 @@ const Home = ({ data }) => {
     toast.error(state.errorMessage || '', {
       position: toast.POSITION.TOP_RIGHT,
     });
-  return <ClientTable />;
+  return <ClientTable dataType={'staff'} data={data} />;
 };
 
 export default Home;

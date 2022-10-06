@@ -42,8 +42,8 @@ class ClientController {
                 pin
             });
             const clData = await (await client.populate('contact')).populate('branch');
-            const dta = await new SearchHelper().addIndex(clData);
-            console.log('search',dta);
+            // const dta = await new SearchHelper().addIndex(clData);
+            // console.log('search',dta);
             const now = new Date()
             const endtimeNow = new Date(meetingDate);
             endtimeNow.setDate(endtimeNow.getDate()-1);
@@ -73,6 +73,20 @@ class ClientController {
             console.log(branch);
             if(branch==null) return response.notFound('client does not exist');
             return response.ok(branch);
+        } catch (error) {
+            console.log(error);
+            return response.internalServerError('id is not valid');
+        }
+    }
+    static async getClientByWebId(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            // let branch = null
+            const branch = await Client.findById(req.params.id).populate('contact').populate('documents');
+            const clients = await Client.find({familyCode:branch.familyCode}).populate('contact').populate('documents');
+            console.log(branch);
+            if(branch==null) return response.notFound('client does not exist');
+            return response.ok({client:branch,related:clients});
         } catch (error) {
             console.log(error);
             return response.internalServerError('id is not valid');

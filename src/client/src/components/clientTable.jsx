@@ -4,25 +4,23 @@ import ButtonComponent from './buttonComponent';
 import { MdFilterList } from 'react-icons/md';
 import Dropdown from './dropdown';
 
-const ClientTable = () => {
-  const listHeadingData = [
+const ClientTable = ({ dataType, data = [] }) => {
+  // console.log(dataType, 'staff datatype');
+  console.log(data, 'data');
+  const staffHeadingData = [
     { headItem: 'ID' },
     { headItem: 'Name' },
-    { headItem: 'Birthdate' },
-    { headItem: 'City' },
-    { headItem: 'State' },
+    { headItem: 'Role' },
+    { headItem: 'Departments' },
+    { headItem: 'Branch' },
   ];
 
-  const listItemData = [
-    { item: '1', name: 'Shubham Patel', date: '03/02/2003', city: 'Gandhinagar', state: 'Gujarat' },
-    { item: '2', name: 'Meet Patel', date: '24/12/2002', city: 'Pune', state: 'Maharashtra' },
-    {
-      item: '3',
-      name: 'Vraj Patel',
-      date: '20/05/2000',
-      city: 'Shimla',
-      state: 'Himachal Pradesh',
-    },
+  const clientHeadingData = [
+    { headItem: 'ID' },
+    { headItem: 'Name' },
+    { headItem: 'Birthdatae' },
+    { headItem: 'Departments' },
+    { headItem: 'Branch' },
   ];
 
   const options = [
@@ -35,7 +33,10 @@ const ClientTable = () => {
   return (
     <div className="bg-white py-2 px-4 rounded-xl">
       <div className="flex justify-between items-center mb-4 ">
-        <h5 className="p-4 font-semibold">Staff Table</h5>
+        <h5 className="p-4 font-semibold">
+          {dataType === 'staff' && 'Staff List'}
+          {dataType === 'client' && 'Client List'}
+        </h5>
         <Dropdown
           placeholder="Filter"
           value={dropdownValue}
@@ -44,20 +45,39 @@ const ClientTable = () => {
         />
       </div>
       <table className="w-full">
-        <tr>
-          {listHeadingData.map((headingData, i) => (
-            <th className="py-4">{headingData.headItem}</th>
-          ))}
-        </tr>
-        {listItemData.map((itemData, i) => (
-          <tr className="hover:bg-pri-light rounded-full text-gray hover:text-black">
-            <td className="text-center py-4">{itemData.item}</td>
-            <td className="text-center py-4">{itemData.name}</td>
-            <td className="text-center py-4">{itemData.date}</td>
-            <td className="text-center py-4">{itemData.city}</td>
-            <td className="text-center py-4">{itemData.state}</td>
+        <thead>
+          <tr>
+            {dataType === 'staff' &&
+              staffHeadingData?.map((headingData, i) => (
+                <th className="py-4">{headingData.headItem}</th>
+              ))}
+            {dataType === 'client' &&
+              clientHeadingData?.map((headingData, i) => (
+                <th className="py-4">{headingData.headItem}</th>
+              ))}
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {data?.map((e, i) => (
+            <tr key={i}>
+              <td>{`#${e?._id}`}</td>
+              <td>{`${e?.firstName} ${e?.lastName}`}</td>
+              <td>{e.role}</td>
+              <td>{e?.department?.length === 0 ? '-' : e?.department?.length}</td>
+              <td>{e?.branch?.name}</td>
+            </tr>
+          ))}
+          {/* <tr>{data.map((item, i) => console.log(item[0], 'indi data'))}</tr> */}
+          {/* {listItemData.map((itemData, i) => (
+          <tr className="hover:bg-pri-light rounded-full text-gray hover:text-black">
+          <td className="text-center py-4">{itemData.item}</td>
+          <td className="text-center py-4">{itemData.name}</td>
+          <td className="text-center py-4">{itemData.date}</td>
+          <td className="text-center py-4">{itemData.city}</td>
+          <td className="text-center py-4">{itemData.state}</td>
+          </tr>
+        ))} */}
+        </tbody>
       </table>
     </div>
   );

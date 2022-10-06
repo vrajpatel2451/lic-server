@@ -7,7 +7,7 @@ export const getStaff = async (dispatch) => {
     try {
         dispatch(loadingReducer());
         const data = await getData(GETSTAFF);
-        console.log(data, "staff data");
+        // console.log(data, "staff data");
         dispatch(successReducer(data));
     } catch (error) {
         dispatch(failedReducer({ message: error.response?.data?.error?.message || error?.message }));

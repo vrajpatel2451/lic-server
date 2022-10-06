@@ -81,6 +81,7 @@ class ClientRoutes{
             *                   type: object  
         */
         this.router.get('/:id', verifyToken, ClientController.getClientById);
+        this.router.get('/web/:id', verifyToken, ClientController.getClientByWebId);
     }
 }
 
