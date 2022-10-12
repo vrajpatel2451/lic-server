@@ -173,7 +173,7 @@ class AuthController {
             { firstName: { $regex: new RegExp(`.*${name??''}.*`), $options: "i" } },
             // { role: { $regex: new RegExp(`.*${role}.*`), $options: "i" } },
           ]
-        }).populate('contact').populate('department').populate('workRole').populate('branch');
+        }).populate('contact').populate('departments').populate('workRole').populate('branch');
         // users = users.filter(e=>(e.branch?._id===branch && e.department?.includes() && e.role === role));
         
       }else if(department!=null && department!='' && department != undefined){
@@ -187,7 +187,7 @@ class AuthController {
             // { department: department },
             // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
-        }).populate('contact').populate('department').populate('workRole').populate('branch');
+        }).populate('contact').populate('departments').populate('workRole').populate('branch');
       }else if(branch!=null && branch!='' && branch != undefined){
         console.log("b",branch);
         users = await User.find({
@@ -199,7 +199,7 @@ class AuthController {
             // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             // { branch: branch },
           ]
-        }).populate('contact').populate('department').populate('workRole').populate('branch');
+        }).populate('contact').populate('departments').populate('workRole').populate('branch');
       }else{
         console.log("no");
         users = await User.find({
@@ -212,7 +212,89 @@ class AuthController {
             // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
             // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
           ]
-        }).populate('contact').populate('department').populate('workRole').populate('branch');
+        }).populate('contact').populate('departments').populate('workRole').populate('branch');
+      }
+      console.log(users);
+      if(users==null||users.length<=0) return response.notFound('staff not found');
+      return response.ok(users);
+      
+    } catch (error) {
+      console.log('staff',error);
+      return response.internalServerError();
+    }
+
+  }
+
+  static async getStaffByWeb(req,res){
+    const response = new ResponseWraper(res);
+    try {
+      const {branch,department,name,role} = req.query;
+      let users=[];
+      console.log(name);
+      console.log(req.file);
+      if(branch!=null && branch!='' && department!=null && department!='' && branch != undefined && department != undefined ){
+        
+        console.log("bd",branch,department);
+        users = await User.find({
+          // "$match":{"firstName": name,"branch"}
+          // firstName: new RegExp(name,'i')
+          // department,
+          // branch,
+          // role,
+          // $where:[
+          //   // {role:role},
+          //   { department: department },
+          // ],
+          // $and:[
+          // ],
+          branch,
+          role,
+          department,
+          $or:[
+            // { branch: branch },
+            { firstName: { $regex: new RegExp(`.*${name??''}.*`), $options: "i" } },
+            // { role: { $regex: new RegExp(`.*${role}.*`), $options: "i" } },
+          ]
+        }).populate('contact').populate('departments').populate('workRole').populate('branch');
+        // users = users.filter(e=>(e.branch?._id===branch && e.department?.includes() && e.role === role));
+        
+      }else if(department!=null && department!='' && department != undefined){
+        console.log("b",department);
+        users = await User.find({
+          role,
+          department,
+          $or:[
+            { firstName: { $regex: new RegExp(`.*${name ?? ''}.*`), $options: "i" } },
+            // { role: { $regex: new RegExp(`.*${role}.*`), $options: "i" } },
+            // { department: department },
+            // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
+          ]
+        }).populate('contact').populate('departments').populate('workRole').populate('branch');
+      }else if(branch!=null && branch!='' && branch != undefined){
+        console.log("b",branch);
+        users = await User.find({
+          role,
+          branch,
+          $or:[
+            { firstName: { $regex: new RegExp(`.*${name ?? ''}.*`), $options: "i" } },
+            // { role: { $regex: new RegExp(`.*${role}.*`), $options: "i" } },
+            // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
+            // { branch: branch },
+          ]
+        }).populate('contact').populate('departments').populate('workRole').populate('branch');
+      }else{
+        console.log("no");
+        users = await User.find({
+          // "$match":{"firstName": name,"branch"}
+          // firstName: new RegExp(name,'i')
+          role,
+          $or:[
+            { firstName: { $regex: new RegExp(`.*${name??''}.*`), $options: "i" } },
+            // { role: { $regex: new RegExp(`.*${role??''}.*`), $options: "i" } },
+            // { department: { $regex: new RegExp(`.*${department}.*`), $options: "i" } },
+            // { branch: { $regex: new RegExp(`.*${branch}.*`), $options: "i" } },
+          ]
+        }).populate('contact').populate('departments').populate('workRole').populate('branch');
       }
       console.log(users);
       if(users==null||users.length<=0) return response.notFound('staff not found');
@@ -228,7 +310,7 @@ class AuthController {
     const response = new ResponseWraper(res);
     try {
       const {id} = req.params;
-      const user = await User.findById(id).populate('contact').populate('department').populate('workRole').populate('branch');
+      const user = await User.findById(id).populate('contact').populate('departments').populate('workRole').populate('branch');
       let tasks = [];
       if (user.role === 'head') {
         tasks = await Task.find({
@@ -255,7 +337,7 @@ class AuthController {
       const { email, password,fcmToken } = req.body;
       const user = await User.findOne({
         email,
-    }).populate('department').populate('branch').populate('workRole');
+    }).populate('departments').populate('branch').populate('workRole');
     if (!user) return response.unauthorized('user not available');
     
     const authenticateUser = await user.authenticate(password);
@@ -280,7 +362,7 @@ class AuthController {
       const { userId } = req.body;
       const { fcmToken } = req.query;
       console.log('fcm',fcmToken);
-      const user = await User.findById(userId).populate('department').populate('branch').populate('workRole');
+      const user = await User.findById(userId).populate('departments').populate('branch').populate('workRole');
       console.log('fcm user',userId);
       user.fcmToken = fcmToken;
       await user.save();

@@ -5,12 +5,13 @@ import { failedAuth, loadingAuth, successAuth } from "./authReducer";
 
 export const verifyUser = async (dispatch) => {
     try {
+        console.log('here verify');
         dispatch(loadingAuth());
         const data = await getData(VERIFY);
+        console.log('here here verify',data?.data);
         dispatch(successAuth(data?.data));
-        console.log('here');
     } catch (error) {
-        console.log(error, 'log');
+        console.log(error, 'log here verify');
         dispatch(failedAuth({ message: error.response?.data?.error?.message || error?.message }));
     }
 }
@@ -23,7 +24,7 @@ export const login = async (dispatch, req) => {
         const data = await postData(LOGIN, req);
         console.log(data, "hello wrold");
         localStorage.setItem('token', data.data?.accessToken)
-        dispatch(successAuth(data?.data));
+        dispatch(successAuth(data));
     } catch (error) {
         dispatch(failedAuth({ message: error.response?.data?.error?.message || error?.message }));
     }

@@ -16,7 +16,7 @@ const UserSchema = new Schema({
     address:{type:Schema.Types.ObjectId, ref:'Address'},
     branch:{type:Schema.Types.ObjectId, ref:'Branch'},
     role:{type:String, enum:['admin','head','staff'],default:'staff'},   
-    department:[{type:Schema.Types.ObjectId, ref:'Department'}],
+    departments:[{type:Schema.Types.ObjectId, ref:'Department'}],
     workRole:[{type:Schema.Types.ObjectId, ref:'WorkRole'}],
     image:String,   
 },

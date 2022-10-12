@@ -4,6 +4,7 @@ const initialState = {
     status: 'initial',
     errorMessage: '',
     clients: [],
+    clientDetails: [],
     token: ''
 
 }
@@ -15,23 +16,44 @@ const clientReducer = createSlice({
     reducers: {
         loadingClient(state) {
             state.status = 'loading';
-            state.user = [];
-            state.token = '';
+            state.clients = [];
+            // state.token = '';
 
         },
         successClient(state, action) {
             // console.log("action", action.payload);
             state.status = 'success';
-            state.user = action.payload.data;
-            state.token = action.payload.data.accessToken;
+            state.clients = action.payload.data;
+            // state.token = action.payload.data.accessToken;
 
         },
         failedClient(state, action) {
 
             state.status = 'error';
             state.errorMessage = action.payload.message;
-            state.user = [];
-            state.token = '';
+            state.clients = [];
+            // state.token = '';
+
+        },
+        loadingClienDetails(state) {
+            state.status = 'loading';
+            state.clientDetails = {};
+            // state.token = '';
+
+        },
+        successClientDetails(state, action) {
+            // console.log("action", action.payload);
+            state.status = 'success';
+            state.clientDetails = action.payload.data;
+            // state.token = action.payload.data.accessToken;
+
+        },
+        failedClientDetails(state, action) {
+
+            state.status = 'error';
+            state.errorMessage = action.payload.message;
+            state.clientDetails = {};
+            // state.token = '';
 
         },
     }
@@ -39,4 +61,4 @@ const clientReducer = createSlice({
 
 export default clientReducer.reducer;
 
-export const { loadingClient, successClient, failedClient } = clientReducer.actions;
+export const { loadingClient, successClient, failedClient,loadingClienDetails,successClientDetails,failedClientDetails } = clientReducer.actions;

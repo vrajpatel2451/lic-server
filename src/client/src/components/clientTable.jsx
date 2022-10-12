@@ -4,12 +4,13 @@ import ButtonComponent from './buttonComponent';
 import { MdFilterList } from 'react-icons/md';
 import Dropdown from './dropdown';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const ClientTable = ({ dataType }) => {
-  const stateStaff = useSelector(state => state?.client);
-  const stateClient = useSelector(state => state?.staff);
+  const stateStaff = useSelector(state => state?.staff);
+  const stateClient = useSelector(state => state?.client);
   // console.log(dataType, 'staff datatype');
-  console.log(data, 'data');
+  console.log('dt stafff',stateStaff);
   const staffHeadingData = [
     { headItem: 'ID' },
     { headItem: 'Name' },
@@ -64,7 +65,7 @@ const ClientTable = ({ dataType }) => {
           {dataType === 'client' &&
             stateClient?.clients?.map((e, i) => (
               <tr key={i}>
-                <td>{`#${e?._id}`}</td>
+                <Link to={`/client/${e?._id}`}><td>{`#${e?._id}`}</td></Link>
                 <td>{`${e?.firstName} ${e?.lastName}`}</td>
                 <td>{dataType === 'staff' ? e.role : e.birthDate}</td>
                 <td>

@@ -80,6 +80,8 @@ class ClientRoutes{
             *                 error:
             *                   type: object  
         */
+       this.router.get('/dashboard', verifyToken, ClientController.getCLientsCount);
+       this.router.patch('/status', verifyToken, ClientController.updateClientStatus);
         this.router.get('/:id', verifyToken, ClientController.getClientById);
         this.router.get('/web/:id', verifyToken, ClientController.getClientByWebId);
     }

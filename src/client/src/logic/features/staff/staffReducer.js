@@ -4,7 +4,9 @@ const initialState = {
     status: 'initial',
     errorMessage: '',
     staff: [],
-    token: '',
+    head: [],
+    admin: [],
+    // token: '',
 }
 
 const staffReducer = createSlice({
@@ -13,21 +15,33 @@ const staffReducer = createSlice({
     reducers: {
         loadingReducer(state) {
             state.status = 'loading';
-            state.user = [];
+            state.staff = [];
             state.token = '';
         },
-        successReducer(state, action) {
+        successStaffReducer(state, action) {
             // console.log(action.payload, "action.payload");
             state.status = 'success';
-            state.user = action.payload.data;
-            state.token = action.payload.data.accessToken;
+            state.staff = action.payload?.data;
+            // state.token = action.payload.data.accessToken;
+        },
+        successAdminReducer(state, action) {
+            // console.log(action.payload, "action.payload");
+            state.status = 'success';
+            state.admin = action.payload?.data;
+            // state.token = action.payload.data.accessToken;
+        },
+        successHeadReducer(state, action) {
+            // console.log(action.payload, "action.payload");
+            state.status = 'success';
+            state.head = action.payload?.data;
+            // state.token = action.payload.data.accessToken;
         },
         failedReducer(state, action) {
             console.log(action);
             state.status = 'error';
             state.errorMessage = action.payload.message;
-            state.user = [];
-            state.token = '';
+            state.staff = [];
+            // state.token = '';
         },
     },
 });
@@ -35,4 +49,4 @@ const staffReducer = createSlice({
 
 export default staffReducer.reducer;
 
-export const { loadingReducer, successReducer, failedReducer } = staffReducer.actions;
+export const { loadingReducer, successStaffReducer, successAdminReducer,successHeadReducer,failedReducer, } = staffReducer.actions;

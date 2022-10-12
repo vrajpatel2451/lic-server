@@ -18,6 +18,8 @@ const ClientSchema = new Schema({
     pin:Number,
     birthDate:{type:Schema.Types.Date,default:new Date().toISOString()},
     meetingDate:{type:Schema.Types.Date,default:new Date().toISOString()},
+    joinDate:{type:Schema.Types.Date,default:new Date().toISOString()},
+    followUpDate:{type:Schema.Types.Date,default:new Date().toISOString()},
     branch:{type:Schema.Types.ObjectId, ref:'Branch'},   
     documents:[{type:Schema.Types.ObjectId, ref:'DocumentClient'}],   
     policies:[{type:Schema.Types.ObjectId, ref:'Policy'}],   

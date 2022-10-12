@@ -28,10 +28,11 @@ const Login = () => {
     nav('/');
   }
 
-  if (state.status === 'error')
+  if (state.status === 'error'){
     toast.error(state.errorMessage || '', {
       position: toast.POSITION.TOP_RIGHT,
     });
+  }
   return (
     <div className="h-screen flex flex-col items-center justify-center">
       <div className=" bg-white w-96 p-4 rounded-lg">

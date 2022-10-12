@@ -19,14 +19,14 @@ const authReducer = createSlice({
         },
         successAuth(state, action) {
             state.status = 'success';
-            state.user = action.payload.user;
-            state.token = action.payload.accessToken;
+            state.user = action.payload?.user;
+            state.token = action.payload?.accessToken;
             state.isLoggedIn = true;
         },
         failedAuth(state, action) {
             console.log(action);
             state.status = 'error';
-            state.errorMessage = action.payload.message;
+            state.errorMessage = action.payload?.message;
             state.user = {};
             state.token = '';
             state.isLoggedIn = false;
