@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useLinkClickHandler, useLocation, useNavigate } from 'react-router-dom';
-import ClientTable from '../components/clientTable';
-import { verifyUser } from '../logic/features/auth/authAction';
-import { getStaff } from '../logic/features/staff/staffAction';
-import { getClient } from '../logic/features/client/clientAction';
 import { toast } from 'react-toastify';
-import CustomTable from '../components/customTable';
 import TaskChart from '../components/taskChart';
 import { dashBoardStuff } from '../logic/features/dashboard/dashboardAction';
 
@@ -22,14 +16,14 @@ const Home = () => {
       // getStaff(dispatch);
     }else{
       console.log('its  not htre');
-      verifyUser(dispatch);
+      // verifyUser(dispatch);
     }
   }, [state.isLoggedIn]);
 
-  if (!state.isLoggedIn && (state.status!=='initial' && state.status!=='loading')) {
-    console.log('hhhhh login',{ss:state.status,hh:state.isLoggedIn});
-    return <Navigate to={'/login'} />;
-  }
+  // if (!state.isLoggedIn && (state.status!=='initial' && state.status!=='loading')) {
+  //   console.log('hhhhh login',{ss:state.status,hh:state.isLoggedIn});
+  //   return <Navigate to={'/login'} />;
+  // }
   if (state.status === 'error'){
     toast.error(state.errorMessage || '', {
       position: toast.POSITION.TOP_RIGHT,

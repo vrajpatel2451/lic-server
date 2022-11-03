@@ -36,5 +36,5 @@ module.exports = {
             },
         ]
     },
-    mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
+    mode: 'development',
 };

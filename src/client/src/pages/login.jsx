@@ -1,11 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../reducers/auth/authSlice';
+import { useDispatch } from 'react-redux';
 import { login } from '../logic/features/auth/authAction';
-import { toast } from 'react-toastify';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email address format').required('Email is required'),
@@ -16,23 +13,9 @@ const LoginSchema = Yup.object().shape({
 
 const Login = () => {
   const dispatch = useDispatch();
-  const state = useSelector(state => state.auth);
-  const nav = useNavigate();
   const handleSubmit = values => {
     login(dispatch, values);
   };
-
-  if (state.isLoggedIn) {
-    console.log('hehhee hhhh');
-    console.log(state.isLoggedIn);
-    nav('/');
-  }
-
-  if (state.status === 'error'){
-    toast.error(state.errorMessage || '', {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-  }
   return (
     <div className="h-screen flex flex-col items-center justify-center">
       <div className=" bg-white w-96 p-4 rounded-lg">

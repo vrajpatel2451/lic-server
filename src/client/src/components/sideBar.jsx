@@ -2,17 +2,23 @@ import React from 'react';
 import { memo } from 'react';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
-import { MdAccountTree, MdAdminPanelSettings, MdDashboard, MdFamilyRestroom, MdLogout, MdOutlineDashboard, MdPeople, MdPerson, MdSettings } from 'react-icons/md';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import ButtonComponent from './buttonComponent';
+import { MdAccountTree, MdFamilyRestroom, MdLogout, MdOutlineDashboard, MdPeople, MdPerson, MdSettings } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { failedAuth } from '../logic/features/auth/authReducer';
 
 const SideBar = () => {
   // const link = useLocation();
 
   const location = useLocation();
   const nav = useNavigate();
-
+  const dispatch = useDispatch();
   console.log('rebuilder');
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    dispatch(failedAuth({ message: 'You loggedOut' }));
+  }
 
   const pathname = useMemo(()=>location.pathname,[location.pathname]);
   const navigate = useCallback((path)=>{
@@ -82,7 +88,7 @@ const SideBar = () => {
         </div>
         {/* </Link> */}
         <div className='flex-1 flex items-end'>
-          <button className='flex w-full items-center gap-4 justify-center p-4 bg-pri bg-blend-darken rounded-md'>
+          <button onClick={handleLogout} className='flex w-full items-center gap-4 justify-center p-4 bg-pri bg-blend-darken rounded-md'>
             <p className='text-white text-base font-light uppercase tracking-wider'>Logout</p>
             <MdLogout color='white'/>
           </button>

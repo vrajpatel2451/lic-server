@@ -16,6 +16,7 @@ export const getClient = async (dispatch) => {
     }
 }
 export const getClientDetails = async (dispatch,id) => {
+    console.log('hahahah');
     try {
         dispatch(loadingClienDetails());
         const data = await getData(GETCLIENT+`/web/${id}`);

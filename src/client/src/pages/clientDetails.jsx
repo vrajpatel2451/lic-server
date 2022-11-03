@@ -10,12 +10,15 @@ const ClientDetails = () => {
     const dispatch = useDispatch();
     const state = useSelector(state=>state.client);
     useEffect(() => {
+        console.log('jjajajjaja');
         getClientDetails(dispatch,params.id);
     }, []);
     
-      console.log(state?.clientDetails);
+    //   console.log('hu chu');
   return (
-    <div className='w-full flex flex-col items-start gap-8'>
+    <div className='flex w-full py-10 items-start h-full'>
+      <div className='w-[20%] h-full'></div>  
+    <div className='flex-1 p-10 h-full flex flex-col items-start gap-8'>
         {/* <h1 className='mb-4'>Client Details</h1> */}
             <h1>{state?.clientDetails?.client?.firstName} {state?.clientDetails?.client?.lastName}</h1>
             <h4 className='w-full flex items-center gap-2'><MdPhone/> <span>+91-{state?.clientDetails?.client?.contact?.phone}</span></h4>
@@ -55,6 +58,7 @@ const ClientDetails = () => {
                 )
             }
         </div>
+    </div>
     </div>
   )
 }
