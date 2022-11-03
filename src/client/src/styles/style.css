@@ -9,6 +9,10 @@
     @apply text-8xl text-pri;
   }
 
+  tbody::-webkit-scrollbar {
+    display: none;
+  }
+
   h2 {
     @apply text-6xl text-pri;
   }
@@ -38,8 +42,8 @@
   .side-nav-active {
     @apply bg-pri-light text-pri-dark border-r-4 border-r-pri-dark;
   }
-  body{
-    @apply bg-lightGray
+  body {
+    @apply bg-lightGray;
   }
   /* tr {
     @apply hover:bg-pri-light rounded-full text-gray hover:text-black;
