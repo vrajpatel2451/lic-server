@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import indexSearch from "../../../utils/searchCLients";
 import { getData, postData } from "../../../utils/serverHelper";
 import { GETCLIENT } from "../../../utils/urls";
 import { loadingClient, successClient, failedClient, loadingClienDetails, successClientDetails, failedClientDetails } from './clientReducer';
@@ -11,6 +12,18 @@ export const getClient = async (dispatch) => {
         // console.log("===>data",data);
         //localStorage.setItem('token', data.data?.accessToken)
         dispatch(successClient(data));
+    } catch (error) {
+        dispatch(failedClient({ message: error.response?.data?.error?.message || error?.message }));
+    }
+}
+export const getClientBySearch = async (dispatch,keyword) => {
+    console.log("===>log");
+    try {
+        dispatch(loadingClient());
+        const data = await (await indexSearch).search(keyword);
+        console.log("===>log",data.hits);
+        //localStorage.setItem('token', data.data?.accessToken)
+        dispatch(successClient({data:data.hits}));
     } catch (error) {
         dispatch(failedClient({ message: error.response?.data?.error?.message || error?.message }));
     }
