@@ -232,9 +232,10 @@ class TaskController {
                 }else{
                     status = 4;
                 }
+                console.log('here',status);
                 return {...e,priority:status}
             });
-            
+
             return response.ok(priorityTasks);
         } catch (error) {
             return response.internalServerError();
