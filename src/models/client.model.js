@@ -14,7 +14,7 @@ const ClientSchema = new Schema({
     area:String,
     city:String,
     state:String,
-    status:{type:Schema.Types.String,enum:['in-followup','onboarded'],default:'in-followup'},
+    status:{type:Schema.Types.String,enum:['prospect','meeting','follow-up','done'],default:'prospect'},
     pin:Number,
     birthDate:{type:Schema.Types.Date,default:new Date().toISOString()},
     meetingDate:{type:Schema.Types.Date,default:new Date().toISOString()},

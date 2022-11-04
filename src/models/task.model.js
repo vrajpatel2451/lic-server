@@ -14,8 +14,31 @@ const TaskSchema = new Schema({
     fields:[{type:Schema.Types.ObjectId, ref:'FieldClient'}],
     comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
     taskType:{type:String, enum:['in-field','off-field','on-field'],default:'in-field'}, 
-    taskStatus:{type:String, enum:['pending','inprogress','verify','completed'],default:'pending'}, 
-});
+    taskStatus:{type:String, enum:['pending','inprogress','verify','completed'],default:'pending'},
+},
+{
+    toJSON: {
+      transform: (doc, ret) => {
+        let status = 1;
+                const milli = parseInt((ret.endTime - ret.startTime) / 3);
+                if((ret.startTime.getTime()+milli) > Date.now()){
+                    status = 1;
+                }else if((ret.startTime.getTime()+(milli*2)) > Date.now()){
+                    status = 2;
+                }else if((ret.startTime.getTime()+(milli*3)) > Date.now()){
+                    status = 3;
+                }else{
+                    status = 4;
+                }
+        const rest = {...ret,priority:status};
+        return rest;
+      },
+      versionKey: false,
+    },
+}, 
+);
+
+
 
 export const Task = model('Task', TaskSchema);
     

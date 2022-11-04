@@ -190,8 +190,15 @@ class TaskController {
             }
             
             if(tasks.length<=0) return response.notFound('Tasks not found');
+
+            // const priorityTasks = tasks.map(e=>{
+                
+                // priorityTasks.push({...e,priority:status});
+            //     return {...e,priority:status}
+            // });
             return response.ok(tasks);
         } catch (error) {
+            console.log(error);
             return response.internalServerError();
         }
     }
@@ -200,7 +207,7 @@ class TaskController {
         try {
             const {createRole,userId} = req.body;
             let tasks = [];
-            console.log(createRole);
+            // console.log(createRole);
             if(createRole==='admin'){
                 tasks = await Task.find({
                     taskStatus:'completed'
@@ -220,23 +227,9 @@ class TaskController {
 
             if(tasks.length<=0) return response.notFound('Tasks not found');
             
-            const priorityTasks = tasks.map(e=>{
-                let status = 1;
-                const milli = parseInt((e.endTime - e.startTime) / 3);
-                if((e.startTime.getMilliseconds+milli) > Date.now()){
-                    status = 1;
-                }else if((e.startTime.getMilliseconds+(milli*2)) > Date.now()){
-                    status = 2;
-                }else if((e.startTime.getMilliseconds+(milli*3)) > Date.now()){
-                    status = 3;
-                }else{
-                    status = 4;
-                }
-                console.log('here',status);
-                return {...e,priority:status}
-            });
+            
 
-            return response.ok(priorityTasks);
+            return response.ok(tasks);
         } catch (error) {
             return response.internalServerError();
         }

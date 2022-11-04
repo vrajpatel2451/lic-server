@@ -5,7 +5,7 @@ class ResponseWraper {
     }
     #handle({ data, success_code, fail_code }) {
         if (success_code) {
-          console.log(data);
+          // console.log(data);
           return this.#res.status(success_code).send({ success: true, data, error:{} });
         }
         return this.#res.status(fail_code).send({ success: false, error: data, data:{} });
