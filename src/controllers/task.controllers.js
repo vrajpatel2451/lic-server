@@ -35,7 +35,7 @@ class TaskController {
         //     email,
         //     phone
         // });
-        // const fieldsResult = await FieldClient.create(fields)
+        const fieldsResult = await FieldClient.create(fields)
         const documentsCreated = await DocumentClient.insertMany(documents);
        const clientData = await Client.findByIdAndUpdate(client,{
             $push:{
@@ -51,7 +51,7 @@ class TaskController {
                     endTime:deadline,
                     department,
                     branch,
-                    fields,
+                    fields:fieldsResult,
                     head,
                     client:clientData,
                     taskType,
@@ -70,7 +70,7 @@ class TaskController {
                     taskStatus:'inprogress',
                     head,
                     staff,
-                    fields,
+                    fields:fieldsResult,
                     client:clientData,
                     taskType,
                     documents:documentsCreated
@@ -287,6 +287,31 @@ class TaskController {
                 await new FirebaseNotificationService().sendNotification(staffExist.fcmToken,'Task Assigned','Please finish this task','1',taskExist._id);
 
             await global.agenda.schedule(endtimeNow, 'task reminder', {isHeadExist:null,isStaffExist:staffExist,admins:null,task:taskExist,});
+                return response.ok(taskExist);
+            }else{
+                return response.badRequest('Task does not exist');
+            }
+            
+        } catch (error) {
+            return response.internalServerError();
+        }
+    }
+    static async assignHead(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            const {head,task} = req.body;
+            const taskExist = await Task.findById(task);
+            if(taskExist){
+                const staffExist = await User.findById(head);
+                if(staffExist === null) return response.badRequest('Staff does not exist');
+                await taskExist.update({
+                    head:staffExist,
+                });
+                // const endtimeNow = new Date(taskExist.endTime)
+                // endtimeNow.setHours(endtimeNow.getHours()-5);
+                await new FirebaseNotificationService().sendNotification(staffExist.fcmToken,'Task Assigned','Please check this task','1',taskExist._id);
+
+            await global.agenda.schedule(endtimeNow, 'task reminder', {isHeadExist:staffExist,isStaffExist:null,admins:null,task:taskExist,});
                 return response.ok(taskExist);
             }else{
                 return response.badRequest('Task does not exist');

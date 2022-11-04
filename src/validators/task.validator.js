@@ -16,7 +16,11 @@ class TaskValidator {
         name:Joi.string().required(),
         type:Joi.string().required(),
     })),
-      fields:Joi.array().items(Joi.string().required()),
+      fields:Joi.array().items(Joi.object({
+        label:Joi.string().required(),
+        type:Joi.string().required(),
+    })),
+      // fields:Joi.array().items(Joi.string().required()),
     });
   }
   static updateStatus() {
