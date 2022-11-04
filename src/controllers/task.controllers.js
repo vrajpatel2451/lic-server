@@ -217,8 +217,25 @@ class TaskController {
                     staff:userId
                 }).populate('staff').populate('head').populate('branch').populate('department').sort('endTime');
             }
+
             if(tasks.length<=0) return response.notFound('Tasks not found');
-            return response.ok(tasks);
+            
+            const priorityTasks = tasks.map(e=>{
+                let status = 1;
+                const milli = parseInt((e.endTime - e.startTime) / 3);
+                if((e.startTime.getMilliseconds+milli) > Date.now()){
+                    status = 1;
+                }else if((e.startTime.getMilliseconds+(milli*2)) > Date.now()){
+                    status = 2;
+                }else if((e.startTime.getMilliseconds+(milli*3)) > Date.now()){
+                    status = 3;
+                }else{
+                    status = 4;
+                }
+                return {...e,priority:status}
+            });
+            
+            return response.ok(priorityTasks);
         } catch (error) {
             return response.internalServerError();
         }
