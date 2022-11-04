@@ -1,11 +1,7 @@
-
 import FirebaseNotificationService from "../helpers/notification.helper";
 import ResponseWraper from "../helpers/response.helpers";
 import SearchHelper from "../helpers/searchindexing.helpers";
-import { Address } from "../models/address.model";
-import { Branch } from "../models/branch.model";
 import { Client } from "../models/client.model";
-import { Contact } from "../models/contact.model";
 import { FieldClient } from "../models/fields.model";
 import { User } from "../models/user.model";
 
@@ -13,36 +9,20 @@ class ClientController {
     static async createClient(req,res){
         const response = new ResponseWraper(res);
         try {
-            const { email,phone,branch,firstName, lastName, policies,familyCode,line1,line2,area,city,state,pin,meetingDate,birthDate,fields } = req.body;
-            let isBranchExist = null;
-            console.log(fields);
-            isBranchExist = await Branch.findById(branch);
-            if(isBranchExist == null) return response.badRequest('Branch Does not Exist');
+            const { firstName, lastName, policies,familyCode,meetingDate,birthDate,fields } = req.body;
             console.log(policies);
-        const newContact = await Contact.create({
-            email,
-            phone
-        });
         const createdFields = await FieldClient.insertMany(fields);
             const client = await Client.create({
                 firstName,
                 lastName,
                 familyCode,
-                branch,
                 meetingDate,
                 birthDate,
-                contact:newContact,
                 policies,
-                line1,
-                line2,
-                area,
-                city,
-                state,
                 fields:createdFields,
-                pin,
                 followUpDate:new Date().toISOString()
             });
-            const clData = await (await client.populate('contact')).populate('branch');
+            const clData = await client.populate('fields');
             const dta = await new SearchHelper().addIndex(clData);
             console.log('search', dta);
             const now = new Date()
@@ -59,7 +39,7 @@ class ClientController {
                     // console.log('called');
                 },endtimeNow-now)
             }
-            return response.created(await client.populate('branch'));
+            return response.created(clData);
 
         } catch (error) {
             console.log('branch error',error);
@@ -70,7 +50,7 @@ class ClientController {
         const response = new ResponseWraper(res);
         try {
             // let branch = null
-            const branch = await Client.findById(req.params.id).populate('contact').populate('documents');
+            const branch = await Client.findById(req.params.id).populate('fields').populate('documents');
             console.log(branch);
             if(branch==null) return response.notFound('client does not exist');
             return response.ok(branch);
@@ -97,8 +77,8 @@ class ClientController {
         const response = new ResponseWraper(res);
         try {
             // let branch = null
-            const branch = await Client.findById(req.params.id).populate('contact').populate('documents').populate('fields');
-            const clients = await Client.find({familyCode:branch.familyCode}).populate('contact').populate('documents');
+            const branch = await Client.findById(req.params.id).populate('documents').populate('fields');
+            const clients = await Client.find({familyCode:branch.familyCode}).populate('fields').populate('documents');
             console.log(branch);
             if(branch==null) return response.notFound('client does not exist');
             return response.ok({client:branch,related:clients});
@@ -117,7 +97,7 @@ class ClientController {
                         firstName:{ $regex: new RegExp(`.*${name??''}.*`), $options: "i" }
                     }
                 ]
-            }).populate('contact').populate('branch').populate('fields');
+            }).populate('fields');
             
             if(clients.length<=0) return response.notFound('Clients not found');
             return response.ok(clients);
