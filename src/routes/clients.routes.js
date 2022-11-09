@@ -82,6 +82,7 @@ class ClientRoutes{
         */
        this.router.get('/dashboard', verifyToken, ClientController.getCLientsCount);
        this.router.patch('/status', verifyToken, ClientController.updateClientStatus);
+       this.router.patch('/fields', [validationMiddleware(ClientValidator.addFields()),verifyToken], ClientController.createField);
         this.router.get('/:id', verifyToken, ClientController.getClientById);
         this.router.get('/web/:id', verifyToken, ClientController.getClientByWebId);
     }

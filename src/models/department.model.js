@@ -6,6 +6,15 @@ const DepartmentSchema = new Schema({
       unique:true,
       index:true
     },
+    durationTask:{
+      type: Number,
+      default:0
+    },
+    unitTask:{
+      type: String,
+      enum:['hr','days'],
+      default:'hr'
+    },
     branches:[{type:Schema.Types.ObjectId, ref:'Branch'}],
     staff:[{type:Schema.Types.ObjectId, ref:'User'}],
     heads:[{type:Schema.Types.ObjectId, ref:'User'}],

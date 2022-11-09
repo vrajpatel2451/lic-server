@@ -6,7 +6,7 @@ class DepartmentController {
     static async createDepartment(req,res){
         const response = new ResponseWraper(res);
         try {
-            const { name, branch, head, staff } = req.body;
+            const { name, branch, head, staff,unit,duration } = req.body;
             let isBranchExist = false;
             isBranchExist = await Branch.findOne({name});
             if(isBranchExist) return response.badRequest('Branch Already Exist');
@@ -14,6 +14,8 @@ class DepartmentController {
                 name,
                 branches:branch,
                 heads:head,
+                durationTask:duration,
+                unitTask:unit,
                 staffs:staff
             });
             await Branch.findByIdAndUpdate(branch,{

@@ -46,6 +46,28 @@ class ClientController {
             return response.internalServerError();
         }
     }
+    static async createField(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            console.log('called');
+            const { fields,client } = req.body;
+            console.log(client);
+        const createdFields = await FieldClient.create(fields);
+        console.log(createdFields);
+            const clientData = await Client.findByIdAndUpdate(client,{
+                $addToSet:{
+                    fields:createdFields
+                }
+            },{new:true});
+            const clData = await clientData.populate('fields');
+            // await new SearchHelper().addIndex(clData);
+            return response.created(clData);
+
+        } catch (error) {
+            console.log('branch error',error);
+            return response.internalServerError();
+        }
+    }
     static async getClientById(req,res){
         const response = new ResponseWraper(res);
         try {

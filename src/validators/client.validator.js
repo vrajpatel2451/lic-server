@@ -24,12 +24,12 @@ class ClientValidator {
   static addFields() {
     return Joi.object({
       client:Joi.string().required(),
-      fields:Joi.array().items(Joi.object({
+      fields:Joi.object({
         label:Joi.string().required(),
         value:Joi.string().allow(''),
         type:Joi.string().required(),
         update:Joi.string().required(),
-      }),),
+      }),
     });
   }
   static addDocuments() {
