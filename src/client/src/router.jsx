@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 import Admin from './pages/admin'
 import Client from './pages/client'
 import ClientDetails from './pages/clientDetails'
+import FilePriviewPage from './pages/FilePriview'
 import Head from './pages/head'
 import Home from './pages/home'
 import Login from './pages/login'
@@ -23,6 +24,7 @@ const RouterMain = () => {
       <Route path='/staff' element={<PrivateRoute Component={Staff} store={{state,dispatch}}/>}/>
       <Route path='/admin' element={<PrivateRoute Component={Admin} store={{state,dispatch}}/>}/>
       <Route path='/head' element={<PrivateRoute Component={Head} store={{state,dispatch}}/>}/>
+      <Route path='/client/:id/pdf' element={<PrivateRoute Component={FilePriviewPage} store={{state,dispatch}}/>}/>
       <Route path='/client/:id' element={<PrivateRoute Component={ClientDetails} store={{state,dispatch}}/>}/>
       <Route path='/' element={<PrivateRoute Component={Home} store={{state,dispatch}}/>}/>
                   {/* <PrivateRoute path="/" component={<Home />} store={{state,dispatch}} />

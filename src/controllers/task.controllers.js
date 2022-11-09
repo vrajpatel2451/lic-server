@@ -322,9 +322,12 @@ class TaskController {
             console.log('image',image);
             const documentExist = await DocumentClient.findByIdAndUpdate(document,{
                 uploaded:true,
-                $push:{
-                    image,
+                $set:{
+                    image
                 }
+                // $push:{
+                //     image,
+                // }
             })   
             return response.ok(documentExist);
         } catch (error) {

@@ -48,7 +48,7 @@ const ClientDetails = () => {
                         {
                             e?.documents?.length>0?
                             e?.documents?.map(
-                                (doc,i)=><p className='bg-pri-dark text-white w-full text-left p-2 rounded-md'>{doc?.name}</p>
+                                (doc,i)=><p onClick={()=>{console.log(doc);}} className='bg-pri-dark text-white w-full text-left p-2 rounded-md'>{doc?.name}</p>
                                 )
                                 :<p className='bg-pri-dark text-white w-full text-left p-2 rounded-md'>No Documents Yet</p>
                             }
