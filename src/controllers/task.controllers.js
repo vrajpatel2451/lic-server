@@ -42,13 +42,27 @@ class TaskController {
                 documents:documentsCreated
             }
         })
+
+        let finalDeadline = '';
+        if(deadline==='' || deadline === undefined || deadline==null){
+            const newDeadline = new Date();
+            if(isDepartmentExist.unitTask==='days'){
+                newDeadline.setDate(newDeadline.getDate()+isDepartmentExist.durationTask);
+            }else{
+                newDeadline.setDate(newDeadline.getHours()+isDepartmentExist.durationTask);
+            }
+            finalDeadline = newDeadline.toISOString();
+        }else{
+            finalDeadline = deadline;
+        }
+
             let task;
             if(staff===null|| staff === undefined || staff === ""){
                 task = await Task.create({
                     title,
                     description,
                     startTime: new Date().toISOString(),
-                    endTime:deadline,
+                    endTime: finalDeadline,
                     department,
                     branch,
                     fields:fieldsResult,
@@ -64,7 +78,7 @@ class TaskController {
                     title,
                     description,
                     startTime:new Date().toISOString(),
-                    endTime:deadline,
+                    endTime:finalDeadline,
                     department,
                     branch,
                     taskStatus:'inprogress',

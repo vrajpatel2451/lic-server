@@ -7,8 +7,8 @@ class ClientValidator {
       lastName: Joi.string().required(),
       reference: Joi.string().allow(''),
       familyCode: Joi.string().allow(''),
-      birthDate:Joi.date().required(),
-      meetingDate:Joi.date().required(),
+      birthDate:Joi.string().allow('').default(new Date().toISOString()),
+      meetingDate:Joi.string().allow('').default(new Date().toISOString()),
       fields:Joi.array().items(Joi.object({
         label:Joi.string().required(),
         value:Joi.string().allow(''),
