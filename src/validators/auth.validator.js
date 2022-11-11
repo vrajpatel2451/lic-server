@@ -22,7 +22,7 @@ class AuthValidator {
       nomineeFirstName:Joi.string().required(),
       nomineeLastName:Joi.string().required(),
       nomineeRelation:Joi.string().required(),
-      nomineePhone:Joi.string().required(),
+      nomineePhone:Joi.number().required(),
       // createRole: Joi.string().required(),
       workRole: Joi.array(),
       department: Joi.array(),
