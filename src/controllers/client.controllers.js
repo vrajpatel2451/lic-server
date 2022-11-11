@@ -45,7 +45,7 @@ class ClientController {
                 occupation,
                 nomineeName,
                 nomineeRelation,
-                familyCode,
+                familyCode:newFamilyCode,
                 meetingDate,
                 birthDate,
                 policies,
@@ -53,8 +53,8 @@ class ClientController {
                 followUpDate:new Date().toISOString()
             });
             const clData = await client.populate('fields');
-            const dta = await new SearchHelper().addIndex(clData);
-            console.log('search', dta);
+            // const dta = await new SearchHelper().addIndex(clData);
+            // console.log('search', dta);
             const now = new Date()
             const endtimeNow = new Date(meetingDate);
             endtimeNow.setDate(endtimeNow.getDate()-1);
