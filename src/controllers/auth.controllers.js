@@ -102,7 +102,7 @@ class AuthController {
             branch,
             role,
             workRole,
-            department,
+            departments:department,
             image:img,
             contact:newContact,
             address:newAddress,
@@ -133,7 +133,7 @@ class AuthController {
     //     password,
     //   });
 
-    const userData = await user.populate('contact')
+    const userData = await (await (await user.populate('contact')).populate('departments')).populate('branch')
     // .populate('department').populate('workRole').populate('branch');
         console.log("hola",userData);
       return response.created({ accessToken: user.generateToken(), user: userData });
@@ -167,7 +167,7 @@ class AuthController {
           // ],
           branch,
           role,
-          department,
+          departments:department,
           $or:[
             // { branch: branch },
             { firstName: { $regex: new RegExp(`.*${name??''}.*`), $options: "i" } },

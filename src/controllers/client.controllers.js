@@ -3,6 +3,7 @@ import ResponseWraper from "../helpers/response.helpers";
 import SearchHelper from "../helpers/searchindexing.helpers";
 import { Client } from "../models/client.model";
 import { FieldClient } from "../models/fields.model";
+import { Latest } from "../models/latest.model";
 import { User } from "../models/user.model";
 
 class ClientController {
@@ -12,10 +13,25 @@ class ClientController {
             const { firstName, lastName, policies,familyCode,meetingDate,birthDate,fields } = req.body;
             console.log(policies);
         const createdFields = await FieldClient.insertMany(fields);
-            const client = await Client.create({
+        
+        const latest = await Latest.findOne({},{},{sort:{'created_at':-1}});
+        let newFamilyCode;
+        if(familyCode==='' || familyCode === undefined || familyCode == null){
+            if(latest){
+                const creCode = await Latest.create({countNum:latest.countNum+1});
+                newFamilyCode = creCode.countNum;
+            }else{
+                const creCode = await Latest.create({countNum:1});
+                newFamilyCode = creCode.countNum;
+            }
+        }else{
+            newFamilyCode = familyCode;
+        }
+        
+        const client = await Client.create({
                 firstName,
                 lastName,
-                familyCode,
+                familyCode:newFamilyCode,
                 meetingDate,
                 birthDate,
                 policies,
@@ -23,8 +39,8 @@ class ClientController {
                 followUpDate:new Date().toISOString()
             });
             const clData = await client.populate('fields');
-            const dta = await new SearchHelper().addIndex(clData);
-            console.log('search', dta);
+            // const dta = await new SearchHelper().addIndex(clData);
+            // console.log('search', dta);
             const now = new Date()
             const endtimeNow = new Date(meetingDate);
             endtimeNow.setDate(endtimeNow.getDate()-1);
