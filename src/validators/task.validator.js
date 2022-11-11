@@ -38,6 +38,7 @@ class TaskValidator {
   static updateFields() {
     return Joi.object({
       value: Joi.string().required(),
+      update: Joi.string().allow(''),
       field:Joi.string().required(),
     });
   }

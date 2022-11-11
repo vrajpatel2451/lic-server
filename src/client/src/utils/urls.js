@@ -1,6 +1,10 @@
 export const VERIFY = '/auth/verify/admin?admin=true';
 export const LOGIN = '/auth/login/admin?admin=true';
 export const GETCLIENT = '/client'
+export const UPLOADDOC = '/client/documents'
+export const UPLOADFIELDS = '/client/fields'
+export const UPDATEFIELDS = '/task/fields'
+export const UPDATEDOC = '/task/documents'
 export const GETBRANCH = '/branch'
 export const GETDEPARTMENT = '/department'
 export const GETSTAFF = '/auth/staff/web?role=staff'

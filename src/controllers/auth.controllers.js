@@ -49,7 +49,7 @@ class AuthController {
     const response = new ResponseWraper(res);
     // console.log(req.body);
     try {
-      const { email,phone, firstName,lastName,branch,role,workRole,department, password,line1,line2,area,city,state,pin,img } = req.body;
+      const { email,phone,joinDate,nomineeFirstName,nomineeLastName,nomineeRelation,nomineePhone, firstName,lastName,branch,role,workRole,department, password,line1,line2,area,city,state,pin,img } = req.body;
     //   const isEmailExist = await Contact.findOne({email}).exec();
       
       let isUserExists = false;
@@ -99,6 +99,11 @@ class AuthController {
             firstName,
             email,
             lastName,
+            joinDate,
+            nomineeFirstName,
+            nomineeLastName,
+            nomineePhone,
+            nomineeRelation,
             branch,
             role,
             workRole,
@@ -335,6 +340,7 @@ class AuthController {
     const response = new ResponseWraper(res);
     try {
       const { email, password,fcmToken } = req.body;
+      const {admin} = req.query;
       const user = await User.findOne({
         email,
     }).populate('departments').populate('branch').populate('workRole');
@@ -343,7 +349,11 @@ class AuthController {
     const authenticateUser = await user.authenticate(password);
     
     if (!authenticateUser) return response.unauthorized('Invalid password');
-    user.fcmToken = fcmToken;
+    if(admin){
+      console.log('clg here');
+    }else{
+      user.fcmToken = fcmToken;
+    } 
 
     await user.save();
       console.log(user);
@@ -364,7 +374,9 @@ class AuthController {
       console.log('fcm',fcmToken);
       const user = await User.findById(userId).populate('departments').populate('branch').populate('workRole');
       console.log('fcm user',userId);
-      user.fcmToken = fcmToken;
+      if(fcmToken){
+        user.fcmToken = fcmToken;
+      }
       await user.save();
       if (!user) return response.unauthorized('user not available');
 

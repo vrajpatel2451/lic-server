@@ -3,7 +3,6 @@ import { checkWidgetAuthorization } from "./utils/checkAuthorization";
 import React from 'react'
 
 const PrivateRoute = ({Component,store}) => {
-    console.log(checkWidgetAuthorization(store));
     return (
           checkWidgetAuthorization(store)
             ? 

@@ -1,7 +1,9 @@
+import cookie from "react-cookies";
 import { successAuth } from "../logic/features/auth/authReducer";
 
 const checkAuthorization= (dispatch) =>{
-    const storedToken = localStorage.getItem("token");
+    // const storedToken = localStorage.getItem("token");
+    const storedToken = cookie.load("token");
   
     if (storedToken) {
         dispatch(successAuth({accessToken:storedToken,user:{}}));

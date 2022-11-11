@@ -338,20 +338,31 @@ class TaskController {
     static async updateFields(req,res){
         const response = new ResponseWraper(res);
         try {
-            const {field,value} = req.body;
+            const {field,value,update} = req.body;
             // const clientExist = await Client.findById(client);
             // if(clientExist===null) return response.badRequest('Document does not exist');
             // await clientExist.update({
             //     $push:{
             //         fields
             //     }
-            // });  
-            const updated = await FieldClient.findByIdAndUpdate(field,{
-                $set:{
-                    value
-                }
-            }) 
-            return response.ok(updated);
+            // });
+            if(update===undefined || update==null || update===''){
+
+                const updated = await FieldClient.findByIdAndUpdate(field,{
+                    $set:{
+                        value
+                    }
+                }) 
+                return response.ok(updated);
+            }else{
+                const updated = await FieldClient.findByIdAndUpdate(field,{
+                    $set:{
+                        value,
+                        update
+                    }
+                })
+                return response.ok(updated);
+            }
         } catch (error) {
             return response.internalServerError();
         }

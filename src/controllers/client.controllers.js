@@ -2,6 +2,7 @@ import FirebaseNotificationService from "../helpers/notification.helper";
 import ResponseWraper from "../helpers/response.helpers";
 import SearchHelper from "../helpers/searchindexing.helpers";
 import { Client } from "../models/client.model";
+import { DocumentClient } from "../models/document.model";
 import { FieldClient } from "../models/fields.model";
 import { User } from "../models/user.model";
 
@@ -9,12 +10,25 @@ class ClientController {
     static async createClient(req,res){
         const response = new ResponseWraper(res);
         try {
-            const { firstName, lastName, policies,familyCode,meetingDate,birthDate,fields } = req.body;
+            const { firstName,email,phone,gender,maritalStatus,motherName,fatherName,spouse,children,birthPlace,income,occupation,nomineeName,nomineeRelation, lastName, policies,familyCode,meetingDate,birthDate,fields } = req.body;
             console.log(policies);
         const createdFields = await FieldClient.insertMany(fields);
             const client = await Client.create({
                 firstName,
                 lastName,
+                email,
+                phone,
+                gender,
+                spouse,
+                motherName,
+                fatherName,
+                children,
+                maritalStatus,
+                birthPlace,
+                income,
+                occupation,
+                nomineeName,
+                nomineeRelation,
                 familyCode,
                 meetingDate,
                 birthDate,
@@ -57,6 +71,35 @@ class ClientController {
             const clientData = await Client.findByIdAndUpdate(client,{
                 $addToSet:{
                     fields:createdFields
+                }
+            },{new:true});
+            const clData = await clientData.populate('fields');
+            // await new SearchHelper().addIndex(clData);
+            return response.created(clData);
+
+        } catch (error) {
+            console.log('branch error',error);
+            return response.internalServerError();
+        }
+    }
+    static async createDocuments(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            console.log('called');
+            const {client,name,type,taskDoc,update } = req.body;
+            console.log('client aayo',client);
+            // console.log('lund',req.file);
+        const createdFields = await DocumentClient.create({
+            client,
+            name,
+            type,
+            image:taskDoc,
+            uploaded:req.file? true:false
+        });
+        console.log(createdFields);
+            const clientData = await Client.findByIdAndUpdate(client,{
+                $addToSet:{
+                    documents:createdFields
                 }
             },{new:true});
             const clData = await clientData.populate('fields');

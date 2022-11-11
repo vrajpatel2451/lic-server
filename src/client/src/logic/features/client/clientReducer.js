@@ -2,7 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     status: 'initial',
+    uploadStatus: 'initial',
     errorMessage: '',
+    doc: {},
     clients: [],
     clientDetails: [],
     token: ''
@@ -56,9 +58,22 @@ const clientReducer = createSlice({
             // state.token = '';
 
         },
+        loadingUploadDoc(state) {
+            state.uploadStatus = 'loading';
+        },
+        successUploadDoc(state, action) {
+            state.uploadStatus = 'success';
+        },
+        failedUploadDoc(state, action) {
+            state.uploadStatus = 'error';
+            state.errorMessage = action.payload.message;
+        },
+        setFileUrl(state, action) {
+            state.doc = action.payload;
+        },
     }
 })
 
 export default clientReducer.reducer;
 
-export const { loadingClient, successClient, failedClient,loadingClienDetails,successClientDetails,failedClientDetails } = clientReducer.actions;
+export const { loadingClient,loadingUploadDoc,successUploadDoc,failedUploadDoc, setFileUrl,successClient, failedClient,loadingClienDetails,successClientDetails,failedClientDetails } = clientReducer.actions;

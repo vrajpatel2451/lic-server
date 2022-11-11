@@ -35,10 +35,10 @@ class ClientValidator {
   static addDocuments() {
     return Joi.object({
       client:Joi.string().required(),
-      documents:Joi.array().items(Joi.object({
-        name:Joi.string().required(),
-        type:Joi.string().required(),
-    })),
+      name:Joi.string().required(),
+      type:Joi.string().required(),
+      taskDoc:Joi.string().allow(''),
+      update:Joi.date().default(new Date().toISOString())
     });
   }
 }

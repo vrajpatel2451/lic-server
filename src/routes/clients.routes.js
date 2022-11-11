@@ -3,6 +3,7 @@ import AuthController from "../controllers/auth.controllers";
 import BrnachController from "../controllers/branch.controllers";
 import ClientController from "../controllers/client.controllers";
 import verifyToken from "../middlewares/auth.middleware";
+import { uploadTaskFile, uploadTaskFileClient } from "../middlewares/task.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import AuthValidator from "../validators/auth.validator";
 import BranchValidator from "../validators/branch.validator";
@@ -83,6 +84,8 @@ class ClientRoutes{
        this.router.get('/dashboard', verifyToken, ClientController.getCLientsCount);
        this.router.patch('/status', verifyToken, ClientController.updateClientStatus);
        this.router.patch('/fields', [validationMiddleware(ClientValidator.addFields()),verifyToken], ClientController.createField);
+       this.router.post('/documents', [uploadTaskFileClient,validationMiddleware(ClientValidator.addDocuments()),verifyToken], ClientController.createDocuments);
+       this.router.patch('/docs', [validationMiddleware(ClientValidator.addFields()),verifyToken], ClientController.createField);
         this.router.get('/:id', verifyToken, ClientController.getClientById);
         this.router.get('/web/:id', verifyToken, ClientController.getClientByWebId);
     }

@@ -5,7 +5,7 @@ class AuthValidator {
     return Joi.object({
       email: Joi.string().required().email(),
       password: Joi.string().required(),
-      fcmToken: Joi.string().required(),
+      fcmToken: Joi.string().allow(''),
     });
   }
   static createUser() {
@@ -18,6 +18,11 @@ class AuthValidator {
       lastName: Joi.string().required(),
       branch: Joi.string().allow(''),
       role: Joi.string().required(),
+      joinDate:Joi.string().required(),
+      nomineeFirstName:Joi.string().required(),
+      nomineeLastName:Joi.string().required(),
+      nomineeRelation:Joi.string().required(),
+      nomineePhone:Joi.string().required(),
       // createRole: Joi.string().required(),
       workRole: Joi.array(),
       department: Joi.array(),
