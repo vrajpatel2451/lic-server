@@ -393,6 +393,18 @@ class TaskController {
             return response.internalServerError();
         }
     }
+    static async updateFieldOfClient(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            const {fieldName,fieldValue,client} = req.body;
+            const taskExist = await Client.findByIdAndUpdate(client,{
+                [fieldName]:fieldValue
+            })   
+            return response.ok(taskExist);
+        } catch (error) {
+            return response.internalServerError();
+        }
+    }
     static async addComment(req,res){
         const response = new ResponseWraper(res);
         try {

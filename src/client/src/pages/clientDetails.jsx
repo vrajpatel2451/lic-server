@@ -73,6 +73,37 @@ const ClientDetails = () => {
         <h4 className="w-full flex items-center gap-2">
           <span>Status :</span> <span>{state?.clientDetails?.client?.status}</span>
         </h4>
+
+        <label htmlFor="">Email</label>
+        <input type="text" value={state?.clientDetails?.client?.email} />
+        <label htmlFor="">Phone</label>
+        <input type="text" value={state?.clientDetails?.client?.phone} />
+        <label htmlFor="">Gender</label>
+        <input type="text" value={state?.clientDetails?.client?.gender} />
+        <label htmlFor="">Marrital Status</label>
+        <input type="text" value={state?.clientDetails?.client?.marritalStatus} />
+        <label htmlFor="">Mother Name</label>
+        <input type="text" value={state?.clientDetails?.client?.motherName} />
+        <label htmlFor="">Father Name</label>
+        <input type="text" value={state?.clientDetails?.client?.fatherName} />
+        <label htmlFor="">Spouse</label>
+        <input type="text" value={state?.clientDetails?.client?.spouse} />
+        <label htmlFor="">Children</label>
+        <input type="text" value={state?.clientDetails?.client?.children} />
+        <label htmlFor="">Place Of Birth</label>
+        <input type="text" value={state?.clientDetails?.client?.birthPlace} />
+        <label htmlFor="">Income Slab</label>
+        <input type="text" value={state?.clientDetails?.client?.income} />
+        <label htmlFor="">Occupation</label>
+        <input type="text" value={state?.clientDetails?.client?.occupation} />
+        <label htmlFor="">Nominee Name</label>
+        <input type="text" value={state?.clientDetails?.client?.nomineeName} />
+        <label htmlFor="">Nominee Relation</label>
+        <input type="text" value={state?.clientDetails?.client?.nomineeRelation} />
+        <label htmlFor="">Birth Date</label>
+        <input type="text" value={state?.clientDetails?.client?.birthDate} />
+        <label htmlFor="">Meeting Date</label>
+        <input type="text" value={state?.clientDetails?.client?.meetingDate} />
         <h3 className="w-full flex items-center gap-2">
           <MdTextFields /> <span className="flex-1">Entries</span><span className='w-20 h-10 bg-pri-light text-pri-dark cursor-pointer flex items-center justify-center rounded-sm' onClick={togglemodelfield}><p>+</p></span>
         </h3>

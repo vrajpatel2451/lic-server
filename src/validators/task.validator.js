@@ -35,6 +35,13 @@ class TaskValidator {
       staff: Joi.string().required(),
     });
   }
+  static editCLientDetails() {
+    return Joi.object({
+      fieldName: Joi.string().required(),
+      fieldValue: Joi.string().required(),
+      client: Joi.string().required(),
+    });
+  }
   static updateFields() {
     return Joi.object({
       value: Joi.string().required(),
