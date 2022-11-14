@@ -34,6 +34,27 @@ class ClientValidator {
     })),
     });
   }
+  static editClient() {
+    return Joi.object({
+      firstName: Joi.string().required(),
+      lastName: Joi.string().required(),
+      email:Joi.string().allow('').email(),
+      phone:Joi.number().allow(''),
+      gender:Joi.string().allow(''),
+      maritalStatus:Joi.string().allow(''),
+      motherName:Joi.string().allow(''),
+      fatherName:Joi.string().allow(''),
+      spouse:Joi.string().allow(''),
+      children:Joi.number().allow(''),
+      birthPlace:Joi.string().allow(''),
+      income:Joi.number().allow(''),
+      occupation:Joi.string().allow(''),
+      nomineeName:Joi.string().allow(''),
+      nomineeRelation:Joi.string().allow(''),
+      birthDate:Joi.string().allow('').default(new Date().toISOString()),
+      meetingDate:Joi.string().allow('').default(new Date().toISOString()),
+    });
+  }
   static addFields() {
     return Joi.object({
       client:Joi.string().required(),

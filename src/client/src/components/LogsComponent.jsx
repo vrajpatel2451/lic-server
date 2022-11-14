@@ -4,7 +4,7 @@ import { MdLocationPin } from 'react-icons/md'
 
 const LogsComponent = ({user,lat,long,place,time,index}) => {
   return (
-    <div className='flex-1 min-w-1/2 rounded-md bg-pri-light gap-4 flex flex-col items-start p-10'>
+    <div className='flex-1 min-w-[40%] rounded-md bg-pri-light gap-4 flex flex-col items-start p-10'>
         <h4>{index} - {user?.firstName} {user?.lastName} (#{user?._id})</h4>
         <div className='flex gap-4 items-start'>
         <p className='flex-1'>{place}</p>

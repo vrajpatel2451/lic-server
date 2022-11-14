@@ -186,6 +186,40 @@ class ClientController {
             return response.internalServerError();
         }
     }
+    static async editClient(req,res){
+        const response = new ResponseWraper(res);
+        try {
+            const {firstName,lastName,email,phone,gender,maritalStatus,motherName,fatherName,spouse,children,birthDate,birthPlace,income,occupation,nomineeName,nomineeRelation,followUpDate,meetingDate} = req.body;
+            const {id:client} = req.params;
+            const clients = await Client.findByIdAndUpdate(client,{
+                $set:{
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    gender,
+                    maritalStatus,
+                    motherName,
+                    fatherName,
+                    spouse,
+                    children,
+                    birthDate,
+                    birthPlace,
+                    income,
+                    occupation,
+                    nomineeName,
+                    nomineeRelation,
+                    followUpDate,
+                    meetingDate,
+                }
+            });
+            
+            // if(clients.length<=0) return response.ok('Clients not found');
+            return response.ok(clients);
+        } catch (error) {
+            return response.internalServerError();
+        }
+    }
 
     static async getCLientsCount(req,res){
         const response = new ResponseWraper(res);
