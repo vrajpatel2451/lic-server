@@ -23,7 +23,9 @@ const UserSchema = new Schema({
     role:{type:String, enum:['admin','head','staff'],default:'staff'},   
     departments:[{type:Schema.Types.ObjectId, ref:'Department'}],
     workRole:[{type:Schema.Types.ObjectId, ref:'WorkRole'}],
-    image:String,   
+    image:String,
+    lat:{type:Schema.Types.Number,default:0},   
+    long:{type:Schema.Types.Number,default:0},   
 },
 {
     toJSON: {

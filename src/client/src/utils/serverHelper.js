@@ -4,7 +4,7 @@ import cookie from "react-cookies";
 export const getData = async (url = '') => {
     // const token = localStorage.getItem('token');
     const token = cookie.load("token");
-    console.log('madarchod token',token);
+    // console.log('madarchod token',token);
     const data = await axiosInstance.get(url, { headers: { "Authorization": `Bearer ${token}` } });
     return data.data;
 }

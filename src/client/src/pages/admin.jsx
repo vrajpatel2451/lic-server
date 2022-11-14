@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useMemo } from 'react';
 import { MdRefresh } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import CustomTable from '../components/customTable';
 import { getAdmin } from '../logic/features/staff/staffAction';
 
@@ -36,6 +37,7 @@ const Admin = () => {
           <option>Select Department</option>
         </select> */}
         {/* <input onChange={onChangeSearch} placeholder='Search client' className="border-none outline-none px-4 py-2 rounded-md"/> */}
+        <Link to={'/logs/admin'}><p className='px-4 h-10 bg-pri-dark border-none flex items-center justify-center rounded-md text-white'>See Logs</p></Link>
         <button onClick={()=>{getAdmin(dispatch)}} className="w-20 h-10 bg-pri border-none flex items-center justify-center rounded-md">
         {/* <button onClick={()=>{onChangeSearch('hshsh')}} className="w-20 h-10 bg-pri border-none flex items-center justify-center rounded-md"> */}
           <MdRefresh color='white'/>

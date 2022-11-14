@@ -1,6 +1,7 @@
 import { Router } from "express";
 import AuthController from "../controllers/auth.controllers";
 import verifyToken, { roleFinder, roleMaker, uploadUserFile, uploadUserFileToServer, verifySuperUser } from "../middlewares/auth.middleware";
+import locationMiddleware from "../middlewares/location.middleware";
 import validationMiddleware from "../middlewares/validation.middleware";
 import AuthValidator from "../validators/auth.validator";
 
@@ -122,7 +123,9 @@ class AuthRoutes{
             *                 error:
             *                   type: object  
         */
-        this.router.post('/login/:role', [validationMiddleware(AuthValidator.login()),roleMaker(),roleFinder()], AuthController.login);
+       this.router.post('/login/web/:role', [locationMiddleware,validationMiddleware(AuthValidator.loginWeb()),roleMaker(),roleFinder(['admin'])], AuthController.loginWeb);
+       this.router.post('/login/:role', [validationMiddleware(AuthValidator.login()),roleMaker(),roleFinder()], AuthController.login);
+       this.router.get('/logs', [verifyToken,roleFinder(['admin'])], AuthController.getAdminLog);
         /**
             * @swagger
             * /auth/staff:

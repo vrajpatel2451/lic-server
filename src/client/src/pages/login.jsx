@@ -11,10 +11,44 @@ const LoginSchema = Yup.object().shape({
     .required('Password is required'),
 });
 
+
 const Login = () => {
+  const getLocation = navigator.geolocation;
   const dispatch = useDispatch();
   const handleSubmit = values => {
-    login(dispatch, values);
+    if(!getLocation){
+      console.log('location not available');
+    }else{
+      console.log('location',getLocation);
+
+      const location = getLocation.getCurrentPosition(
+        (pos)=>{
+          console.log('here pos',pos.coords.latitude);
+          console.log('here pos',pos.coords.longitude);
+          login(dispatch,{...values,lat:pos.coords.latitude,long:pos.coords.longitude});
+        },
+        (err)=>{
+          console.log('here err',err);
+        }
+      );
+      // navigator.permissions
+      //   .query({ name: "geolocation" })
+      //   .then(function (result) {
+      //     if (result.state === "granted") {
+      //       console.log(result.state);
+      //       //If granted then you can directly call your function here
+      //     } else if (result.state === "prompt") {
+      //       console.log('which state',result.state);
+      //       // login(dispatch, values);
+      //     } else if (result.state === "denied") {
+      //       alert('please provide')
+      //       //If denied then you have to show instructions to enable location
+      //     }
+      //     result.onchange = function () {
+      //       console.log(result.state);
+      //     };
+      //   });
+    }
   };
   return (
     <div className="h-screen flex flex-col items-center justify-center">

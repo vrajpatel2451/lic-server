@@ -1,5 +1,8 @@
 export const VERIFY = '/auth/verify/admin?admin=true';
-export const LOGIN = '/auth/login/admin?admin=true';
+// export const LOGIN = '/auth/login/admin?admin=true';
+export const LOGIN = '/auth/login/web/admin';
+export const ADMIN_LOGS = '/auth/logs';
+export const STAFF_LOGS=(staff) => `/auth/log?staff=${staff}`;
 export const GETCLIENT = '/client'
 export const UPLOADDOC = '/client/documents'
 export const UPLOADFIELDS = '/client/fields'

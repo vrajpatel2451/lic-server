@@ -4,6 +4,7 @@ import branchReducer from './features/branch/branchReducer';
 import clientReducer from './features/client/clientReducer';
 import dashboardReducer from './features/dashboard/dashboardReducer';
 import departmentReducer from './features/department/departmentReducer';
+import logsReducer from './features/logs/logsReducer';
 import staffReducer from './features/staff/staffReducer'
 
 
@@ -15,6 +16,7 @@ const store = configureStore({
         dashboard: dashboardReducer,
         branch: branchReducer,
         department: departmentReducer,
+        logs:logsReducer
     },
 })
 

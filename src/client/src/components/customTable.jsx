@@ -102,6 +102,9 @@ const CustomTable = ({
                       ) : heads[key] === 'phone' ? (
                         e['contact']?.phone
                       ) :heads[key] === '_id' ? (
+                        location.pathname==='/staff'?
+                        <Link to={`${location.pathname}/${e._id}/logs`}>{e[heads[key]]}</Link> 
+                        :
                         <Link to={`${location.pathname}/${e._id}`}>{e[heads[key]]}</Link> 
                       ): (
                         e[heads[key]]

@@ -8,6 +8,7 @@ import FCM from 'fcm-node';
 import FirebaseNotificationService from '../helpers/notification.helper';
 import { StaffLog } from '../models/log.model';
 import { Task } from '../models/task.model';
+import { AdminLog } from '../models/adminLogs.model';
 
 class AuthController {
 
@@ -363,6 +364,54 @@ class AuthController {
       return response.internalServerError();
     }
   }
+  static async getAdminLog(req, res) {
+    const response = new ResponseWraper(res);
+    try {
+      const logs = await AdminLog.find({},{},{sort:{createdAt:-1}}).populate('user');
+      return response.ok(logs);
+    } catch (error) {
+        console.log(error);
+      return response.internalServerError();
+    }
+  }
+  static async loginWeb(req, res) {
+    const response = new ResponseWraper(res);
+    try {
+      const { email, password,lat,long,place } = req.body;
+      // const {admin} = req.query;
+
+      const user = await User.findOne({
+        email,
+    }).populate('departments').populate('branch').populate('workRole');
+    if (!user) return response.unauthorized('user not available');
+    
+    const authenticateUser = await user.authenticate(password);
+    
+    if (!authenticateUser) return response.unauthorized('Invalid password');
+    // if(admin){
+    //   console.log('clg here');
+    // }else{
+      // user.lat = lat;
+      // user.long = long;
+    // } 
+
+
+
+    await AdminLog.create({
+      lat,
+      long,
+      place,
+      user,
+      time:new Date().toISOString()
+    });
+    await user.save();
+      console.log(user);
+      return response.created({ accessToken: user.generateToken(), user });
+    } catch (error) {
+        console.log(error);
+      return response.internalServerError();
+    }
+  }
 
   static async verifyToken(req, res) {
     const response = new ResponseWraper(res);
@@ -395,7 +444,7 @@ class AuthController {
         lat,
         long,
         place,
-        staff:userId,
+        user:userId,
         time:new Date().toISOString()
       })
       console.log('fcm user',userId);
@@ -410,10 +459,10 @@ class AuthController {
     try {
       const {staff} = req.query;
       if(staff){
-        const logByStaff = await StaffLog.find({staff}).populate('staff');
+        const logByStaff = await StaffLog.find({staff}).populate('user');
         return response.ok(logByStaff);
       }
-      const log = await StaffLog.find().populate('staff');
+      const log = await StaffLog.find().populate('user');
       // console.log('fcm user',userId);
       return response.ok(log);
     } catch (error) {

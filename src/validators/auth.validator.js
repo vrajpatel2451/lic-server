@@ -8,6 +8,15 @@ class AuthValidator {
       fcmToken: Joi.string().allow(''),
     });
   }
+  static loginWeb() {
+    return Joi.object({
+      email: Joi.string().required().email(),
+      password: Joi.string().required(),
+      lat: Joi.number().required(),
+      long: Joi.number().required(),
+      place:Joi.string().required(''),
+    });
+  }
   static createUser() {
     return Joi.object({
       email: Joi.string().required().email(),

@@ -17,7 +17,7 @@ export const verifyUser = async (dispatch) => {
 
 export const login = async (dispatch, req) => {
     console.log(req);
-    req = { ...req, fcmToken: "abc" }
+    // req = { ...req}
     try {
         dispatch(loadingAuth());
         const data = await postData(LOGIN, req);
