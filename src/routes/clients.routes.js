@@ -86,6 +86,7 @@ class ClientRoutes{
        this.router.patch('/fields', [validationMiddleware(ClientValidator.addFields()),verifyToken], ClientController.createField);
        this.router.post('/documents', [uploadTaskFileClient,validationMiddleware(ClientValidator.addDocuments()),verifyToken], ClientController.createDocuments);
        this.router.patch('/docs', [validationMiddleware(ClientValidator.addFields()),verifyToken], ClientController.createField);
+       this.router.patch('/:id', [validationMiddleware(ClientValidator.editClient()),verifyToken], ClientController.editClient);
         this.router.get('/:id', verifyToken, ClientController.getClientById);
         this.router.get('/web/:id', verifyToken, ClientController.getClientByWebId);
     }
