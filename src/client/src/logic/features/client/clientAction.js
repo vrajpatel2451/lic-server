@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import indexSearch from "../../../utils/searchCLients";
 import { getData, patchData, postData } from "../../../utils/serverHelper";
-import { GETCLIENT, UPDATEDOC, UPDATEFIELDS, UPLOADDOC, UPLOADFIELDS } from "../../../utils/urls";
+import { GETCLIENT, UPDATEDOC, UPDATEFIELDS, UPDATESTATUS, UPLOADDOC, UPLOADFIELDS } from "../../../utils/urls";
 import { loadingClient, successClient, failedClient, loadingClienDetails, successClientDetails, failedClientDetails, loadingUploadDoc, successUploadDoc, failedUploadDoc, changeBasicFields } from './clientReducer';
 
 
@@ -93,6 +93,23 @@ export const updateField = async (dispatch,dataPass,field,cb,client) => {
     }
 }
 
+export const updateClient = async (dispatch,id,dataPass) => {
+    console.log('hahahah',dataPass);
+    try {
+        dispatch(loadingUploadDoc());
+        // const formData = {value:dataPass.value,update:dataPass.update,field};
+        const data = await patchData(GETCLIENT+`/${id}`,dataPass);
+        console.log("===>data",data);
+        // cb();
+        //localStorage.setItem('token', data.data?.accessToken)
+        dispatch(successUploadDoc());
+        await getClientDetails(dispatch,id);
+    } catch (error) {
+        console.log('error here',error);
+        dispatch(failedUploadDoc({ message: error.response?.data?.error?.message || error?.message }));
+    }
+}
+
 export const updateDoc = async (dispatch,dataPass,cb,client) => {
     console.log('hahahah',dataPass);
     try {
@@ -106,6 +123,21 @@ export const updateDoc = async (dispatch,dataPass,cb,client) => {
         //localStorage.setItem('token', data.data?.accessToken)
         dispatch(successUploadDoc());
         await getClientDetails(dispatch,client);
+    } catch (error) {
+        console.log('error here',error);
+        dispatch(failedUploadDoc({ message: error.response?.data?.error?.message || error?.message }));
+    }
+}
+export const updateStatus = async (dispatch,status,id) => {
+    // console.log('hahahah',dataPass);
+    try {
+        dispatch(loadingUploadDoc());
+        const data = await patchData(UPDATESTATUS,{id,status});
+        console.log("===>data",data);
+        // cb();
+        //localStorage.setItem('token', data.data?.accessToken)
+        dispatch(successUploadDoc());
+        await getClientDetails(dispatch,id);
     } catch (error) {
         console.log('error here',error);
         dispatch(failedUploadDoc({ message: error.response?.data?.error?.message || error?.message }));

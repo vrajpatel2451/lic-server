@@ -48,7 +48,7 @@ const SideBar = () => {
         </div>
         {/* </Link> */}
         {/* <Link to={'/client'}> */}
-        <div onClick={()=>navigate('/client')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname==="/client"?'bg-pri':''}`}>
+        <div onClick={()=>navigate('/client')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname.includes("/client")?'bg-pri':''}`}>
           <span className='w-[20%] flex justify-center items-center'>
           <MdFamilyRestroom color='white'/>
           </span>
@@ -56,7 +56,7 @@ const SideBar = () => {
         </div>
         {/* </Link> */}
         {/* <Link to={'/staff'}> */}
-        <div onClick={()=>navigate('/staff')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname==="/staff"?'bg-pri':''}`}>
+        <div onClick={()=>navigate('/staff')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname.includes("/staff")?'bg-pri':''}`}>
           <span className='w-[20%] flex justify-center items-center'>
           <MdAccountTree color='white'/>
           </span>
@@ -64,7 +64,7 @@ const SideBar = () => {
         </div>
         {/* </Link> */}
         {/* <Link to={'/head'}> */}
-        <div onClick={()=>navigate('/head')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname==="/head"?'bg-pri':''}`}>
+        <div onClick={()=>navigate('/head')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname.includes("/head")?'bg-pri':''}`}>
           <span className='w-[20%] flex justify-center items-center'>
           <MdPeople color='white'/>
           </span>
@@ -72,7 +72,7 @@ const SideBar = () => {
         </div>
         {/* </Link> */}
         {/* <Link to={'/admin'}> */}
-        <div onClick={()=>navigate('/admin')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname==="/admin"?'bg-pri':''}`}>
+        <div onClick={()=>navigate('/admin')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname.includes("/admin")?'bg-pri':''}`}>
           <span className='w-[20%] flex justify-center items-center'>
           <MdPerson color='white'/>
           </span>
@@ -80,7 +80,7 @@ const SideBar = () => {
         </div>
         {/* </Link> */}
         {/* <Link to={'/admin'}> */}
-        <div onClick={()=>navigate('/admin')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname==="/account"?'bg-pri':''}`}>
+        <div onClick={()=>navigate('/admin')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname.includes("/account")?'bg-pri':''}`}>
           <span className='w-[20%] flex justify-center items-center'>
           <MdSettings color='white'/>
           </span>

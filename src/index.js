@@ -54,10 +54,14 @@ class MainServer {
       // this.#app.get('/', (req,res)=>{
       //   return res.send('<h1>Lic App</h1>')
       // });
-      this.#app.get("*", (req, res) => {
-        res.sendFile(
-          path.join(__dirname, "./client/dist/index.html")
-        );
+      this.#app.get("*", async(req, res) => {
+        try {
+          res.sendFile(
+            path.join(__dirname, "./client/dist/index.html")
+            );
+          } catch (error) {
+            res.status(200).send('no file')
+          }
       });
      }
     

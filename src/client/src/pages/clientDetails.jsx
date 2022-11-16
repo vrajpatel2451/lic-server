@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import ModelDocUpload from '../components/modelDocUpload';
 import ModelFields, { ModelUpdateFields } from '../components/modelFields';
-import { changeBasicFieldsAction, getClientDetails, updateDoc } from '../logic/features/client/clientAction';
+import { changeBasicFieldsAction, getClientDetails, updateClient, updateDoc, updateStatus } from '../logic/features/client/clientAction';
 
 const ClientDetails = () => {
     const [selected, setSelected] = useState('');
@@ -53,6 +53,15 @@ const ClientDetails = () => {
     },state?.clientDetails?.client?._id);
   }
 
+  const onEdit = async()=>{
+    const {firstName,lastName,email,phone,gender,marritalStatus,motherName,fatherName,spouse,children,birthPlace,income,occupation,nomineeName,nomineeRelation,birthDate,meetingDate} = state?.clientDetails?.client;
+    const dataPass = {firstName,lastName,email,phone,gender,marritalStatus,motherName,fatherName,spouse,children,birthPlace,income,occupation,nomineeName,nomineeRelation,birthDate,meetingDate};
+    await updateClient(dispatch,state?.clientDetails?.client?._id,dataPass);
+    setEditOn(false);
+  }
+  const onStatusUpdate = async(e)=>{
+    await updateStatus(dispatch,e.target.value,state?.clientDetails?.client?._id);
+  }
 
     console.log('hu chu',selected);
   return (
@@ -74,7 +83,7 @@ const ClientDetails = () => {
         </h4>
         <h4 className="w-full flex items-center gap-2">
           <span>Status :</span> 
-          <select className='px-4 py-2 text-base rounded-md' name="status" id="status" defaultValue={state?.clientDetails?.client?.status}>
+          <select onChange={onStatusUpdate} className='px-4 py-2 text-base rounded-md' name="status" id="status" defaultValue={state?.clientDetails?.client?.status}>
             <option value={'prospect'}>Prospect</option>
             <option value={'follow-up'}>Follow up</option>
             <option value={'meeting'}>Meeting</option>
@@ -188,7 +197,7 @@ const ClientDetails = () => {
         </div>
         {
           editOn?
-          <button className='w-1/3 p-4 hover:bg-pri hover:text-white transition hover:transition bg-pri-light rounded-md'>Submit edited values</button>
+          <button onClick={onEdit} type='button' className='w-1/3 p-4 hover:bg-pri hover:text-white transition hover:transition bg-pri-light rounded-md'>Submit edited values</button>
           :null
         }
         <h3 className="w-full flex items-center gap-2">
