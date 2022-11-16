@@ -16,6 +16,10 @@ class TaskValidator {
         name:Joi.string().required(),
         type:Joi.string().required(),
     })),
+    basicFields:Joi.array().items(Joi.object({
+      name:Joi.string().valid('firstName','lastName','phone','email','gender','maritalStatus','fatherName','motherName','spouse','children','birthPlace','income','occupation','nomineeName','nomineeRelation','birthDate','meetingDate'),
+      type:Joi.string().valid('string','number','date-time')
+    })),
       fields:Joi.array().items(Joi.object({
         label:Joi.string().required(),
         type:Joi.string().required(),
