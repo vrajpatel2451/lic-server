@@ -28,8 +28,8 @@ class TaskController {
             let isStaffExist = null;
             // if(isHeadExist == null) return response.badRequest('Head Does not Exist');
             let isClientExist = null;
-            isClientExist = await Client.findById(client);
-            if(isClientExist == null) return response.badRequest('Client Does not Exist');
+            // isClientExist = await Client.findById(client);
+            // if(isClientExist == null) return response.badRequest('Client Does not Exist');
             
         // const newContact = await Contact.create({
         //     email,
@@ -37,11 +37,14 @@ class TaskController {
         // });
         const fieldsResult = await FieldClient.create(fields)
         const documentsCreated = await DocumentClient.insertMany(documents);
-       const clientData = await Client.findByIdAndUpdate(client,{
-            $push:{
-                documents:documentsCreated
-            }
-        })
+            let clientData;
+        if(clientRelated){
+           clientData = await Client.findByIdAndUpdate(client,{
+               $push:{
+                   documents:documentsCreated
+                }
+            })
+        }
 
         let finalDeadline = '';
         if(deadline==='' || deadline === undefined || deadline==null){
@@ -73,26 +76,80 @@ class TaskController {
                     taskType,
                     documents:documentsCreated
                 });
+                if(client===null|| client === undefined || client === ""){
+                    task = await Task.create({
+                        title,
+                        description,
+                        startTime: new Date().toISOString(),
+                        endTime: finalDeadline,
+                        department,
+                        branch,
+                        clientRelated,
+                        fields:fieldsResult,
+                        basicFields,
+                        head,
+                        taskType,
+                        documents:documentsCreated
+                    });
+                    
+                }else{
+                    task = await Task.create({
+                        title,
+                        description,
+                        startTime: new Date().toISOString(),
+                        endTime: finalDeadline,
+                        department,
+                        branch,
+                        clientRelated,
+                        fields:fieldsResult,
+                        basicFields,
+                        head,
+                        client:clientData,
+                        taskType,
+                        documents:documentsCreated
+                    });
+                } 
             }else{
                 isStaffExist = await User.findById(staff);
                 if(isStaffExist===null) return response.badRequest('Staff not exist');
-                task = await Task.create({
-                    title,
-                    description,
-                    startTime:new Date().toISOString(),
-                    endTime:finalDeadline,
-                    department,
-                    branch,
-                    taskStatus:'inprogress',
-                    head,
-                    clientRelated,
-                    staff,
-                    basicFields,
-                    fields:fieldsResult,
-                    client:clientData,
-                    taskType,
-                    documents:documentsCreated
-                });
+                if(client===null|| client === undefined || client === ""){
+                    
+                    task = await Task.create({
+                        title,
+                        description,
+                        startTime:new Date().toISOString(),
+                        endTime:finalDeadline,
+                        department,
+                        branch,
+                        taskStatus:'inprogress',
+                        head,
+                        clientRelated,
+                        staff,
+                        basicFields,
+                        fields:fieldsResult,
+                        taskType,
+                        documents:documentsCreated
+                    });
+                }else{
+                    task = await Task.create({
+                        title,
+                        description,
+                        startTime:new Date().toISOString(),
+                        endTime:finalDeadline,
+                        department,
+                        branch,
+                        taskStatus:'inprogress',
+                        head,
+                        clientRelated,
+                        staff,
+                        basicFields,
+                        fields:fieldsResult,
+                        client:clientData,
+                        taskType,
+                        documents:documentsCreated
+                    });
+                } 
+                
             }
             const endtimeNow = new Date(deadline);
             endtimeNow.setHours(endtimeNow.getHours()-5);
