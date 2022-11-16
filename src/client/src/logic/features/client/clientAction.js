@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import indexSearch from "../../../utils/searchCLients";
 import { getData, patchData, postData } from "../../../utils/serverHelper";
 import { GETCLIENT, UPDATEDOC, UPDATEFIELDS, UPLOADDOC, UPLOADFIELDS } from "../../../utils/urls";
-import { loadingClient, successClient, failedClient, loadingClienDetails, successClientDetails, failedClientDetails, loadingUploadDoc, successUploadDoc, failedUploadDoc } from './clientReducer';
+import { loadingClient, successClient, failedClient, loadingClienDetails, successClientDetails, failedClientDetails, loadingUploadDoc, successUploadDoc, failedUploadDoc, changeBasicFields } from './clientReducer';
 
 
 export const getClient = async (dispatch) => {
@@ -110,4 +110,8 @@ export const updateDoc = async (dispatch,dataPass,cb,client) => {
         console.log('error here',error);
         dispatch(failedUploadDoc({ message: error.response?.data?.error?.message || error?.message }));
     }
+}
+
+export const changeBasicFieldsAction=(dispatch,e)=>{
+    dispatch(changeBasicFields({name:e.target.name,value:e.target.value}));
 }

@@ -14,7 +14,7 @@ class TaskController {
     static async createTask(req,res){
         const response = new ResponseWraper(res);
         try {
-            const { title,description,fields,deadline,taskType, department, client,staff,head,branch,documents,basicFields } = req.body;
+            const { title,description,clientRelated,fields,deadline,taskType, department, client,staff,head,branch,documents,basicFields } = req.body;
             let isBranchExist = null;
             console.log(req.body);
             isBranchExist = await Branch.findById(branch);
@@ -65,6 +65,7 @@ class TaskController {
                     endTime: finalDeadline,
                     department,
                     branch,
+                    clientRelated,
                     fields:fieldsResult,
                     basicFields,
                     head,
@@ -84,6 +85,7 @@ class TaskController {
                     branch,
                     taskStatus:'inprogress',
                     head,
+                    clientRelated,
                     staff,
                     basicFields,
                     fields:fieldsResult,

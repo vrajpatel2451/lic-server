@@ -4,6 +4,7 @@ const TaskSchema = new Schema({
     title:String,
     description:String,
     startTime: {type: Schema.Types.Date, default:Date.now()},
+    clientRelated: {type: Schema.Types.Boolean, default:true},
     endTime: {type: Schema.Types.Date, default:Date.now()},
     department: {type: Schema.Types.ObjectId, ref:'Department'},
     branch: {type: Schema.Types.ObjectId, ref:'Branch'},

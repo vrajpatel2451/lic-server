@@ -5,12 +5,13 @@ class TaskValidator {
     return Joi.object({
       title: Joi.string().required(),
       description: Joi.string().required(),
+      clientRelated: Joi.boolean().required(),
       deadline: Joi.date().required(),
       branch: Joi.string().required(),
       department: Joi.string().required(),
-      head: Joi.string().required(),
+      head: Joi.string().allow(''),
       staff: Joi.string().allow(''),
-      client: Joi.string().required(),
+      client: Joi.string().allow(''),
       taskType:Joi.string().required(),
       documents:Joi.array().items(Joi.object({
         name:Joi.string().required(),
