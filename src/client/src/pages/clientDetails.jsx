@@ -5,6 +5,7 @@ import {
   MdCode,
   MdDocumentScanner,
   MdEdit,
+  MdEditOff,
   MdEmail,
   MdFamilyRestroom,
   MdLocationPin,
@@ -15,10 +16,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import ModelDocUpload from '../components/modelDocUpload';
 import ModelFields, { ModelUpdateFields } from '../components/modelFields';
-import { getClientDetails, updateDoc } from '../logic/features/client/clientAction';
+import { changeBasicFieldsAction, getClientDetails, updateDoc } from '../logic/features/client/clientAction';
 
 const ClientDetails = () => {
     const [selected, setSelected] = useState('');
+    const [editOn, setEditOn] = useState(false);
     const [openModel, setOpenModel] = useState(false);
     const [openFiModel, setOpenFiModel] = useState(null);
     const [openFieldModel, setOpenFieldModel] = useState(false);
@@ -71,91 +73,124 @@ const ClientDetails = () => {
           <span>Reference :</span> <span>{state?.clientDetails?.client?.reference?state?.clientDetails?.client?.reference:'No reference'}</span>
         </h4>
         <h4 className="w-full flex items-center gap-2">
-          <span>Status :</span> <span>{state?.clientDetails?.client?.status}</span>
+          <span>Status :</span> 
+          <select className='px-4 py-2 text-base rounded-md' name="status" id="status" defaultValue={state?.clientDetails?.client?.status}>
+            <option value={'prospect'}>Prospect</option>
+            <option value={'follow-up'}>Follow up</option>
+            <option value={'meeting'}>Meeting</option>
+            <option value={'client'}>Client</option>
+          </select>
+          <div className='flex-1'></div>
+          <span className='cursor-pointer' onClick={()=>setEditOn(prev=>!prev)}>
+            {
+              editOn?
+              <MdEditOff/>
+              :
+              <MdEdit/>
+            }
+
+          </span>
+          {/* <span>
+            {state?.clientDetails?.client?.status}
+            </span> */}
         </h4>
 
         <div className='w-full flex gap-4 items-center flex-wrap'>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Email</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.email} />
+        <label htmlFor="email">Email</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="email" name='email' id='email' value={state?.clientDetails?.client?.email} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Phone</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.phone} />
+        <label htmlFor="phone">Phone</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="number" name='phone' id='phone' value={state?.clientDetails?.client?.phone} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         </div>
 
         <div className='w-full flex gap-4 items-center flex-wrap'>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Gender</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.gender} />
+        <label htmlFor="gender">Gender</label>
+        <select className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} name="gender" id="gender" defaultValue={state?.clientDetails?.client?.gender} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}>
+          <option value={'male'}>Male</option>
+          <option value={'female'}>Female</option>
+          <option value={'other'}>Other</option>
+        </select>
+        {/* <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.gender} /> */}
         </div>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Marrital Status</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.marritalStatus} />
+        <label htmlFor="marritalStatus">Marrital Status</label>
+        <select className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} name="marritalStatus" id="marritalStatus" defaultValue={state?.clientDetails?.client?.marritalStatus} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}>
+          <option value={'married'}>Married</option>
+          <option value={'unmarried'}>Unmarried</option>
+          <option value={'divorced'}>Divorced</option>
+          <option value={'widowed'}>Widowed</option>
+        </select>
+        {/* <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.marritalStatus} /> */}
         </div>
         </div>
 
         <div className='w-full flex gap-4 items-center flex-wrap'>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Mother Name</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.motherName} />
+        <label htmlFor="motherName">Mother Name</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="text" name='motherName' id='motherName' value={state?.clientDetails?.client?.motherName} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Father Name</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.fatherName} />
+        <label htmlFor="fatherName">Father Name</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="text" name='fatherName' id='fatherName' value={state?.clientDetails?.client?.fatherName} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Spouse</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.spouse} />
+        <label htmlFor="spouse">Spouse</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="text" name='spouse' id='spouse' value={state?.clientDetails?.client?.spouse} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         </div>
 
         <div className='w-full flex gap-4 items-center flex-wrap'>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Children</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.children} />
+        <label htmlFor="children">Children</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="number" name='children' id='children' value={state?.clientDetails?.client?.children} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Meeting Date</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.meetingDate} />
+        <label htmlFor="meetingDate">Meeting Date</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="date" name='meetingDate' id='meetingDate' value={moment(state?.clientDetails?.client?.meetingDate).format('YYYY-MM-DD')} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         </div>
 
         <div className='w-full flex gap-4 items-center flex-wrap'>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Birth Date</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.birthDate} />
+        <label htmlFor="birthDate">Birth Date</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="date" name='birthDate' id='birthDate' value={moment(state?.clientDetails?.client?.birthDate).format('YYYY-MM-DD')} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Place Of Birth</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.birthPlace} />
+        <label htmlFor="birthPlace">Place Of Birth</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="text" name='birthPlace' id='birthPlace' value={state?.clientDetails?.client?.birthPlace} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         </div>
         
         <div className='w-full flex gap-4 items-center flex-wrap'>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Occupation</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.occupation} />
+        <label htmlFor="occupation">Occupation</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="text" name='occupation' id='occupation' value={state?.clientDetails?.client?.occupation} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Income Slab</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.income} />
+        <label htmlFor="income">Income Slab</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="number" name='income' id='income' value={state?.clientDetails?.client?.income} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         </div>
 
         <div className='w-full flex gap-4 items-center flex-wrap'>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Nominee Name</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.nomineeName} />
+        <label htmlFor="nomineeName">Nominee Name</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="text" name='nomineeName' id='nomineeName' value={state?.clientDetails?.client?.nomineeName} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         <div className='flex-1 flex items-start flex-col'>
-        <label htmlFor="">Nominee Relation</label>
-        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.nomineeRelation} />
+        <label htmlFor="nomineeRelation">Nominee Relation</label>
+        <input className={`w-full py-2 ${!editOn?'bg-lightGray px-0 border-b':'bg-white px-4 rounded-md'}`} type="text" name='nomineeRelation' id='nomineeRelation' value={state?.clientDetails?.client?.nomineeRelation} disabled={!editOn} onChange={e=>changeBasicFieldsAction(dispatch,e)}/>
         </div>
         </div>
-
-
+        {
+          editOn?
+          <button className='w-1/3 p-4 hover:bg-pri hover:text-white transition hover:transition bg-pri-light rounded-md'>Submit edited values</button>
+          :null
+        }
         <h3 className="w-full flex items-center gap-2">
           <MdTextFields /> <span className="flex-1">Entries</span><span className='w-20 h-10 bg-pri-light text-pri-dark cursor-pointer flex items-center justify-center rounded-sm' onClick={togglemodelfield}><p>+</p></span>
         </h3>

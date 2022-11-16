@@ -61,6 +61,9 @@ const clientReducer = createSlice({
         loadingUploadDoc(state) {
             state.uploadStatus = 'loading';
         },
+        changeBasicFields(state,action) {
+            state.clientDetails.client[action.payload.name] = action.payload.value;
+        },
         successUploadDoc(state, action) {
             state.uploadStatus = 'success';
         },
@@ -76,4 +79,4 @@ const clientReducer = createSlice({
 
 export default clientReducer.reducer;
 
-export const { loadingClient,loadingUploadDoc,successUploadDoc,failedUploadDoc, setFileUrl,successClient, failedClient,loadingClienDetails,successClientDetails,failedClientDetails } = clientReducer.actions;
+export const { loadingClient,loadingUploadDoc,successUploadDoc,changeBasicFields, failedUploadDoc, setFileUrl,successClient, failedClient,loadingClienDetails,successClientDetails,failedClientDetails } = clientReducer.actions;
