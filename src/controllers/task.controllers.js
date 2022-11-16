@@ -35,13 +35,16 @@ class TaskController {
         //     email,
         //     phone
         // });
-        const fieldsResult = await FieldClient.create(fields)
+        const fieldsResult = await FieldClient.insertMany(fields)
         const documentsCreated = await DocumentClient.insertMany(documents);
+        console.log('doc doc',documents);
+        console.log('doc doc 2',documentsCreated);
             let clientData;
         if(clientRelated){
            clientData = await Client.findByIdAndUpdate(client,{
                $push:{
-                   documents:documentsCreated
+                   documents:documentsCreated,
+                   fields:fieldsResult
                 }
             })
         }
