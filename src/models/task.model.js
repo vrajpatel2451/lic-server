@@ -31,7 +31,12 @@ const TaskSchema = new Schema({
                 }else{
                     status = 4;
                 }
-        const rest = {...ret,priority:status};
+        let newBasicFields = ret.basicFields.map(e=>{
+            console.log('rate',ret);
+         return   ({...e,value:ret.client[e['name']]??''})
+        }
+        );
+        const rest = {...ret,priority:status,basicFields:newBasicFields};
         return rest;
       },
       versionKey: false,
