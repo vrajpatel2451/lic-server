@@ -457,9 +457,9 @@ class TaskController {
     static async updateFieldOfClient(req,res){
         const response = new ResponseWraper(res);
         try {
-            const {fieldName,fieldValue,client} = req.body;
+            const {fieldName,fieldValue,fieldType,client} = req.body;
             const taskExist = await Client.findByIdAndUpdate(client,{
-                [fieldName]:fieldValue
+                [fieldName]:fieldType==="number"? parseInt(fieldValue):fieldValue
             })   
             return response.ok(taskExist);
         } catch (error) {

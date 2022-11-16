@@ -43,6 +43,7 @@ class TaskValidator {
   static editCLientDetails() {
     return Joi.object({
       fieldName: Joi.string().required().valid('firstName','lastName','phone','email','gender','maritalStatus','fatherName','motherName','spouse','children','birthPlace','income','occupation','nomineeName','nomineeRelation','birthDate','meetingDate'),
+      fieldType: Joi.string().required().valid('string','number','date-time'),
       fieldValue: Joi.string().required(),
       client: Joi.string().required(),
     });
