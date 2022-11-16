@@ -74,36 +74,88 @@ const ClientDetails = () => {
           <span>Status :</span> <span>{state?.clientDetails?.client?.status}</span>
         </h4>
 
+        <div className='w-full flex gap-4 items-center flex-wrap'>
+        <div className='flex-1 flex items-start flex-col'>
         <label htmlFor="">Email</label>
-        <input type="text" value={state?.clientDetails?.client?.email} />
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.email} />
+        </div>
+        <div className='flex-1 flex items-start flex-col'>
         <label htmlFor="">Phone</label>
-        <input type="text" value={state?.clientDetails?.client?.phone} />
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.phone} />
+        </div>
+        </div>
+
+        <div className='w-full flex gap-4 items-center flex-wrap'>
+        <div className='flex-1 flex items-start flex-col'>
         <label htmlFor="">Gender</label>
-        <input type="text" value={state?.clientDetails?.client?.gender} />
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.gender} />
+        </div>
+        <div className='flex-1 flex items-start flex-col'>
         <label htmlFor="">Marrital Status</label>
-        <input type="text" value={state?.clientDetails?.client?.marritalStatus} />
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.marritalStatus} />
+        </div>
+        </div>
+
+        <div className='w-full flex gap-4 items-center flex-wrap'>
+        <div className='flex-1 flex items-start flex-col'>
         <label htmlFor="">Mother Name</label>
-        <input type="text" value={state?.clientDetails?.client?.motherName} />
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.motherName} />
+        </div>
+        <div className='flex-1 flex items-start flex-col'>
         <label htmlFor="">Father Name</label>
-        <input type="text" value={state?.clientDetails?.client?.fatherName} />
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.fatherName} />
+        </div>
+        <div className='flex-1 flex items-start flex-col'>
         <label htmlFor="">Spouse</label>
-        <input type="text" value={state?.clientDetails?.client?.spouse} />
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.spouse} />
+        </div>
+        </div>
+
+        <div className='w-full flex gap-4 items-center flex-wrap'>
+        <div className='flex-1 flex items-start flex-col'>
         <label htmlFor="">Children</label>
-        <input type="text" value={state?.clientDetails?.client?.children} />
-        <label htmlFor="">Place Of Birth</label>
-        <input type="text" value={state?.clientDetails?.client?.birthPlace} />
-        <label htmlFor="">Income Slab</label>
-        <input type="text" value={state?.clientDetails?.client?.income} />
-        <label htmlFor="">Occupation</label>
-        <input type="text" value={state?.clientDetails?.client?.occupation} />
-        <label htmlFor="">Nominee Name</label>
-        <input type="text" value={state?.clientDetails?.client?.nomineeName} />
-        <label htmlFor="">Nominee Relation</label>
-        <input type="text" value={state?.clientDetails?.client?.nomineeRelation} />
-        <label htmlFor="">Birth Date</label>
-        <input type="text" value={state?.clientDetails?.client?.birthDate} />
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.children} />
+        </div>
+        <div className='flex-1 flex items-start flex-col'>
         <label htmlFor="">Meeting Date</label>
-        <input type="text" value={state?.clientDetails?.client?.meetingDate} />
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.meetingDate} />
+        </div>
+        </div>
+
+        <div className='w-full flex gap-4 items-center flex-wrap'>
+        <div className='flex-1 flex items-start flex-col'>
+        <label htmlFor="">Birth Date</label>
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.birthDate} />
+        </div>
+        <div className='flex-1 flex items-start flex-col'>
+        <label htmlFor="">Place Of Birth</label>
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.birthPlace} />
+        </div>
+        </div>
+        
+        <div className='w-full flex gap-4 items-center flex-wrap'>
+        <div className='flex-1 flex items-start flex-col'>
+        <label htmlFor="">Occupation</label>
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.occupation} />
+        </div>
+        <div className='flex-1 flex items-start flex-col'>
+        <label htmlFor="">Income Slab</label>
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.income} />
+        </div>
+        </div>
+
+        <div className='w-full flex gap-4 items-center flex-wrap'>
+        <div className='flex-1 flex items-start flex-col'>
+        <label htmlFor="">Nominee Name</label>
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.nomineeName} />
+        </div>
+        <div className='flex-1 flex items-start flex-col'>
+        <label htmlFor="">Nominee Relation</label>
+        <input className='w-full px-4 py-2 rounded-md' type="text" value={state?.clientDetails?.client?.nomineeRelation} />
+        </div>
+        </div>
+
+
         <h3 className="w-full flex items-center gap-2">
           <MdTextFields /> <span className="flex-1">Entries</span><span className='w-20 h-10 bg-pri-light text-pri-dark cursor-pointer flex items-center justify-center rounded-sm' onClick={togglemodelfield}><p>+</p></span>
         </h3>

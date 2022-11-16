@@ -5,6 +5,7 @@ class TaskValidator {
     return Joi.object({
       title: Joi.string().required(),
       description: Joi.string().required(),
+      clientRelated: Joi.boolean().required(),
       deadline: Joi.date().required(),
       branch: Joi.string().required(),
       department: Joi.string().required(),
