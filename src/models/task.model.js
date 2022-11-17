@@ -34,7 +34,7 @@ const TaskSchema = new Schema({
                 }
         let newBasicFields = ret.basicFields.map(e=>{
             // console.log('rate',ret);
-         return   ({...e,value:ret.client[e['name']]??''})
+         return   ({...e,value:ret.client?ret.client[e['name']]??'':''})
         }
         );
         const rest = {...ret,priority:status,basicFields:newBasicFields};
