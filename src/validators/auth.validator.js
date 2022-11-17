@@ -60,6 +60,20 @@ class AuthValidator {
       pin: Joi.number().required().min(100000).max(999999),
     });
   }
+  static editSingle() {
+    return Joi.object({
+      staff:Joi.string().required(),
+      field: Joi.string().required(),
+      value: Joi.string().required(),
+    });
+  }
+  static editList() {
+    return Joi.object({
+      staff:Joi.string().required(),
+      field: Joi.string().required(),
+      value: Joi.array().items(Joi.string()),
+    });
+  }
   static createLog() {
     return Joi.object({
       lat: Joi.number().required(),

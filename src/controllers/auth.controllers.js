@@ -470,6 +470,21 @@ class AuthController {
       return response.internalServerError();
     }
   }
+  static async editSingle(req, res) {
+    const response = new ResponseWraper(res);
+    try {
+      const {staff,field,value} = req.body;
+      
+      const data = await User.findByIdAndUpdate(staff,{
+        [field]:value,
+      });
+
+      return response.ok(data);
+    } catch (error) {
+        console.log(error);
+      return response.internalServerError();
+    }
+  }
 }
 
 export default AuthController;
