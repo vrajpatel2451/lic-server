@@ -9,7 +9,7 @@
     "start": "NODE_ENV=prod node ./build/index.js",
     "start-client": "webpack serve --open",
     "build-client": "webpack",
-    "build": "mkdir build && babel src -s -d build",
+    "build": "mkdir build && babel src -s -d build && cp -R ./src/client/dist ./build/client",
     "dev": "NODE_ENV=dev nodemon ./src/index.js --exec babel-node ./src/index.js"
   },
   "dependencies": {
