@@ -17,11 +17,11 @@ import SearchHelper from './helpers/searchindexing.helpers';
 class MainServer {
      #app;
      #port = parseInt(process.env.PORT) || 3000;
-     #mongoUri = parseInt(process.env.MONGODB_URI) || 'ab';
+     #mongoUri = process.env.MONGODB_URI || 'ab';
      
      constructor(){
        this.#port = parseInt(process.env.PORT) || 3000;
-          this.#mongoUri = process.env.MONGODB_URI || '';
+          this.#mongoUri = process.env.MONGODB_URI_PROD || '';
          this.#app = express();
          this.#config();
          this.#mongo();
