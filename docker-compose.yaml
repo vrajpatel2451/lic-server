@@ -8,6 +8,11 @@ services:
   nginx:
     build: ./nginx
     ports:
-    - '80:80'
+      - '80:80'
+      - '443:443'
     depends_on:
-    - api
+      - api
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/nginx.conf 
+      - ./nginx/error.log:/etc/nginx/error_log.log
+      - /etc/letsencrypt/:/etc/letsencrypt/
