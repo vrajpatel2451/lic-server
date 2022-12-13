@@ -1,6 +1,6 @@
 FROM nginx
 
-RUN adduser -u 1000 -D -S -G www-data www-data
+# RUN adduser -u 1000 -D -S -G www-data www-data
 
 COPY ./default.conf /etc/nginx/nginx.conf
 
