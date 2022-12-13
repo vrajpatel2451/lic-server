@@ -7,6 +7,6 @@ COPY ./default.conf /etc/nginx/nginx.conf
 EXPOSE 80
 EXPOSE 443
 
-RUN nginx -g daemon off;
+# RUN nginx -g daemon off;
 
-# CMD [“nginx”, “-g”, “daemon off;”]
+CMD [“nginx”]
