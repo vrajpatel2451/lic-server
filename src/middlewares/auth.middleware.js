@@ -76,6 +76,7 @@ export function roleMaker (){
 export const uploadUserFile = (req,res,next) => {
   const response = new ResponseWrapper(res);
   new FileOperations().upload((req,file,cb)=>{
+    console.log('file',file);
     if(file.mimetype==='image/png'||file.mimetype==='image/jpg' || file.mimetype === 'application/octet-stream'){
       cb(null,true)
     }else{
