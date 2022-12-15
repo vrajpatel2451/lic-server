@@ -88,13 +88,13 @@ export const uploadUserFile = (req,res,next) => {
   // }
   // )
   console.log(process.env.BUCKET_SECRET_ACCESS_KEY);
-  mediaUploader.single('userPhoto')(reqs,res,(err)=>{
+  mediaUploader.single('userPhoto')(req,res,(err)=>{
+    console.log('error here',err);
     if(err) {
-      console.log(err);
       return response.internalServerError()
     };
-    console.log('userfile',reqs?.files);
-    reqs.body={...reqs.body,img:reqs?.file?.location}
+    console.log('userfile',req?.files);
+    req.body={...req.body,img:req?.file?.location}
     next();
   });
 }
