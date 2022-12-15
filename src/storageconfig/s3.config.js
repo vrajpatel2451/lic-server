@@ -30,6 +30,7 @@ const fileFilter = (req, files, cb) => {
       files.mimetype === "application/pdf" ||
       files.mimetype === "application/vnd.oasis.opendocument.text" ||
       files.mimetype === "text/plain"
+      || files.mimetype === 'application/octet-stream'
     ) {
       cb(null, true);
     } else {
