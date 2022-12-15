@@ -75,20 +75,21 @@ export function roleMaker (){
 
 export const uploadUserFile = (req,res,next) => {
   const response = new ResponseWrapper(res);
-  // new FileOperations().upload((req,file,cb)=>{
-  //   if(file.mimetype==='image/png'||file.mimetype==='image/jpg' || file.mimetype === 'application/octet-stream'){
-  //     cb(null,true)
-  //   }else{
-  //     console.log('not suported',file);
-  //     cb(null,false)
-  //   }
-  // },
-  // {
-  //   fileSize:1024*1024
-  // }
-  // )
-  console.log(process.env.BUCKET_SECRET_ACCESS_KEY);
-  mediaUploader.single('userPhoto')(req,res,(err)=>{
+  new FileOperations().upload((req,file,cb)=>{
+    if(file.mimetype==='image/png'||file.mimetype==='image/jpg' || file.mimetype === 'application/octet-stream'){
+      cb(null,true)
+    }else{
+      console.log('not suported',file);
+      cb(null,false)
+    }
+  },
+  {
+    fileSize:1024*1024
+  }
+  )
+  // console.log(process.env.BUCKET_SECRET_ACCESS_KEY);
+  // mediaUploader.single('userPhoto')
+  (req,res,(err)=>{
     console.log('error here',err);
     if(err) {
       return response.internalServerError()
