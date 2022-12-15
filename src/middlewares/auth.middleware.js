@@ -93,7 +93,7 @@ export const uploadUserFile = (req,res,next) => {
       console.log(err);
       return response.internalServerError()
     };
-    console.log('userfile',reqs?.file);
+    console.log('userfile',reqs);
     req.body={...req.body,img:reqs?.file?.location}
     next();
   });
