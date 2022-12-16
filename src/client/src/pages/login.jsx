@@ -20,17 +20,20 @@ const Login = () => {
       console.log('location not available');
     }else{
       console.log('location',getLocation);
-
+      let lat = 0.0;
+      let lon = 0.0;
       const location = getLocation.getCurrentPosition(
         (pos)=>{
           console.log('here pos',pos.coords.latitude);
           console.log('here pos',pos.coords.longitude);
-          login(dispatch,{...values,lat:pos.coords.latitude,long:pos.coords.longitude});
+          lat =  pos.coords.latitude;
+          lon =  pos.coords.longitude;
         },
         (err)=>{
           console.log('here err',err);
         }
-      );
+        );
+        login(dispatch,{...values,lat:lat,long:lon});
       // navigator.permissions
       //   .query({ name: "geolocation" })
       //   .then(function (result) {
