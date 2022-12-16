@@ -20,8 +20,8 @@ const Login = () => {
       console.log('location not available');
     }else{
       console.log('location',getLocation);
-      let lat = 0.0;
-      let lon = 0.0;
+      let lat = 27.3333;
+      let lon = 73.45555;
       const location = getLocation.getCurrentPosition(
         (pos)=>{
           console.log('here pos',pos.coords.latitude);
@@ -33,6 +33,7 @@ const Login = () => {
           console.log('here err',err);
         }
         );
+        console.log('hhhhaa login here start');
         login(dispatch,{...values,lat:lat,long:lon});
       // navigator.permissions
       //   .query({ name: "geolocation" })
