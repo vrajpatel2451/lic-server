@@ -1,8 +1,10 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Routes } from 'react-router-dom'
+import Account from './pages/account'
 import Admin from './pages/admin'
 import AdminLogs from './pages/adminLogs'
+import ChangeStaffPassword from './pages/changeStaffPassword'
 import Client from './pages/client'
 import ClientDetails from './pages/clientDetails'
 import FilePriviewPage from './pages/FilePriview'
@@ -29,7 +31,9 @@ const RouterMain = () => {
       <Route path='/head' element={<PrivateRoute Component={Head} store={{state,dispatch}}/>}/>
       <Route path='/client/:id/pdf' element={<PrivateRoute Component={FilePriviewPage} store={{state,dispatch}}/>}/>
       <Route path='/staff/:id/logs' element={<PrivateRoute Component={StaffLogs} store={{state,dispatch}}/>}/>
+      <Route path='/staff/:id/changePassword' element={<PrivateRoute Component={ChangeStaffPassword} store={{state,dispatch}}/>}/>
       <Route path='/client/:id' element={<PrivateRoute Component={ClientDetails} store={{state,dispatch}}/>}/>
+      <Route path='/account' element={<PrivateRoute Component={Account} store={{state,dispatch}}/>}/>
       <Route path='/' element={<PrivateRoute Component={Home} store={{state,dispatch}}/>}/>
                   {/* <PrivateRoute path="/" component={<Home />} store={{state,dispatch}} />
                   <PrivateRoute path="/client" component={<Client />} store={{state,dispatch}}/>

@@ -1,6 +1,8 @@
 export const VERIFY = '/auth/verify/admin?admin=true';
 // export const LOGIN = '/auth/login/admin?admin=true';
 export const LOGIN = '/auth/login/web/admin';
+export const CHANGE_PASSWORD = '/auth/staff/password';
+export const CHANGE_OWN_PASSWORD = '/auth/staff/password/admin';
 export const ADMIN_LOGS = '/auth/logs';
 export const STAFF_LOGS=(staff) => `/auth/log?staff=${staff}`;
 export const GETCLIENT = '/client'

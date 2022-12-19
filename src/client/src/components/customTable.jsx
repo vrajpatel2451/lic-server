@@ -79,6 +79,17 @@ const CustomTable = ({
             ))
             // heads?.map((key,val)=><p>{key}</p>)
           }
+          {/* {
+           title == 'Clients'? 
+            <th
+            className={`flex-1 p-2 rounded-sm text-left border-[0.5px] border-white border-collapse 
+            `
+          }
+          // key={key}
+          >
+                action
+              </th>:''
+            } */}
         </thead>
         <tbody className="flex-1 overflow-y-scroll">
           {!loading
@@ -92,9 +103,18 @@ const CustomTable = ({
                       } text-left border-[0.5px] border-pri-light`}
                     >
                       {heads[key] === 'action' ? (
+                        location.pathname !== '/client'?
+                        <Link to={`/staff/${e._id}/changePassword`}>
                         <button className="bg-none border-none">
                           <MdEdit />
                         </button>
+                        </Link>
+                        :
+                        <Link to={`${location.pathname}/${e._id}`}>
+                        <button className="bg-none border-none">
+                          <MdEdit />
+                        </button>
+                        </Link>
                       ) : heads[key] === 'departments' ? (
                         e[heads[key]]?.length
                       ) : heads[key] === 'branch' ? (
@@ -125,6 +145,12 @@ const CustomTable = ({
                       <span className="w-full h-6 block bg-lightGray animate-pulse rounded-sm"></span>
                     </td>
                   ))}
+                    <td
+                      // key={key}
+                      className={`flex-1 overflow-x-hidden p-2 border-collapse text-left border-[0.5px] border-pri-light`}
+                    >
+                      <span className="w-full h-6 block bg-lightGray animate-pulse rounded-sm"></span>
+                    </td>
                 </tr>
               ))}
         </tbody>

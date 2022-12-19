@@ -1,8 +1,9 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../logic/features/auth/authAction';
+import { toast } from 'react-toastify';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email address format').required('Email is required'),
@@ -15,7 +16,9 @@ const LoginSchema = Yup.object().shape({
 const Login = () => {
   const getLocation = navigator.geolocation;
   const dispatch = useDispatch();
-  const handleSubmit = values => {
+
+  const state = useSelector(state => state.auth);
+  const handleSubmit = (values,submitProps) => {
     if(!getLocation){
       console.log('location not available');
     }else{
@@ -34,7 +37,10 @@ const Login = () => {
         }
         );
         console.log('hhhhaa login here start');
+        
         login(dispatch,{...values,lat:lat,long:lon});
+        submitProps.setSubmitting(false)
+        submitProps.resetForm()
       // navigator.permissions
       //   .query({ name: "geolocation" })
       //   .then(function (result) {
@@ -54,6 +60,14 @@ const Login = () => {
       //   });
     }
   };
+
+
+  if (state.status === 'error'){
+    toast.error(state.errorMessage || '', {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  }
+
   return (
     <div className="h-screen flex flex-col items-center justify-center">
       <div className=" bg-white w-96 p-4 rounded-lg">

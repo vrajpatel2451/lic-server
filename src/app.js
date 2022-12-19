@@ -17,7 +17,7 @@ import SearchHelper from './helpers/searchindexing.helpers';
 export class MainServer {
      #app;
      #port = parseInt(process.env.PORT) || 3000;
-     #mongoUri = process.env.MONGODB_URI || 'ab';
+     #mongoUri = process.env.MONGODB_URI_PROD || 'ab';
      
      constructor(){
        this.#port = parseInt(process.env.PORT) || 3000;

@@ -21,6 +21,7 @@ const Admin = () => {
     "Last Name":"lastName",
     "Email":"email",
     "Phone":"phone",
+    "Action":"action",
 }),[]);
 
   return (<div className='flex w-full py-10 items-start h-full'>

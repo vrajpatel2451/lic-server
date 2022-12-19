@@ -74,6 +74,18 @@ class AuthValidator {
       value: Joi.array().items(Joi.string()),
     });
   }
+  static editPassword() {
+    return Joi.object({
+      staff:Joi.string().required(),
+      newPassword: Joi.string().required(),
+    });
+  }
+  static editOwnPassword() {
+    return Joi.object({
+      cPassword:Joi.string().required(),
+      newPassword: Joi.string().required(),
+    });
+  }
   static createLog() {
     return Joi.object({
       lat: Joi.number().required(),

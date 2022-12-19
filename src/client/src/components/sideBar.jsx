@@ -80,7 +80,7 @@ const SideBar = () => {
         </div>
         {/* </Link> */}
         {/* <Link to={'/admin'}> */}
-        <div onClick={()=>navigate('/admin')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname.includes("/account")?'bg-pri':''}`}>
+        <div onClick={()=>navigate('/account')} className={`flex items-center gap-2 py-4 rounded-md hover:bg-pri ${pathname.includes("/account")?'bg-pri':''}`}>
           <span className='w-[20%] flex justify-center items-center'>
           <MdSettings color='white'/>
           </span>

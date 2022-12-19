@@ -9,6 +9,7 @@ import FirebaseNotificationService from '../helpers/notification.helper';
 import { StaffLog } from '../models/log.model';
 import { Task } from '../models/task.model';
 import { AdminLog } from '../models/adminLogs.model';
+import bcrypt from 'bcrypt';
 
 class AuthController {
 
@@ -480,6 +481,62 @@ class AuthController {
       });
 
       return response.ok(data);
+    } catch (error) {
+        console.log(error);
+      return response.internalServerError();
+    }
+  }
+  static async editPassword(req, res) {
+    const response = new ResponseWraper(res);
+    try {
+      const {staff,newPassword} = req.body;
+
+      const pass = await bcrypt.hash(newPassword, bcrypt.genSaltSync(Number(process.env.SALT_SECRET)));
+
+      const data = await User.findByIdAndUpdate(staff,{
+        password:pass,
+      });
+
+      return response.ok(data);
+    } catch (error) {
+        console.log(error);
+      return response.internalServerError();
+    }
+  }
+  static async editOwnPassword(req, res) {
+    const response = new ResponseWraper(res);
+    try {
+      const {userId,newPassword,cPassword} = req.body;
+      console.log('user id',userId);
+      const user = await User.findById(userId);
+
+      if (!user) return response.unauthorized('user not available');
+    
+      const authenticateUser = await user.authenticate(cPassword);
+      
+      // if (!authenticateUser) return response.unauthorized('Invalid password');
+
+
+      const pass = await bcrypt.hash(newPassword, bcrypt.genSaltSync(Number(process.env.SALT_SECRET)));
+
+      // console.log('new',pass);
+
+      await User.findByIdAndUpdate(userId,{
+        password:pass,
+      });
+
+      // await user.updateOne({
+      //   $set:{
+      //     password:newPassword
+      //   }
+      // });
+
+      await user.save();
+      // const data = await User.findByIdAndUpdate(staff,{
+      //   password,
+      // });
+
+      return response.ok(user);
     } catch (error) {
         console.log(error);
       return response.internalServerError();

@@ -150,6 +150,8 @@ class AuthRoutes{
         this.router.get('/staff', [verifyToken,roleFinder(['admin','head'])], AuthController.getStaff);
         this.router.patch('/staff/single', [validationMiddleware(AuthValidator.editSingle()),verifyToken,roleFinder(['admin'])], AuthController.editSingle);
         this.router.patch('/staff/list', [validationMiddleware(AuthValidator.editList()),verifyToken,roleFinder(['admin'])], AuthController.editSingle);
+        this.router.patch('/staff/password', [validationMiddleware(AuthValidator.editPassword()),verifyToken,roleFinder(['admin'])], AuthController.editPassword);
+        this.router.patch('/staff/password/admin', [validationMiddleware(AuthValidator.editOwnPassword()),verifyToken,roleFinder(['admin'])], AuthController.editOwnPassword);
         this.router.get('/staff/web', [verifyToken,roleFinder(['admin','head'])], AuthController.getStaffByWeb);
         this.router.get('/staff/:id', [verifyToken], AuthController.getStaffById);
         /**

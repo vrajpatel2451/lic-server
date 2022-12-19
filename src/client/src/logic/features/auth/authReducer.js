@@ -24,13 +24,11 @@ const authReducer = createSlice({
             cookie.save('token',action.payload?.accessToken,{
                 maxAge: 24 * 60 * 60,
             });
-            console.log('chodinu token',action.payload);
             state.user = action.payload?.user;
             state.token = action.payload?.accessToken;
             state.isLoggedIn = true;
         },
         failedAuth(state, action) {
-            // localStorage.removeItem('token');
             console.log(action);
             cookie.remove('token');
             state.status = 'error';
@@ -39,8 +37,7 @@ const authReducer = createSlice({
             state.token = '';
             state.isLoggedIn = false;
         },
-        logOutAuth(state,action){
-            // localStorage.removeItem('token');
+        logOutAuth(state){
             cookie.remove('token');
             state.isLoggedIn = false;
             state.token='';
