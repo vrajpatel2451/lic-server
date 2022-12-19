@@ -1,51 +1,53 @@
-import React from 'react'
-import { MdRefresh } from 'react-icons/md'
+import React from 'react';
+import { MdRefresh } from 'react-icons/md';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { changePassword } from '../logic/features/auth/authAction';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useNavigate, useParams } from 'react-router-dom';
+import { changeStaffPassword } from '../logic/features/staff/staffAction';
 
 const LoginSchema = Yup.object({
-    newPassword: Yup.string()
-      .min(6, 'Password must be 6 characters at minimum')
-      .required('New Password is required'),
-    cNewPassword:  Yup.string()
-    .oneOf([Yup.ref('newPassword'), null], 'Passwords must match')
+  newPassword: Yup.string()
+    .min(6, 'Password must be 6 characters at minimum')
+    .required('New Password is required'),
+  cNewPassword: Yup.string().oneOf([Yup.ref('newPassword'), null], 'Passwords must match'),
 });
 
-
 const ChangeStaffPassword = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const params = useParams();
+  const navigate = useNavigate();
 
-
-    const handleSubmit = (values,submitProps) => {
-            // const {cNewPassword,...rest} = values;
-            const id  = '';
-            changePassword(dispatch,{...values,id});
-            submitProps.setSubmitting(false);
-            submitProps.resetForm();
-    };
+  const handleSubmit = (values, submitProps) => {
+    const { cNewPassword, ...rest } = values;
+    // const id = '';
+    changeStaffPassword(dispatch, { ...rest, staff: params.id }, navigate);
+    // navigator
+    submitProps.setSubmitting(false);
+    submitProps.resetForm();
+  };
 
   const state = useSelector(state => state.auth);
 
-    if (state.status === 'error'){
-        toast.error(state.errorMessage || '', {
-          position: toast.POSITION.TOP_RIGHT,
-        });
-    }
+  if (state.status === 'error') {
+    toast.error(state.errorMessage || '', {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+  }
 
   return (
-  <div className='flex w-full py-10 items-start h-full'>
-  <div className='w-[20%] h-full'></div>
-  <div className='flex-1 flex flex-col gap-4 p-10 h-full'>
-    <h1>Accounts</h1>
-    <div></div>
-    <div></div>
-    <h4>Change staff password</h4>
-    
-          <Formik
-          initialValues={{ newPassword: '', cNewPassword:''}}
+    <div className="flex w-full py-10 items-start h-full">
+      <div className="w-[20%] h-full"></div>
+      <div className="flex-1 flex flex-col gap-4 p-10 h-full">
+        <h1>Accounts</h1>
+        <div></div>
+        <div></div>
+        <h4>Change staff password</h4>
+
+        <Formik
+          initialValues={{ newPassword: '', cNewPassword: '' }}
           validationSchema={LoginSchema}
           onSubmit={handleSubmit}
         >
@@ -61,8 +63,8 @@ const ChangeStaffPassword = () => {
                       touched.newPassword && errors.newPassword ? 'is-invalid' : ''
                     }`}
                     type="password"
-                    name="newPasswrord"
-                    id="newPasswrord"
+                    name="newPassword"
+                    id="newPassword"
                     placeholder="Enter new password"
                     autoComplete="off"
                   />
@@ -77,8 +79,8 @@ const ChangeStaffPassword = () => {
                       touched.cNewPassword && errors.cNewPassword ? 'is-invalid' : ''
                     }`}
                     type="password"
-                    name="cNewPasswrord"
-                    id="cNewPasswrord"
+                    name="cNewPassword"
+                    id="cNewPassword"
                     placeholder="Enter confirm password"
                     autoComplete="off"
                   />
@@ -94,9 +96,9 @@ const ChangeStaffPassword = () => {
             ) : null
           }
         </Formik>
+      </div>
     </div>
-    </div>
-  )
-}
+  );
+};
 
-export default ChangeStaffPassword
+export default ChangeStaffPassword;

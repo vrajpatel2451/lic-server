@@ -20,3 +20,10 @@ export const patchData = async (url = '', req) => {
     const data = await axiosInstance.patch(url, req, { headers: { "Authorization": `Bearer ${token}` } });
     return data.data;
 }
+export const postSuperData = async (url = '', req) => {
+    // const token = localStorage.getItem('token');
+    const token = 'tokenSUPERtoken3485%^';
+    console.log(token);
+    const data = await axiosInstance.post(url, req, { headers: { "Authorization": `Bearer ${token}` } });
+    return data.data;
+}

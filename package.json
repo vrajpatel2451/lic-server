@@ -10,7 +10,7 @@
     "start-client": "webpack serve --open",
     "build-client": "webpack",
     "build": "mkdir build && babel src -s -d build && cp -R ./src/client/dist ./build/client",
-    "dev": "NODE_ENV=dev nodemon ./src/index.js --exec babel-node ./src/index.js"
+    "dev": "nodemon ./src/index.js --exec babel-node ./src/index.js"
   },
   "dependencies": {
     "@ant-design/charts": "^1.4.2",
