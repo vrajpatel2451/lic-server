@@ -36,6 +36,18 @@ const staffReducer = createSlice({
             state.head = action.payload?.data;
             // state.token = action.payload.data.accessToken;
         },
+        successAdminCreateReducer(state, action) {
+            // console.log(action.payload, "action.payload");
+            state.status = 'success';
+            state.head.push(action.payload.data);
+            // state.token = action.payload.data.accessToken;
+        },
+        successPasswordReducer(state, action) {
+            // console.log(action.payload, "action.payload");
+            state.status = 'success';
+            // state.head = action.payload?.data;
+            // state.token = action.payload.data.accessToken;
+        },
         failedReducer(state, action) {
             console.log(action);
             state.status = 'error';
@@ -49,4 +61,4 @@ const staffReducer = createSlice({
 
 export default staffReducer.reducer;
 
-export const { loadingReducer, successStaffReducer, successAdminReducer,successHeadReducer,failedReducer, } = staffReducer.actions;
+export const { loadingReducer, successAdminCreateReducer, successStaffReducer, successAdminReducer, successHeadReducer, failedReducer, successPasswordReducer } = staffReducer.actions;

@@ -8,7 +8,7 @@ export const verifyUser = async (dispatch) => {
         console.log('here verify');
         dispatch(loadingAuth());
         const data = await getData(VERIFY);
-        console.log('here here verify',data?.data);
+        console.log('here here verify', data?.data);
         dispatch(successAuth(data?.data));
     } catch (error) {
         console.log(error, 'log here verify');
