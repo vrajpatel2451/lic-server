@@ -115,16 +115,18 @@ export class MainServer {
      }
 }
 
+
+
+const searchServer = new SearchHelper();
+if(process.env.IS_SEARCH_BUILD==="1"){
+  connection.on('connected',async()=>{
+    console.log('search connected');
+    await searchServer.defineIndex();
+  });
+}
+// else{
+//   console.log('search connected dev');
+  // server.runServer();
+// }
 // const server = new MainServer();
 
-// const searchServer = new SearchHelper();
-
-// if(process.env.IS_SEARCH_BUILD==="1"){
-//   connection.on('connected',async()=>{
-//     console.log('search connected');
-//     await searchServer.defineIndex();
-//   });
-// }else{
-//   console.log('search connected dev');
-//   server.runServer();
-// }

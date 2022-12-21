@@ -125,7 +125,10 @@ const CustomTable = ({
                         location.pathname==='/staff'?
                         <Link to={`${location.pathname}/${e._id}/logs`}>{e[heads[key]]}</Link> 
                         :
-                        <Link to={`${location.pathname}/${e._id}`}>{e[heads[key]]}</Link> 
+                        location.pathname==='/client'?
+                        <Link to={`${location.pathname}/${e._id}`}>
+                          {e[heads[key]]}
+                          </Link> : e[heads[key]]
                       ): (
                         e[heads[key]]
                       )}

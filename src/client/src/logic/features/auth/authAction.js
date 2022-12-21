@@ -25,6 +25,9 @@ export const login = async (dispatch, req) => {
         dispatch(successAuth(data.data));
     } catch (error) {
         dispatch(failedAuth({ message: error.response?.data?.error?.message || error?.message }));
+        toast.error((error.response?.data?.error?.message || error?.message) || 'Something went wrong', {
+            position: toast.POSITION.TOP_RIGHT,
+          });
     }
 }
 
@@ -37,5 +40,8 @@ export const changePassword = async (dispatch, req) => {
         dispatch(logOutAuth());
     } catch (error) {
         dispatch(failedAuth({ message: error.response?.data?.error?.message || error?.message }));
+        toast.error((error.response?.data?.error?.message || error?.message) || 'Something went wrong', {
+            position: toast.POSITION.TOP_RIGHT,
+          });
     }
 }

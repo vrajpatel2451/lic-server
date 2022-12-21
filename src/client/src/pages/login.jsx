@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../logic/features/auth/authAction';
 import { toast } from 'react-toastify';
+import { useMemo } from 'react';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email address format').required('Email is required'),
@@ -18,6 +19,7 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const state = useSelector(state => state.auth);
+  // const status = useMemo(()=>state.status,[]);
   const handleSubmit = (values,submitProps) => {
     if(!getLocation){
       console.log('location not available');
@@ -26,21 +28,26 @@ const Login = () => {
       let lat = 27.3333;
       let lon = 73.45555;
       const location = getLocation.getCurrentPosition(
-        (pos)=>{
+        async(pos)=>{
           console.log('here pos',pos.coords.latitude);
           console.log('here pos',pos.coords.longitude);
           lat =  pos.coords.latitude;
           lon =  pos.coords.longitude;
+          await login(dispatch,{...values,lat:lat,long:lon});
+          submitProps.setSubmitting(true);
+          submitProps.resetForm();
         },
         (err)=>{
           console.log('here err',err);
+          submitProps.setSubmitting(true);
+          submitProps.resetForm();
+          toast.error(err.message || 'Something went wrong', {
+            position: toast.POSITION.TOP_RIGHT,
+          });
         }
         );
         console.log('hhhhaa login here start');
         
-        login(dispatch,{...values,lat:lat,long:lon});
-        submitProps.setSubmitting(false)
-        submitProps.resetForm()
       // navigator.permissions
       //   .query({ name: "geolocation" })
       //   .then(function (result) {
@@ -62,11 +69,9 @@ const Login = () => {
   };
 
 
-  if (state.status === 'error'){
-    toast.error(state.errorMessage || '', {
-      position: toast.POSITION.TOP_RIGHT,
-    });
-  }
+  // if (status === 'error'){
+    
+  // }
 
   return (
     <div className="h-screen flex flex-col items-center justify-center">
@@ -78,7 +83,7 @@ const Login = () => {
           onSubmit={handleSubmit}
         >
           {({ touched, errors, isSubmitting, values }) =>
-            !isSubmitting ? (
+            
               <Form>
                 <div className="flex my-2 flex-col">
                   <label htmlFor="email" className="text-pri-dark text-lg">
@@ -111,13 +116,14 @@ const Login = () => {
                   <ErrorMessage component="div" name="password" className="text-red" />
                 </div>
                 <button
-                  className="bg-pri-dark hover:bg-pri transition-all w-full mt-2 text-white rounded px-4 py-2"
+                  className="bg-pri-dark hover:bg-pri transition-all disabled:bg-pri-light w-full mt-2 text-white rounded px-4 py-2"
                   type="submit"
+                  disabled={isSubmitting}
                 >
                   Submit
                 </button>
               </Form>
-            ) : null
+            
           }
         </Formik>
       </div>

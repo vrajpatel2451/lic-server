@@ -6,7 +6,7 @@ class SearchHelper {
     #client;
     constructor(){
     this.#client = new MeiliSearch({
-            host: 'http://localhost:7700',
+            host: 'https://admin.madhavinsurance.in',
             apiKey: 'MADHAV_SEARCH',
     });
     }
@@ -28,3 +28,15 @@ class SearchHelper {
 }
 
 export default SearchHelper;
+
+
+
+/*
+
+docker run -it --rm \
+  -p 7700:7700 \
+  -e MEILI_MASTER_KEY='MADHAV_SEARCH'\
+  -v $(pwd)/meili_data:/meili_data \
+  getmeili/meilisearch:v0.30
+
+*/

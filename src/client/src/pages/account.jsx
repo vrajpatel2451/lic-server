@@ -21,9 +21,9 @@ const Account = () => {
     const dispatch = useDispatch();
 
 
-    const handleSubmit = (values,submitProps) => {
+    const handleSubmit = async(values,submitProps) => {
             const {cNewPassword,...rest} = values;
-            changePassword(dispatch,rest);
+            await changePassword(dispatch,rest);
             submitProps.setSubmitting(false);
             submitProps.resetForm();
     };
@@ -51,7 +51,6 @@ const Account = () => {
           onSubmit={handleSubmit}
         >
           {({ touched, errors, isSubmitting, values }) =>
-            !isSubmitting ? (
               <Form>
                 <div className="flex my-2 flex-col w-[20rem]">
                   <label htmlFor="cPassword" className="text-pri-dark text-lg">
@@ -102,13 +101,13 @@ const Account = () => {
                   <ErrorMessage component="div" name="cNewPassword" className="text-red" />
                 </div>
                 <button
-                  className="bg-pri-dark w-[20rem] hover:bg-pri transition-all mt-2 text-white rounded px-4 py-2"
+                  className="bg-pri-dark w-[20rem disabled:bg-pri-light hover:bg-pri transition-all mt-2 text-white rounded px-4 py-2"
                   type="submit"
+                  disabled={!isSubmitting}
                 >
                   Submit
                 </button>
               </Form>
-            ) : null
           }
         </Formik>
     </div>
