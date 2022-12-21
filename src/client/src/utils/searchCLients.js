@@ -1,7 +1,7 @@
 import MeiliSearch from "meilisearch";
 
 const client = new MeiliSearch({
-  host: "/",
+  host: "https://admin.madhavinsurance.in/",
   apiKey:'MADHAV_SEARCH'
 });
 
