@@ -32,6 +32,7 @@ const Staff = () => {
       'Last Name': 'lastName',
       Departments: 'departments',
       Branch: 'branch',
+      Action: 'action',
     }),
     [],
   );
@@ -39,21 +40,21 @@ const Staff = () => {
 
   const filterHeadByBranch = async(e) =>{
     setdepartment(prev=>({...prev,branch:e.target.value}))
-    await getStaffByBranchOrDepartment(dispatch,departmentList.department,departmentList.branch);
+    await getStaffByBranchOrDepartment(dispatch,departmentList.department,e.target.value);
   }
   const filterHeadByDept = async(e) =>{
     setdepartment(prev=>({...prev,department:e.target.value}))
-    await getStaffByBranchOrDepartment(dispatch,departmentList.department,departmentList.branch);
+    await getStaffByBranchOrDepartment(dispatch,e.target.value,departmentList.branch);
   }
 
   return (
     <div className="flex w-full py-10 items-start h-full">
       <div className="w-[20%] h-full"></div>
       <div className="flex-1 flex flex-col gap-4 p-10 h-full"><div className="w-full flex items-center justify-between">
-        <h4 className=" text-2xl font-light">{'Heads'}</h4>
-        <button className="w-20 h-10 bg-pri border-none flex items-center justify-center rounded-md">
+        <h4 className=" text-2xl font-light">{'Staff'}</h4>
+        {/* <button className="w-20 h-10 bg-pri border-none flex items-center justify-center rounded-md">
           <p className="font-bold text-lg text-white">+</p>
-        </button>
+        </button> */}
       </div>
       <div className='w-full flex items-stretch gap-4'>
         <select onChange={filterHeadByBranch} className="border-none outline-none px-4 py-2 rounded-md">

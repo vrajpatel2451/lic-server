@@ -17,7 +17,7 @@ import SearchHelper from './helpers/searchindexing.helpers';
 export class MainServer {
      #app;
      #port = parseInt(process.env.PORT) || 3000;
-     #mongoUri = process.env.MONGODB_URI || 'ab';
+     #mongoUri = process.env.MONGODB_URI_PROD || 'ab';
      
      constructor(){
        this.#port = parseInt(process.env.PORT) || 3000;
@@ -115,16 +115,18 @@ export class MainServer {
      }
 }
 
+
+
+const searchServer = new SearchHelper();
+if(process.env.IS_SEARCH_BUILD==="1"){
+  connection.on('connected',async()=>{
+    console.log('search connected');
+    await searchServer.defineIndex();
+  });
+}
+// else{
+//   console.log('search connected dev');
+  // server.runServer();
+// }
 // const server = new MainServer();
 
-// const searchServer = new SearchHelper();
-
-// if(process.env.IS_SEARCH_BUILD==="1"){
-//   connection.on('connected',async()=>{
-//     console.log('search connected');
-//     await searchServer.defineIndex();
-//   });
-// }else{
-//   console.log('search connected dev');
-//   server.runServer();
-// }

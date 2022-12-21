@@ -38,13 +38,27 @@ const UserSchema = new Schema({
   },
 );
 
-UserSchema.pre('save', async function encrypt(next) {
+UserSchema.pre('save',{document:true,query:false} ,async function encrypt(next) {
+    // console.log('got here');
+    // console.log(this.isModified('password'));
     if (this.isModified('password')) {
+      console.log('got here inner');
       const hash = await this.encryptPassword(this.password);
       this.password = hash;
     }
     return next();
   });
+
+// UserSchema.pre('findByIdAndUpdate',{document:true,query:false} ,async function encrypt(next) {
+//     console.log('got here find');
+//     console.log(this.isModified('password'));
+//     if (this.isModified('password')) {
+//       console.log('got here inner');
+//       const hash = await this.encryptPassword(this.password);
+//       this.password = hash;
+//     }
+//     return next();
+//   });
   
   UserSchema.methods = {
     async authenticate(plainTextPassword) {

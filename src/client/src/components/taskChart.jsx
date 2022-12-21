@@ -29,12 +29,20 @@ const TaskChart = () => {
       ];
     const dataClients = [
         {
-          type: 'On Boarded',
-          value: state.clientPie?.inFollowup,
+          type: 'Prospect',
+          value: state.clientPie?.prospect,
         },
         {
-          type: 'On Followup',
-          value: state.clientPie?.onboarded,
+          type: 'Meeting',
+          value: state.clientPie?.meeting,
+        },
+        {
+          type: 'Follow-up',
+          value: state.clientPie?.follow_up,
+        },
+        {
+          type: 'Done',
+          value: state.clientPie?.done,
         },
       ];
       const config = {

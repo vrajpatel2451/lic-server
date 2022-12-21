@@ -11,11 +11,11 @@ const Home = () => {
   const state = useSelector(state => state.auth);
   useEffect(() => {
     if (state.isLoggedIn) {
-      console.log('its htre');
+      // console.log('its htre');
       dashBoardStuff(dispatch);
       // getStaff(dispatch);
     }else{
-      console.log('its  not htre');
+      // console.log('its  not htre');
       // verifyUser(dispatch);
     }
   }, [state.isLoggedIn]);

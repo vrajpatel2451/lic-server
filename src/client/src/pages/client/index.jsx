@@ -43,9 +43,9 @@ const Client = () => {
       <div className="flex-1 flex flex-col gap-4 p-10 h-full">
       <div className="w-full flex items-center justify-between">
         <h4 className="mb-4 text-2xl font-light">{'Clients'}</h4>
-        <button className="w-20 h-10 bg-pri border-none flex items-center justify-center rounded-md">
+        {/* <button className="w-20 h-10 bg-pri border-none flex items-center justify-center rounded-md">
           <p className="font-bold text-lg text-white">+</p>
-        </button>
+        </button> */}
       </div>
       <div className='w-full flex items-stretch gap-4'>
         <input onChange={onChangeSearch} placeholder='Search client' className="border-none outline-none px-4 py-2 rounded-md"/>

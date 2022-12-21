@@ -227,16 +227,24 @@ class ClientController {
 
             const {month,year} = req.query;
 
-            const countOfJoinedCLient = await Client.count({
-                status:'onboarded'
+            const countOfProspect = await Client.count({
+                status:'prospect'
+            });
+            const countOfMeeting = await Client.count({
+                status:'meeting'
             });
             const countOfFollowUpCLient = await Client.count({
-                status:'in-followup'
+                status:'follow-up'
+            });
+            const countOfDone = await Client.count({
+                status:'done'
             });
 
             const pie = {
-                "inFollowup":countOfFollowUpCLient,
-                "onboarded":countOfJoinedCLient
+                "prospect":countOfProspect,
+                "meeting":countOfMeeting,
+                "follow_up":countOfFollowUpCLient,
+                "done":countOfDone,
             };
 
             const dataWeek = [];
@@ -259,57 +267,107 @@ class ClientController {
 
             const countjWeek1 = await Client.count({
                 joinDate: {'$gte':week1Start,'$lte':week1End},
-                status:'onboarded'
+                status:'prospect'
             });
             const countjWeek2 = await Client.count({
                 joinDate: {'$gte':week2Start,'$lte':week2End},
-                status:'onboarded'
+                status:'prospect'
             });
             const countjWeek3 = await Client.count({
                 joinDate: {'$gte':week3Start,'$lte':week3End},
-                status:'onboarded'
+                status:'prospect'
             });
             const countjWeek4 = await Client.count({
                 joinDate: {'$gte':week4Start,'$lte':week4End},
-                status:'onboarded'
+                status:'prospect'
             });
             const countjWeek5 = await Client.count({
                 joinDate: {'$gte':week5Start,'$lte':week5End},
-                status:'onboarded'
+                status:'prospect'
+            });
+            const countkWeek1 = await Client.count({
+                joinDate: {'$gte':week1Start,'$lte':week1End},
+                status:'meeting'
+            });
+            const countkWeek2 = await Client.count({
+                joinDate: {'$gte':week2Start,'$lte':week2End},
+                status:'meeting'
+            });
+            const countkWeek3 = await Client.count({
+                joinDate: {'$gte':week3Start,'$lte':week3End},
+                status:'meeting'
+            });
+            const countkWeek4 = await Client.count({
+                joinDate: {'$gte':week4Start,'$lte':week4End},
+                status:'meeting'
+            });
+            const countkWeek5 = await Client.count({
+                joinDate: {'$gte':week5Start,'$lte':week5End},
+                status:'meeting'
             });
 
             const countfWeek1 = await Client.count({
                 followUpDate: {'$gte':week1Start,'$lte':week1End},
-                status:'in-followup'
+                status:'follow-up'
             });
             const countfWeek2 = await Client.count({
                 followUpDate: {'$gte':week2Start,'$lte':week2End},
-                status:'in-followup'
+                status:'follow-up'
             });
             const countfWeek3 = await Client.count({
                 followUpDate: {'$gte':week3Start,'$lte':week3End},
-                status:'in-followup'
+                status:'follow-up'
             });
             const countfWeek4 = await Client.count({
                 followUpDate: {'$gte':week4Start,'$lte':week4End},
-                status:'in-followup'
+                status:'follow-up'
             });
             const countfWeek5 = await Client.count({
                 followUpDate: {'$gte':week5Start,'$lte':week5End},
-                status:'in-followup'
+                status:'follow-up'
+            });
+            const countgWeek1 = await Client.count({
+                followUpDate: {'$gte':week1Start,'$lte':week1End},
+                status:'done'
+            });
+            const countgWeek2 = await Client.count({
+                followUpDate: {'$gte':week2Start,'$lte':week2End},
+                status:'done'
+            });
+            const countgWeek3 = await Client.count({
+                followUpDate: {'$gte':week3Start,'$lte':week3End},
+                status:'done'
+            });
+            const countgWeek4 = await Client.count({
+                followUpDate: {'$gte':week4Start,'$lte':week4End},
+                status:'done'
+            });
+            const countgWeek5 = await Client.count({
+                followUpDate: {'$gte':week5Start,'$lte':week5End},
+                status:'done'
             });
 
             const data = [
-                { "week": "Week1", "type": "OnBoarded", "value": countjWeek1 },
-                { "week": "Week1", "type": "OnFolloeup", "value": countfWeek1 },
-                { "week": "Week2", "type": "OnBoarded", "value": countjWeek2 },
-                { "week": "Week2", "type": "OnFolloeup", "value": countfWeek2 },
-                { "week": "Week3", "type": "OnBoarded", "value": countjWeek3 },
-                { "week": "Week3", "type": "OnFolloeup", "value": countfWeek3 },
-                { "week": "Week4", "type": "OnBoarded", "value": countjWeek4 },
-                { "week": "Week4", "type": "OnFolloeup", "value": countfWeek4 },
-                { "week": "Week5", "type": "OnBoarded", "value": countjWeek5 },
-                { "week": "Week5", "type": "OnFolloeup", "value": countfWeek5 },
+                { "week": "Week1", "type": "prospect", "value": countjWeek1 },
+                { "week": "Week1", "type": "meeting", "value": countkWeek1 },
+                { "week": "Week1", "type": "follow-up", "value": countfWeek1 },
+                { "week": "Week1", "type": "done", "value": countgWeek1 },
+                { "week": "Week2", "type": "prospect", "value": countjWeek2 },
+                { "week": "Week2", "type": "meeting", "value": countkWeek2 },
+                { "week": "Week2", "type": "follow-up", "value": countfWeek2 },
+                { "week": "Week2", "type": "done", "value": countgWeek2 },
+                { "week": "Week3", "type": "prospect", "value": countjWeek3 },
+                { "week": "Week3", "type": "meeting", "value": countkWeek3 },
+                { "week": "Week3", "type": "follow-up", "value": countfWeek3 },
+                { "week": "Week3", "type": "done", "value": countgWeek3 },
+                { "week": "Week4", "type": "prospect", "value": countjWeek4 },
+                { "week": "Week4", "type": "meeting", "value": countkWeek4 },
+                { "week": "Week4", "type": "follow-up", "value": countfWeek4 },
+                { "week": "Week4", "type": "done", "value": countgWeek4 },
+                { "week": "Week5", "type": "prospect", "value": countjWeek5 },
+                { "week": "Week5", "type": "meeting", "value": countkWeek5 },
+                { "week": "Week5", "type": "follow-up", "value": countfWeek5 },
+                { "week": "Week5", "type": "done", "value": countgWeek5 },
                 ];
             return response.ok({pie,data});
         } catch (error) {
