@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { getData, patchData, postSuperData } from "../../../utils/serverHelper"
 import { CHANGE_OWN_PASSWORD, CHANGE_PASSWORD, GETADMIN, GETHEAD, GETHEADBYBRANCH, GETSTAFF, GETSTAFFBYBRANCH, REGISTER_ADMIN } from "../../../utils/urls"
 import { loadingReducer, failedReducer, successAdminReducer, successHeadReducer, successStaffReducer, successPasswordReducer, successAdminCreateReducer } from "./staffReducer";
@@ -93,5 +94,8 @@ export const createAdmin = async (dispatch, req, navigate) => {
         navigate(-1);
     } catch (error) {
         dispatch(failedReducer({ message: error.response?.data?.error?.message || error?.message }));
+        toast.error((error.response?.data?.error?.message || error?.message) || 'Something went wrong', {
+            position: toast.POSITION.TOP_RIGHT,
+          });
     }
 }

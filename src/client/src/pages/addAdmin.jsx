@@ -51,7 +51,8 @@ const AddAdmin = () => {
     //   }
 
     createAdmin(dispatch, formData, navigate);
-
+    submitProps.setSubmitting(true);
+          submitProps.resetForm();
     console.log(formData.entries, 'values again');
   };
 
@@ -83,7 +84,7 @@ const AddAdmin = () => {
           onSubmit={handleSubmit}
         >
           {({ touched, errors, isSubmitting, setFieldValue }) =>
-            !isSubmitting ? (
+            
               <Form>
                 <div className="flex my-2 flex-col w-[20rem]">
                   <label htmlFor="firstName" className="text-pri-dark text-lg">
@@ -281,11 +282,12 @@ const AddAdmin = () => {
                 <button
                   className="bg-pri-dark w-[20rem] hover:bg-pri transition-all mt-2 text-white rounded px-4 py-2"
                   type="submit"
+                  disabled={isSubmitting}
                 >
                   Submit
                 </button>
               </Form>
-            ) : null
+           
           }
         </Formik>
       </div>
